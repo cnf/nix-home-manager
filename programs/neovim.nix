@@ -1,11 +1,12 @@
-{config, pkgs, lib, ...}:
+{lib, pkgs, ...}:
 let
-  fromGitHub = ref: repo: pkgs.vimUtils.buildVimPlugin {
+  fromGitHub = rev: ref: repo: pkgs.vimUtils.buildVimPlugin {
     pname = "${lib.strings.sanitizeDerivationName repo}";
     version = ref;
     src = builtins.fetchGit {
       url = "https://github.com/${repo}.git";
       ref = ref;
+      rev = rev;
     };
   };
 in {
@@ -44,7 +45,7 @@ in {
       tcomment_vim
       gitgutter
       vim-nix
-      (fromGitHub "HEAD" "cnf/vim-pointless")
+      (fromGitHub "482a30223f322b6d4e569640ec979946ec873c18" "master" "cnf/vim-pointless")
     ];
   };
 }

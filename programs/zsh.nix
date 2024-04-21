@@ -1,4 +1,4 @@
-{ lib, fetchFromGitHub}:
+{ lib, pkgs, ...}:
 
 {
   programs.zsh = {
@@ -25,7 +25,7 @@
       { 
         name = "git-prompt";
         file = "lib/git.zsh";
-        src = fetchFromGitHub {
+        src = pkgs.fetchFromGitHub {
           owner = "cnf";
           repo = "zshrc";
           rev = "ebb9381";
@@ -35,7 +35,7 @@
       { 
         name = "prompt";
         file = "prompt.zsh";
-        src = fetchFromGitHub {
+        src = pkgs.fetchFromGitHub {
           owner = "cnf";
           repo = "zshrc";
           rev = "ebb9381";
@@ -45,7 +45,7 @@
       { 
         name = "options";
         file = "options.zsh";
-        src = fetchFromGitHub {
+        src = pkgs.fetchFromGitHub {
           owner = "cnf";
           repo = "zshrc";
           rev = "ebb9381";
@@ -55,7 +55,7 @@
       { 
         name = "dotenv";
         file = "plugins/dotenv/dotenv.plugin.zsh";
-        src = fetchFromGitHub {
+        src = pkgs.fetchFromGitHub {
           owner = "ohmyzsh";
           repo = "ohmyzsh";
           rev = "3427da4";
