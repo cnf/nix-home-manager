@@ -40,6 +40,13 @@
             ./optinix.nix 
           ];
         };
+        "cnf@surface" = home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+          modules = [
+            {home = home;}
+            ./surface.nix 
+          ];
+        };
       };
       #homeConfigurations.${username} = home-manager.lib.homeManagerConfiguration {
       #  inherit pkgs;
