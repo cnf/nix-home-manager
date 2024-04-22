@@ -2,10 +2,10 @@
   description = "Home Manager configuration";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     home-manager = {
-      url = "github:nix-community/home-manager";
+      url = "github:nix-community/home-manager/release-23.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -56,6 +56,9 @@
         };
 	"funshoot@OptiNix" = home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
+	  extraSpecialArgs = {
+	    inherit unstable;
+	  };
           modules = [
             ./funshoot.nix
           ];

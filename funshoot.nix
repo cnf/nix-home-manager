@@ -1,7 +1,8 @@
-{ config, pkgs, ... }:
-let
-  unstable = import <nixpkgs-unstable> {config = { allowUnfree = true; };};
-in {
+{ config, pkgs, unstable, ... }:
+#let
+#  unstable = import <nixpkgs-unstable> {config = { allowUnfree = true; };};
+#in
+{
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
   home.username = "funshoot";
@@ -99,6 +100,8 @@ in {
   #  name = "FunShoots";
   #  type = "Directory";
   #};
+
+  programs.git = (pkgs.callPackage ./programs/git.nix {}).programs.git;
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
