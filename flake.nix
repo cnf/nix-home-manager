@@ -54,13 +54,12 @@
             ./ysl.nix
           ];
         };
+	"funshoot@OptiNix" = home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+          modules = [
+            ./funshoot.nix
+          ];
+        };
       };
-      #homeConfigurations.${username} = home-manager.lib.homeManagerConfiguration {
-      #  inherit pkgs;
-      #
-      #  modules = [
-      #    home
-      #  ];
-      #};
     };
 }
