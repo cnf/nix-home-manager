@@ -4,7 +4,8 @@
   programs.zsh = {
     enable = true;
     enableCompletion = true;
-    autosuggestion.enable = true;
+    # autosuggestion.enable = true;
+    enableAutosuggestions = true;
     #syntaxHighlighting.enable = true;
     dotDir = ".config/zsh";
     history = {
