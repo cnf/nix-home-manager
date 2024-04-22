@@ -43,8 +43,8 @@
   home.sessionVariables = {
     # EDITOR = "emacs";
   };
-  #programs.git = (pkgs.callPackage ./programs/git.nix {}).programs.git;
-  #programs.neovim = (pkgs.callPackage ./programs/neovim.nix {}).programs.neovim;
+  programs.git = (pkgs.callPackage ./programs/git.nix {}).programs.git;
+  programs.neovim = (pkgs.callPackage ./programs/neovim.nix {}).programs.neovim;
   programs.zsh = (pkgs.callPackage ./programs/zsh.nix {}).programs.zsh;
   #programs.vscode = (pkgs.callPackage ./programs/vscode.nix {}).programs.vscode;
   #programs.go = (pkgs.callPackage ./programs/golang.nix {}).programs.go;

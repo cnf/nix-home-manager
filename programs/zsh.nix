@@ -45,8 +45,8 @@
       export CLICOLOR=1
 
       # load local config not in git
-      if [[ -f "$HOME/.zsh/local.zsh" ]]; then
-        source "$HOME/.zsh/local.zsh"
+      if [[ -f "$HOME/.config/zsh/local.zsh" ]]; then
+        source "$HOME/.config/zsh/local.zsh"
       fi
     '';
     # check vcs_info for prompt
