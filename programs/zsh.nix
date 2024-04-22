@@ -1,4 +1,4 @@
-{ lib, pkgs, ...}:
+{ lib, pkgs, config, ...}:
 
 {
   programs.zsh = {
@@ -6,8 +6,9 @@
     enableCompletion = true;
     autosuggestion.enable = true;
     #syntaxHighlighting.enable = true;
-    #dotDir = "${config.home.homeDirectory}/.zsh";
+    dotDir = ".config/zsh";
     history = {
+      path = "$HOME/.local/zsh/history";
       size = 10000;
       ignoreDups = true;
       ignoreAllDups = false;
@@ -16,28 +17,6 @@
       share = true;
       extended = false;
     };
-    initExtraFirst = ''
-      # see man zshoptions(1)
-      setopt PRINT_EXIT_VALUE
-      setopt TRANSIENT_RPROMPT
-      setopt ALWAYS_TO_END
-      setopt AUTO_MENU
-      setopt AUTO_PUSHD
-      setopt COMPLETE_IN_WORD
-      setopt NO_FLOW_CONTROL
-    '';
-    #setOptions = [
-    #  "HIST_IGNORE_DUPS" in history
-    #  "SHARE_HISTORY" in history
-    #  "HIST_FCNTL_LOCK" auto, in history
-    #  "PRINT_EXIT_VALUE"
-    #  "TRANSIENT_RPROMPT"
-    #  "ALWAYS_TO_END"
-    #  "AUTO_MENU"
-    #  "AUTO_PUSHD"
-    #  "COMPLETE_IN_WORD"
-    #  "NO_FLOW_CONTROL"
-    #];
     sessionVariables = {
       LC_CTYPE = "en_US.UTF-8";
       LC_ALL = "en_US.UTF-8";
@@ -47,9 +26,24 @@
       ls = "ls -F --color=auto";
     };
     initExtra = ''
+      ## initExtra
+      # see man zshoptions(1)
+      setopt PRINT_EXIT_VALUE
+      setopt TRANSIENT_RPROMPT
+      setopt ALWAYS_TO_END
+      setopt AUTO_MENU
+      setopt AUTO_PUSHD
+      setopt COMPLETE_IN_WORD
+      setopt NO_FLOW_CONTROL
+
+      # notify when someone else logs in
       watch=(notme)
+
+      # ls dircolors
       eval "$(/usr/bin/env dircolors -b)"
       export CLICOLOR=1
+
+      # load local config not in git
       if [[ -f "$HOME/.zsh/local.zsh" ]]; then
         source "$HOME/.zsh/local.zsh"
       fi
