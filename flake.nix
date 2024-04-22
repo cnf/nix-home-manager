@@ -47,6 +47,13 @@
             ./surface.nix 
           ];
         };
+	"cnf@ySL" = home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+          modules = [
+            {home = home;}
+            ./ysl.nix
+          ];
+        };
       };
       #homeConfigurations.${username} = home-manager.lib.homeManagerConfiguration {
       #  inherit pkgs;
