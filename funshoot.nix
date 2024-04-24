@@ -92,6 +92,14 @@
     };
   };
   dconf.settings = {
+    "org/gnome/desktop/background" = {
+      color-shading-type="solid";
+      picture-options = "zoom";
+      picture-uri="file://${pkgs.gnome.gnome-backgrounds}/share/backgrounds/gnome/adwaita-l.jpg";
+      picture-uri-dark="file://${pkgs.gnome.gnome-backgrounds}/share/backgrounds/gnome/adwaita-d.jpg";
+      primary-color="#3071AE";
+      secondary-color="#000000";
+    };
     "org/gnome/shell" = {
       favorite-apps = [ "funshoot.desktop" "nautilus.desktop"];
     };

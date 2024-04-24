@@ -66,6 +66,7 @@
   programs.zsh = (pkgs.callPackage ./programs/zsh.nix {}).programs.zsh;
   programs.vscode = (pkgs.callPackage ./programs/vscode.nix {}).programs.vscode;
   programs.go = (pkgs.callPackage ./programs/golang.nix {}).programs.go;
+  imports = [./configs/gnome.nix];
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
