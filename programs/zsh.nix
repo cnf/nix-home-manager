@@ -1,7 +1,11 @@
-{ lib, pkgs, config, ...}:
+{ pkgs, lib, config, inputs, ... }:
 
 {
-  programs.zsh = {
+  options = {
+    myZsh.enable = lib.mkEnableOption "Enable and configure zsh";
+  };
+  config = lib.mkIf config.myZsh.enable {
+    programs.zsh = {
     enable = true;
     enableCompletion = true;
     # autosuggestion.enable = true;
@@ -96,4 +100,5 @@
       }
     ]; 
   };
+};
 }

@@ -1,7 +1,11 @@
-{ pkgs, ... }:
+{ pkgs, lib, config, inputs, ... }:
 {
-  programs.go = {
-    enable = true;
+  options = {
+    myGolang.enable = lib.mkEnableOption "Enable and configure golang";
   };
-
+  config = lib.mkIf config.myGolang.enable {
+    programs.go = {
+      enable = true;
+    };
+  };
 }

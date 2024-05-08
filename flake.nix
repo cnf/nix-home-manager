@@ -34,9 +34,11 @@
     in {
       homeConfigurations = {
         "cnf@OptiNix" = home-manager.lib.homeManagerConfiguration {
+          extraSpecialArgs = {inherit inputs;};
           inherit pkgs;
           modules = [
             {home = home;}
+            ./programs
             ./optinix.nix 
           ];
         };
@@ -64,5 +66,6 @@
           ];
         };
       };
+      homeManagerModules.default = ./programs;
     };
 }

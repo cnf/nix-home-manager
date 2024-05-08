@@ -1,7 +1,11 @@
-{}:
+{ pkgs, lib, config, inputs, ... }:
 
 {
-  programs.git = {
+  options = {
+    myGit.enable = lib.mkEnableOption "Enable and configure git";
+  };
+  config = lib.mkIf config.myGit.enable {
+    programs.git = {
     enable = true;
     userName = "Frank Rosquin";
     userEmail = "frank.rosquin@gmail.com";
@@ -60,4 +64,5 @@
     #  };
     #};
   };
+};
 }

@@ -1,4 +1,4 @@
-{lib, pkgs, ...}:
+{ pkgs, lib, config, inputs, ... }:
 let
   fromGitHub = rev: ref: repo: pkgs.vimUtils.buildVimPlugin {
     pname = "${lib.strings.sanitizeDerivationName repo}";
@@ -10,7 +10,11 @@ let
     };
   };
 in {
-  programs.neovim = {
+  options = {
+    myVim.enable = lib.mkEnableOption "Enable and configure NeoVim";
+  };
+  config = lib.mkIf config.myVim.enable {
+    programs.neovim = {
     enable = true;
     viAlias = true;
     vimAlias = true;
@@ -48,4 +52,5 @@ in {
       (fromGitHub "482a30223f322b6d4e569640ec979946ec873c18" "master" "cnf/vim-pointless")
     ];
   };
+};
 }
