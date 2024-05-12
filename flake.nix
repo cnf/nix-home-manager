@@ -34,7 +34,7 @@
     in {
       homeConfigurations = {
         "cnf@OptiNix" = home-manager.lib.homeManagerConfiguration {
-          extraSpecialArgs = {inherit inputs;};
+          extraSpecialArgs = {inherit inputs;inherit unstable;};
           inherit pkgs;
           modules = [
             {home = home;}

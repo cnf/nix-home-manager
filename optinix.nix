@@ -76,6 +76,7 @@
   myGolang.enable = false;
   sdr.enable = true;
   myFirefox.enable = true;
+  my.hyprland.enable = true;
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;

@@ -16,6 +16,9 @@
       gqrx
       urh
       librtlsdr
+      dump1090
+
+      kismet
 
       (gnuradio.override {
         extraPackages = with gnuradioPackages; [
@@ -40,10 +43,11 @@
       "org/gnome/desktop/app-folders/folders/SDR" = {
         name = "SDR";
         apps = [
+          "dk.gqrx.gqrx.desktop"
+          "CubicSDR.desktop"
           "urh.desktop"
           "gnuradio.desktop"
-          "CubicSDR.desktop"
-          "dk.gqrx.gqrx.desktop"
+          "dump1090.desktop"
         ];
       };
       "org/gnome/shell" = {
@@ -79,6 +83,15 @@
       icon = "urh";
       exec = "urh";
       terminal = false;
+      categories = ["HamRadio"];
+    };
+    xdg.desktopEntries.dump1090 = {
+      name = "Dump 1090";
+      type = "Application";
+      comment="dump 1090 ADS-B info";
+      icon = "sdr";
+      exec = "dump1090 --device-type hackrf --net";
+      terminal = true;
       categories = ["HamRadio"];
     };
   };
