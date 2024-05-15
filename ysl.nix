@@ -43,14 +43,9 @@
   home.sessionVariables = {
     # EDITOR = "emacs";
   };
-  myGit.enable = true;
-  myVim.enable = true;
-  myZsh.enable = true;
-  #programs.git = (pkgs.callPackage ./programs/git.nix {}).programs.git;
-  #programs.neovim = (pkgs.callPackage ./programs/neovim.nix {}).programs.neovim;
-  #programs.zsh = (pkgs.callPackage ./programs/zsh.nix {}).programs.zsh;
-  #programs.vscode = (pkgs.callPackage ./programs/vscode.nix {}).programs.vscode;
-  #programs.go = (pkgs.callPackage ./programs/golang.nix {}).programs.go;
+  my.git.enable = true;
+  my.vim.enable = true;
+  my.zsh.enable = true;
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;

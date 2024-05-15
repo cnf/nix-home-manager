@@ -2,6 +2,9 @@
 
 {
   config = lib.mkIf config.my.hyprland.enable {
+    home.packages = with pkgs; [
+      unstable.hyprlock
+    ];
     home.file = {
       ".config/hypr/hyprlock.conf".text = ''
 $primary = rgb(ff6700)

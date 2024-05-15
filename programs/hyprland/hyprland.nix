@@ -5,41 +5,43 @@
   #  my.hyprland.enable = lib.mkEnableOption "Enable and configure hyprland";
   #};
   config = lib.mkIf config.my.hyprland.enable {
+    my.desktop.enable = true;
     home.packages = with pkgs; [
       xdg-desktop-portal-hyprland
       xdg-desktop-portal-gtk
-      hyprpaper
-      unstable.hyprlock
+      pavucontrol
+      blueman
+     # polkit-kde-agent < TODO
       kitty
-      waybar
-      rofi
-      dunst
+      wev
     ];
-    programs.rofi.enable = true;
+
     services.network-manager-applet.enable = true;
-#    programs.eww = { 
-#      enable = true;
-#      # configDir = ./config;
-#    };
-#    programs.anyrun = {
-#      enable = true;
-#    };
-    programs.wlogout.enable = true;
+    services.blueman-applet.enable = true;
 
     wayland.windowManager.hyprland.enable  = true;
     #wayland.windowManager.hyprland.plugins  = [
+    #  inputs.hyprgrass.packages.${pkgs.system}.default
     #  "horriblename/hyprgrass"
     #];
     wayland.windowManager.hyprland.settings = {
       # See https://wiki.hyprland.org/Configuring/Monitors/
-      monitor=",preferred,auto,auto";
-
+      monitor = [
+        ",preferred,auto,1"
+        "desc:XYK Display demoset-1,preferred,auto,1"
+      ];
       exec-once = [
         "waybar"
         "dunst"
         "hyprpaper"
+        "wl-paste --type text --watch cliphist store #Stores only text data"
+        "wl-paste --type image --watch cliphist store #Stores only image data"
+        ""
       ];
       "$mod" = "SUPER";
+      # $wob_socket        = $XDG_RUNTIME_DIR/wob.sock # Used like $wob_socket <number>
+      "$sink_volume" = "pactl get-sink-volume @DEFAULT_SINK@ | grep '^Volume:' | cut -d / -f 2 | tr -d ' ' | sed 's/%//'";
+      "$sink_volume_mute" = "pactl get-sink-mute @DEFAULT_SINK@ | sed -En \"/no/ s/.*/$($sink_volume)/p; /yes/ s/.*/0/p\"";
 
       env = [
         "XCURSOR_SIZE,24"]
@@ -51,6 +53,7 @@
         "$mod, F4, killactive, # close the active window"
         "$mod, L, exec, hyprlock #lock the active window"
         #"$mod, M, exec, wlogout --protocol layer-shell # show the logout window"
+        "$mod, M, exec, nwg-bar # show the logout window"
         #"$mod, M, exit,"
         "$mod SHIFT, M, exit, # Exit Hyprland all together no (force quit Hyprland)"
         "$mod, Q, exec, kitty"
@@ -87,7 +90,16 @@
         # Scroll through existing workspaces with mainMod + scroll
         "$mod, mouse_down, workspace, e+1"
         "$mod, mouse_up, workspace, e-1"
+        # halp!
+        "$mod SHIFT, code:61, exec, $HOME/.config/hypr/keys.sh"
+        "$mod, code:61, exec, $HOME/.config/hypr/keys.sh"
 
+      ];
+      binde = [
+        #", XF86AudioRaiseVolume, exec, pactl set-sink-volume @DEFAULT_SINK@ +5% && $sink_volume > $wob_socket"
+        #", XF86AudioLowerVolume, exec, pactl set-sink-volume @DEFAULT_SINK@ -5% && $sink_volume > $wob_socket"
+        ", XF86AudioRaiseVolume, exec, swayosd-client --output-volume raise"
+        ", XF86AudioLowerVolume, exec, swayosd-client --output-volume lower"
       ];
       bindm = [
         "$mod,mouse:272,movewindow"
@@ -97,6 +109,7 @@
         follow_mouse = 1;
         sensitivity = 0; # -1.0 - 1.0, 0 means no modification.
         touchpad.natural_scroll = "yes";
+        kb_options = "ctrl:nocaps";
       };
       general = {
         "gaps_in" = 5;
@@ -151,6 +164,8 @@
       #  "float, ^(kitty)$"
       #];
       windowrulev2 = [ 
+        "float,class:^(pavucontrol)$"
+        "float,class:^(.blueman.*)$"
         "move cursor -3% -105%,class:^(rofi)$"
         "noanim,class:^(rofi)$"
         "opacity 0.8 0.6,class:^(rofi)$"
@@ -176,6 +191,17 @@
         submap=reset
 
         # keybinds further down will be global again...
+        plugin {
+        hyprbars {
+        # example config
+        bar_height = 20
+
+        # example buttons (R -> L)
+        # hyprbars-button = color, size, on-click
+        hyprbars-button = rgb(ff4040), 10, 󰖭, hyprctl dispatch killactive
+        hyprbars-button = rgb(eeee11), 10, , hyprctl dispatch fullscreen 1
+        }
+        }
       '';
 
   gtk = {

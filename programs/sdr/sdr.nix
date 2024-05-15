@@ -1,10 +1,6 @@
 { pkgs, lib, config, inputs, ... }:
 {
-  options = {
-    sdr.enable = lib.mkEnableOption "Enable SDR Packages";
-    hackrf.enable = lib.mkEnableOption "Install HackRF";
-  };
-  config = lib.mkIf config.sdr.enable {
+  config = lib.mkIf config.my.sdr.enable {
     #hardware.hackrf.enable = true;
 
     home.packages = with pkgs; [
@@ -12,13 +8,21 @@
       kalibrate-hackrf
       soapysdr-with-plugins
       soapyhackrf
+      #soapyremote
       cubicsdr
+      sdrangel
+      sdrpp
       gqrx
       urh
       librtlsdr
-      dump1090
+      rtl-sdr
+      inspectrum
+      gpredict
+      gnss-sdr
 
       kismet
+
+      hamlib
 
       (gnuradio.override {
         extraPackages = with gnuradioPackages; [
@@ -76,6 +80,15 @@
       #  };
       #};
     };
+    xdg.desktopEntries.inspectrum = {
+      name = "Inspectrum";
+      type = "Application";
+      comment="A tool for analysing captured signals, primarily from software-defined radio receivers.";
+      icon = "inspectrum";
+      exec = "inspectrum";
+      terminal = false;
+      categories = ["HamRadio"];
+    };
     xdg.desktopEntries.urh = {
       name = "Universal Radio Hacker";
       type = "Application";
@@ -83,15 +96,6 @@
       icon = "urh";
       exec = "urh";
       terminal = false;
-      categories = ["HamRadio"];
-    };
-    xdg.desktopEntries.dump1090 = {
-      name = "Dump 1090";
-      type = "Application";
-      comment="dump 1090 ADS-B info";
-      icon = "sdr";
-      exec = "dump1090 --device-type hackrf --net";
-      terminal = true;
       categories = ["HamRadio"];
     };
   };

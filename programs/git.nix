@@ -2,9 +2,9 @@
 
 {
   options = {
-    myGit.enable = lib.mkEnableOption "Enable and configure git";
+    my.git.enable = lib.mkEnableOption "Enable and configure git";
   };
-  config = lib.mkIf config.myGit.enable {
+  config = lib.mkIf config.my.git.enable {
     programs.git = {
     enable = true;
     userName = "Frank Rosquin";

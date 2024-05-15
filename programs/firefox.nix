@@ -2,9 +2,9 @@
 
 {
   options = {
-    myFirefox.enable = lib.mkEnableOption "Enable and configure firefox";
+    my.firefox.enable = lib.mkEnableOption "Enable and configure firefox";
   };
-  config = lib.mkIf config.myFirefox.enable {
+  config = lib.mkIf config.my.firefox.enable {
     programs.firefox = {
       profiles.default.bookmarks = {
         name = "HackRF Software Support";
