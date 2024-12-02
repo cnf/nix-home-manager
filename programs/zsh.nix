@@ -19,7 +19,7 @@
       ignoreAllDups = false;
       ignoreSpace = true;
       expireDuplicatesFirst = false;
-      share = true;
+      share = false;
       extended = false;
     };
     sessionVariables = {

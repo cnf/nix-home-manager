@@ -3,6 +3,12 @@
   options = { 
     my.desktop.enable = lib.mkEnableOption "Enable a graphical env";
   };
+  imports = [
+    ./vscode.nix
+    ./firefox.nix
+    ./obsidian.nix
+    ./discord.nix
+  ];
   config = lib.mkIf config.my.desktop.enable {
     fonts.fontconfig.enable = true;
     programs.jq.enable = true;

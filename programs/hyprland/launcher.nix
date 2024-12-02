@@ -7,6 +7,7 @@
   config = lib.mkIf config.my.hyprland.enable {
     home.packages = with pkgs; [
       hyprkeys
+      pinentry-rofi
     ];
     #programs.fuzzel.enable = true;
     home.file.".config/hypr/keys.sh" = {
@@ -33,6 +34,11 @@
       package = pkgs.rofi-wayland;
       terminal = "${pkgs.kitty}/bin/kitty";
       theme = "theme.rasi";
+      font = "JetBrainsMono Nerd Font";
+      extraConfig = {
+        show-icons = true;
+        display-drun = "  ";
+      };
       plugins = [
         pkgs.rofi-menugen
       ];

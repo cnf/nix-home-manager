@@ -67,11 +67,13 @@
   my.zsh.enable = true;
   my.git.enable = true;
   my.vim.enable = true;
-  my.vscode.enable = true;
   my.golang.enable = false;
-  my.sdr.enable = true;
-  my.firefox.enable = true;
   my.desktop.enable = true;
+  my.vscode.enable = true;
+  my.firefox.enable = true;
+  my.obsidian.enable = false;
+  my.discord.enable = true;
+  my.sdr.enable = true;
   my.hyprland.enable = true;
   my.hyprland.nwg.enable = false;
 
