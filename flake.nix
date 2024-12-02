@@ -68,6 +68,7 @@
           inherit pkgs;
           modules = [
             {home = home;}
+            ./programs
             ./surface.nix 
           ];
         };

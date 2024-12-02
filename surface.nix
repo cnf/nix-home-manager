@@ -21,6 +21,7 @@
   my.git.enble = true;
   my.vim.enable = true;
   my.zsh.enable = true;
+  my.sigrok.enable = true;
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
