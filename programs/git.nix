@@ -52,9 +52,6 @@
       ".apdisk"
       "### Vim"
       "*.swp"
-      "### Nix"
-      "default.nix"
-      "shell.nix"
       "### Direnv"
       ".envrc" 
     ];
