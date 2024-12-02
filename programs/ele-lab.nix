@@ -2,9 +2,9 @@
 {
   options = {
     #sdr.enable = lib.mkEnableOption "Enable SDR Packages";
-    sigrok.enable = lib.mkEnableOption "Install SigRok";
+    my.sigrok.enable = lib.mkEnableOption "Install SigRok";
   };
-  config = lib.mkIf config.sigrok.enable {
+  config = lib.mkIf config.my.sigrok.enable {
 
     home.packages = with pkgs; [
       sigrok-cli
