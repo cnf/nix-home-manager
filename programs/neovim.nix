@@ -11,9 +11,9 @@ let
   };
 in {
   options = {
-    myVim.enable = lib.mkEnableOption "Enable and configure NeoVim";
+    my.vim.enable = lib.mkEnableOption "Enable and configure NeoVim";
   };
-  config = lib.mkIf config.myVim.enable {
+  config = lib.mkIf config.my.vim.enable {
     programs.neovim = {
     enable = true;
     viAlias = true;

@@ -2,9 +2,9 @@
 
 {
   options = {
-    myZsh.enable = lib.mkEnableOption "Enable and configure zsh";
+    my.zsh.enable = lib.mkEnableOption "Enable and configure zsh";
   };
-  config = lib.mkIf config.myZsh.enable {
+  config = lib.mkIf config.my.zsh.enable {
     programs.zsh = {
     enable = true;
     enableCompletion = true;
@@ -19,7 +19,7 @@
       ignoreAllDups = false;
       ignoreSpace = true;
       expireDuplicatesFirst = false;
-      share = true;
+      share = false;
       extended = false;
     };
     sessionVariables = {

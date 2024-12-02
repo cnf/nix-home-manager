@@ -109,10 +109,8 @@
   #  type = "Directory";
   #};
 
-  #programs.git = (pkgs.callPackage ./programs/git.nix {}).programs.git;
-  #programs.zsh = (pkgs.callPackage ./programs/zsh.nix {}).programs.zsh;
-  myGit.enable = true;
-  myZsh.enable = true;
+  my.git.enable = true;
+  my.zsh.enable = true;
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;

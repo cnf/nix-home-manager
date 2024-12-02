@@ -18,9 +18,9 @@
   };
 
   imports = [./configs/gnome.nix];
-  myGit.enble = true;
-  myVim.enable = true;
-  myZsh.enable = true;
+  my.git.enble = true;
+  my.vim.enable = true;
+  my.zsh.enable = true;
   sigrok.enable = true;
 
   # Let Home Manager install and manage itself.

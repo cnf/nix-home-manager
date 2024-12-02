@@ -1,9 +1,9 @@
 { pkgs, lib, config, inputs, ... }:
 {
   options = { 
-    myVSCode.enable = lib.mkEnableOption "Enable VSCode";
+    my.vscode.enable = lib.mkEnableOption "Enable VSCode";
   };
-  config = lib.mkIf config.myVSCode.enable {
+  config = lib.mkIf config.my.vscode.enable {
     programs.vscode = {
     enable = true;
   };

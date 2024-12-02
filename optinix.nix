@@ -61,22 +61,21 @@
   home.sessionVariables = {
     # EDITOR = "emacs";
   };
-  #programs.git = (pkgs.callPackage ./programs/git.nix {}).programs.git;
-  #programs.neovim = (pkgs.callPackage ./programs/neovim.nix {}).programs.neovim;
-  #programs.zsh = (pkgs.callPackage ./programs/zsh.nix {}).programs.zsh;
-  #programs.vscode = (pkgs.callPackage ./programs/vscode.nix {}).programs.vscode;
-  #programs.go = (pkgs.callPackage ./programs/golang.nix {}).programs.go;
   imports = [
     ./configs/gnome.nix
   ];
-  myGit.enable = true;
-  myVim.enable = true;
-  myZsh.enable = true;
-  myVSCode.enable = true;
-  myGolang.enable = false;
-  sdr.enable = true;
-  myFirefox.enable = true;
+  my.zsh.enable = true;
+  my.git.enable = true;
+  my.vim.enable = true;
+  my.golang.enable = false;
+  my.desktop.enable = true;
+  my.vscode.enable = true;
+  my.firefox.enable = true;
+  my.obsidian.enable = false;
+  my.discord.enable = true;
+  my.sdr.enable = true;
   my.hyprland.enable = true;
+  my.hyprland.nwg.enable = false;
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
