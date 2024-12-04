@@ -8,8 +8,7 @@
     programs.zsh = {
     enable = true;
     enableCompletion = true;
-    # autosuggestion.enable = true;
-    enableAutosuggestions = true;
+    autosuggestion.enable = true;
     #syntaxHighlighting.enable = true;
     dotDir = ".config/zsh";
     history = {

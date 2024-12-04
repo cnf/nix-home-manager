@@ -7,8 +7,10 @@
 
   # The home.packages option allows you to install Nix packages into your
   # environment.
-  home.packages = [
-    pkgs.assh
+  home.packages = with pkgs; [
+    assh
+    freecad-wayland
+    kicad
   #  # (pkgs.nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
   #  pkgs.qlcplus
   #  #pkgs.midimonster
@@ -74,7 +76,6 @@
   my.obsidian.enable = false;
   my.discord.enable = true;
   my.sdr.enable = true;
-  my.sigrok.enable = true;
   my.hyprland.enable = true;
   my.hyprland.nwg.enable = false;
 

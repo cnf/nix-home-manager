@@ -11,6 +11,7 @@
     ./hyprpaper.nix
     ./locker.nix
     ./dunst.nix
+    ./kitty.nix
     ./waybar
     ./nwg.nix
     ./osd.nix
