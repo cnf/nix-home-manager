@@ -18,7 +18,7 @@
       pavucontrol
       blueman
      # polkit-kde-agent < TODO
-      kitty
+      #kitty
       wev
       networkmanagerapplet
 
