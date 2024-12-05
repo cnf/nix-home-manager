@@ -7,6 +7,7 @@
 
   home.packages = [
     pkgs.assh
+    pkgs.usbutils
   #  pkgs.terminator
   ];
 
@@ -18,7 +19,7 @@
   };
 
   imports = [./configs/gnome.nix];
-  my.git.enble = true;
+  my.git.enable = true;
   my.vim.enable = true;
   my.zsh.enable = true;
   my.sigrok.enable = true;

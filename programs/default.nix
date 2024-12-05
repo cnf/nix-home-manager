@@ -5,6 +5,7 @@
     ./git.nix
     ./golang.nix
     ./neovim.nix
+    ./ele-lab.nix
     ./desktop
     ./sdr
     ./hyprland

@@ -11,10 +11,11 @@
       libsigrok
       libsigrokdecode
       sigrok-firmware-fx2lafw
-      smuview
+      #smuview # new in 24.11
       pulseview
 
     ];
+    #programs.pulseview.enable = true;
 
 #    xdg.desktopEntries.SDR = {
 #      name = "SDR";
