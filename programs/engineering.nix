@@ -1,14 +1,14 @@
 { pkgs, lib, config, inputs, ... }:
 {
   options = {
-    #sdr.enable = lib.mkEnableOption "Enable SDR Packages";
-    my.3dprint.enable = lib.mkEnableOption "Install 3dprinting stuff";
+    my.engineering.enable = lib.mkEnableOption "Install engineering stuff";
   };
-  config = lib.mkIf config.my.3dprint.enable {
+  config = lib.mkIf config.my.engineering.enable {
 
     home.packages = with pkgs; [
-	prusa-slicer
-
+      prusa-slicer
+      freecad-wayland
+      kicad
     ];
 
 #    xdg.desktopEntries.SDR = {

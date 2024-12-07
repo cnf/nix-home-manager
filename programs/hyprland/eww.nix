@@ -2,7 +2,7 @@
 
 {
   config = lib.mkIf config.my.hyprland.enable {
-    home.packages = with pkgs;[eww];
+    # home.packages = with pkgs;[eww];
     # programs.eww.enable = true;
   };
 }

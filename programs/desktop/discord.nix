@@ -6,6 +6,7 @@
   config = lib.mkIf config.my.discord.enable {
     home.packages = with pkgs; [
       discord
+      webcord
     ];
   };
 }

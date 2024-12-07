@@ -9,7 +9,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     # hyprland.url = "github:hyprwm/Hyprland";
-    hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
+    hyprland = {
+      url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
+    };
     waybar = {
       url = "github:Alexays/Waybar";
     };
@@ -19,7 +21,7 @@
     };
     hyprland-contrib = {
       url = "github:hyprwm/contrib";
-      inputs.hyprland.follows = "hyprland";
+      #inputs.hyprland.follows = "hyprland";
     };
     hyprgrass = {
       url = "github:horriblename/hyprgrass";
@@ -29,6 +31,10 @@
       url = "github:KZDKM/Hyprspace";
       # Hyprspace uses latest Hyprland. We declare this to keep them in sync.
       inputs.hyprland.follows = "hyprland";
+    };
+    hyprsysteminfo = {
+      url = "github:hyprwm/hyprsysteminfo";
+      # inputs.hyprland.follows = "hyprland";
     };
   };
 
@@ -47,14 +53,32 @@
       #  inherit system;
       #  config = {
       #    allowUnfree = true;
+      #    allowUnfreePredicate = (_: true);
       #  };
       #};
       pkgs = nixpkgs.legacyPackages.${system};
-      unstable = nixpkgs-unstable.legacyPackages.${system};
+      unstable = import nixpkgs-unstable {
+        inherit system;
+        config = {
+          allowUnfree = true;
+          allowUnfreePredicate = (_: true);
+        };
+      };
+      #unstable = nixpkgs-unstable.legacyPackages.${system};
+      #unstable.config.allowUnfree = true;
 
 
     in {
       homeConfigurations = {
+        "cnf@hydra" = home-manager.lib.homeManagerConfiguration {
+          extraSpecialArgs = {inherit inputs;inherit unstable;};
+          inherit pkgs;
+          modules = [
+            {home = home;}
+            ./programs
+            ./hydra.nix 
+          ];
+        };
         "cnf@OptiNix" = home-manager.lib.homeManagerConfiguration {
           extraSpecialArgs = {inherit inputs;inherit unstable;};
           inherit pkgs;

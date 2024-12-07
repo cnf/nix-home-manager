@@ -6,6 +6,9 @@
   config = lib.mkIf config.my.vscode.enable {
     programs.vscode = {
     enable = true;
-  };
+    };
+    home.packages = with pkgs; [
+      direnv
+    ];
   };
 }

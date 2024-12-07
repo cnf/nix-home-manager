@@ -9,30 +9,8 @@
   # environment.
   home.packages = with pkgs; [
     assh
-    freecad-wayland
-    kicad
   #  # (pkgs.nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
-  #  pkgs.qlcplus
-  #  #pkgs.midimonster
-  #  pkgs.ola
-  #  pkgs.xlights
-  #  pkgs.terminator
   ];
-  #nixpkgs.overlays = [
-  #  (final: prev: {qlcplus = unstable.qlcplus;})
-    #(final: prev: {midimonster = unstable.midimonster;})
-    #(final: prev: {qlcplus = prev.qlcplus.overrideAttrs ( old: rec {
-    #    version = "4.13.0";
-    #    patches = [];
-    #    src = prev.fetchFromGitHub {
-    #      owner = "mcallegari";
-    #      repo = "qlcplus";
-    #      rev = "QLC+_${version}";
-    #      sha256 = "sha256-d77bl64UF08KCQAr54v5uNaExQ67DE4rDesCah5MW4U=";
-    #    };
-    #  });
-    #})
-  #];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
   # plain files is through 'home.file'.
@@ -49,23 +27,12 @@
     # '';
   #};
 
-  # Home Manager can also manage your environment variables through
-  # 'home.sessionVariables'. If you don't want to manage your shell through Home
-  # Manager then you have to manually source 'hm-session-vars.sh' located at
-  # either
-  #
-  #  ~/.nix-profile/etc/profile.d/hm-session-vars.sh
-  #
-  # or
-  #
-  #  /etc/profiles/per-user/cnf/etc/profile.d/hm-session-vars.sh
-  #
   home.sessionVariables = {
     # EDITOR = "emacs";
   };
-  imports = [
-    ./configs/gnome.nix
-  ];
+  #imports = [
+  #  ./configs/gnome.nix
+  #];
   my.zsh.enable = true;
   my.git.enable = true;
   my.vim.enable = true;
@@ -76,6 +43,8 @@
   my.obsidian.enable = false;
   my.discord.enable = true;
   my.sdr.enable = true;
+  my.engineering.enable = true;
+  my.mqtt.enable = true;
   my.hyprland.enable = true;
   my.hyprland.nwg.enable = false;
 

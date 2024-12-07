@@ -5,33 +5,35 @@
     home.packages = with pkgs; [
       nwg-bar
     ];
-    programs.wlogout.enable = false;
-    programs.wlogout.layout = [
-      { 
-        label = "lock";
-        action = "hyprlock";
-        text = "Lock";
-      }
-      {
-        label = "logout";
-        action = "hyprctl dispatch exit";
-        text = "Logout";
-      }
-      {
-        label = "shutdown";
-        action = "systemctl poweroff";
-        text = "Shutdown";
-      }
-    ];
-    #programs.wlogout.style = ''
-    #  window {
-    #    background: #16191C;
-    #  }
-    #
-    #  button {
-    #    color: #AAB2BF;
-    #  }
-    #'';
+    programs.wlogout = {
+      enable = false;
+      layout = [
+        { 
+          label = "lock";
+          action = "hyprlock";
+          text = "Lock";
+        }
+        {
+          label = "logout";
+          action = "hyprctl dispatch exit";
+          text = "Logout";
+        }
+        {
+          label = "shutdown";
+          action = "systemctl poweroff";
+          text = "Shutdown";
+        }
+      ];
+    style = ''
+     window {
+       background: #16191C;
+     }
+    
+     button {
+       color: #AAB2BF;
+     }
+    '';
+    };
     home.file.".config/nwg-bar/bar.json".text = ''
       [
  {

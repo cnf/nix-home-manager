@@ -1,9 +1,6 @@
 { pkgs, lib, config, inputs, unstable, ... }:
 
 {
-  #options = {
-  #  my.hyprland.enable = lib.mkEnableOption "Enable and configure hyprland";
-  #};
   config = lib.mkIf config.my.hyprland.enable {
     home.packages = with pkgs; [
       hyprkeys
@@ -16,7 +13,8 @@
         #!/usr/bin/env bash
         # Format JSON proper;y
         #JSON=$(hyprkeys --from-ctl --raw)
-        JSON=$(hyprkeys --from-ctl --json | jq -r --slurp "[.[]][0]");
+        # hyprctl binds -j
+        JSON=$(hyprkeys --from-ctl --raw| jq -r --slurp "[.[]][0]");
 
         USER_SELECTED=$(echo $JSON | jq -r 'range(0, length) as $i | "\($i) \(.[$i].mods) \(.[$i].key) \(.[$i].dispatcher) \(.[$i].arg)"' | rofi -dmenu -p 'Keybinds' | awk -F ' ' '{print $1}')
 

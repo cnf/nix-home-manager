@@ -6,6 +6,7 @@
     ./golang.nix
     ./neovim.nix
     ./ele-lab.nix
+    ./engineering.nix
     ./desktop
     ./sdr
     ./hyprland

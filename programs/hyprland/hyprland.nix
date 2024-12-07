@@ -11,10 +11,21 @@
       QT_QPA_PLATFORM = "wayland";
       SDL_VIDEODRIVER = "wayland";
       XDG_SESSION_TYPE = "wayland";
+      MOZ_ENABLE_WAYLAND=1;
     };
     home.packages = with pkgs; [
       xdg-desktop-portal-hyprland
       xdg-desktop-portal-gtk
+      hyprpolkitagent
+      hyprsunset
+      hyprpicker
+      hyprutils
+      hyprlang
+      aquamarine
+      hyprshade
+      
+      #qt5-wayland
+      #qt6-wayland
       pavucontrol
       blueman
      # polkit-kde-agent < TODO
@@ -25,7 +36,7 @@
       # screenshots
       grim
       slurp
-      unstable.hyprshot
+      hyprshot
       inputs.hyprland-contrib.packages.${pkgs.system}.grimblast
 
       # idle
@@ -36,28 +47,30 @@
 
     wayland.windowManager.hyprland = {
       enable  = true;
-      package = inputs.hyprland.packages.${pkgs.system}.default;
+      package = inputs.hyprland.packages.${pkgs.system}.hyprland;
       plugins  = [
-        inputs.hyprgrass.packages.${pkgs.system}.default
+        inputs.hyprgrass.packages.${pkgs.system}.hyprgrass
+        # inputs.hyprsysteminfo.packages.${pkgs.system}.hyprsysteminfo
         #inputs.hyprspace.packages.${pkgs.system}.Hyprspace
-        inputs.hyprland-plugins.packages.${pkgs.system}.hyprbars
+        #inputs.hyprland-plugins.packages.${pkgs.system}.hyprbars
         inputs.hyprland-plugins.packages.${pkgs.system}.hyprexpo
       ];
     };
     wayland.windowManager.hyprland.settings = {
       # See https://wiki.hyprland.org/Configuring/Monitors/
       monitor = [
+        "desc:BOE NE135A1M-NY1,preferred,auto,2"
         ",preferred,auto,1"
         "desc:XYK Display demoset-1,preferred,auto,1"
-        "desc:LG Electronics 34GK950F 0x000461C1,preferred,auto,1"
       ];
       exec-once = [
         "waybar"
         "hypridle"
         "dunst"
-        "hyprpaper"
+        #"hyprpaper"
         "wl-paste --type text --watch cliphist store #Stores only text data"
         "wl-paste --type image --watch cliphist store #Stores only image data"
+        "1password --silent"
         ""
       ];
       "$mod" = "SUPER";
@@ -75,9 +88,20 @@
         "XDG_SESSION_DESKTOP,Hyprland"
       ];
 
-      misc.disable_hyprland_logo=false;
+      misc.disable_hyprland_logo=true;
 
+      bindd = [
+        # Screenshots
+        #"$mod, PRINT, exec, hyprshot -m window"
+        #", PRINT, exec, hyprshot -m output"
+        #"$shiftmod, PRINT, exec, hyprshot -m region"
+        ", Print, Screenshot entire screen, exec, hyprshot -m output" #grimblast --notify copysave screen"
+        "$mod, Print, Screenshot active window,exec, hyprshot -m active" #grimblast copysave active"
+        "$shiftmod, Print, Screenshot selected area, exec, hyprshot -m area"
+      ];
       bind = [
+        "$mod, G, togglegroup"
+        "$mod, GRAVE, changegroupactive"
         # Main keybinds
         "$mod, F4, killactive, # close the active window"
         "$mod, L, exec, hyprlock #lock the active window"
@@ -85,13 +109,6 @@
         "$mod, M, exec, nwg-bar # show the logout window"
         #"$mod, M, exit,"
         "$shiftmod, M, exit, # Exit Hyprland all together no (force quit Hyprland)"
-        # Screenshots
-        #"$mod, PRINT, exec, hyprshot -m window"
-        #", PRINT, exec, hyprshot -m output"
-        #"$shiftmod, PRINT, exec, hyprshot -m region"
-        ", PRINT, exec, grimblast copysave screen"
-        "$mod, PRINT, exec, grimblast copysave active"
-        "$shiftmod, PRINT, exec, hyprshot area"
         # stuff
         "$mod, Q, exec, kitty"
         "$mod, C, killactive,"
@@ -100,6 +117,11 @@
         "$mod, ESCAPE, hyprexpo:expo, toggle"
         #"$mod, SPACE, exec, anyrun"
         "ALT, V, exec, cliphist list | rofi -dmenu | cliphist decode | wl-copy # open clipboard manager"
+        "$mod, A, exec, hyprctl keyword general:layout master"
+        "$shiftmod, A, exec, hyprctl keyword general:layout dwindle"
+        # Master,
+        "$mod, S, layoutmsg, orientationcycle right center"
+
         # Dwindle
         "$mod, P, pseudo, # Dwindle"
         "$mod, J, togglesplit, # Dwindle"
@@ -133,10 +155,16 @@
         "$mod, code:61, exec, $HOME/.config/hypr/keys.sh"
 
       ];
-      bindl = [
-        ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_SOURCE@ toggle"
-        ", XF86AudioRaiseVolume, exec, wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"
-        ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
+      binddl = [
+        ", XF86AudioMute, Mute audio, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+        ", XF86AudioRaiseVolume, Volume up, exec, wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"
+        ", XF86AudioLowerVolume, Volume down, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
+        ", XF86MonBrightnessUp, Raise brightness, exec, brightnessctl set 5%+"
+        ", XF86MonBrightnessDown, Lower brightness, exec, brightnessctl set 5%-"
+        # trigger when the switch is turning off
+        ", switch:off:Lid Switch, Laptop open,exec,hyprctl keyword monitor \"eDP-1, preferred,auto,2\""
+        # trigger when the switch is turning on
+        ", switch:on:Lid Switch, Laptop closes,exec,hyprctl keyword monitor \"eDP-1, disable\""
 
       ];
       bindm = [
@@ -146,7 +174,10 @@
       input = {
         follow_mouse = 1;
         sensitivity = 0; # -1.0 - 1.0, 0 means no modification.
-        touchpad.natural_scroll = "yes";
+        scroll_factor = 1.5;
+        touchpad = {
+          natural_scroll = "yes";
+        };
         kb_options = "ctrl:nocaps";
       };
       general = {
@@ -163,21 +194,25 @@
         preserve_split = "yes";
       };
       master = {
-        new_is_master = false;
+        always_center_master = true;
+        #new_is_master = false;
         orientation = "right";
+  #
       };
       gestures = {
         workspace_swipe = true;
       };
       decoration = {
         rounding=6;
-        drop_shadow=true;
-        active_opacity=0.9;
-        inactive_opacity=0.85;
-        shadow_range = 10;
-        shadow_render_power = 4;
-        "col.shadow" = "rgba(ff6700ee)"; #"rgba(1a1a1aee)";
-        "col.shadow_inactive" = "rgba(0098ff33)";
+        shadow = {
+          enabled = true;
+          range = 10;
+          render_power = 4;
+          color = "rgba(ff6700ee)"; #"rgba(1a1a1aee)";
+          color_inactive = "rgba(0098ff33)";
+        };
+        active_opacity=0.8;
+        inactive_opacity=0.7;
         blur = {
           enabled=true;
           size=7;
@@ -185,6 +220,15 @@
           new_optimizations=true;
           noise=0.04;
           vibrancy=0.2; #0.1696
+        };
+      };
+      group = {
+        drag_into_group = 2;
+        "col.border_active" = "rgba(ff6700ee)";
+        "col.border_inactive" = "rgba(0098ff33)";
+        groupbar = {
+          "col.active" = "rgba(ff6700ee)";
+          "col.inactive" = "rgba(0098ff33)";
         };
       };
       animations = {
@@ -208,7 +252,15 @@
         "float,class:^(pavucontrol)$"
         "float,class:^(.blueman.*)$"
         "float,class:^(nm-connection-editor)$"
+        "float,class:^(org.pulseaudio.pavucontrol)$"
         "float,class:^(org.gnome.Nautilus)$"
+        "float,class:^(org.kde.dolphin)$"
+        "opacity 1.0 0.9,class:^(Code)$"
+        "float,initialTitle:^(Picture-in-Picture)$"
+        "float,class:(1Password)"
+        "size 70% 70%,class:(1Password)"
+        "center,class:(1Password)"
+        "stayfocused,class:(1Password)"
         "move cursor -3% -105%,class:^(rofi)$"
         "noanim,class:^(rofi)$"
         "opacity 0.8 0.6,class:^(rofi)$"
@@ -235,46 +287,57 @@
 
         # keybinds further down will be global again...
         plugin {
-          hyprbars {
-            # example config
-            bar_height = 20
-            bar_part_of_window = true
-            bar_precedence_over_border = true
-            bar_button_padding = 10
+          hyprexpo {
+            columns = 2
+            gap_size = 6
+            bg_col = rgba(0098ff77)
+            workspace_method = first 1 # [center/first] [workspace] e.g. first 1 or center m+1
 
-            # example buttons (R -> L)
-            # hyprbars-button = color, size, on-click
-            hyprbars-button = rgb(FF605C), 15, , hyprctl dispatch killactive
-            hyprbars-button = rgb(ffBD44), 15, , hyprctl dispatch togglefloating
-            hyprbars-button = rgb(00CA4E), 15, , hyprctl dispatch fullscreen 1
+            enable_gesture = true # laptop touchpad
+            gesture_fingers = 4  # 3 or 4
+            gesture_distance = 300 # how far is the "max"
+            gesture_positive = true # positive = swipe down. Negative = swipe up.
           }
+          #hyprbars {
+          #  # example config
+          #  bar_height = 20
+          #  bar_part_of_window = true
+          #  bar_precedence_over_border = true
+          #  bar_button_padding = 10
+
+          #  # example buttons (R -> L)
+          #  # hyprbars-button = color, size, on-click
+          #  hyprbars-button = rgb(FF605C), 15, , hyprctl dispatch killactive
+          #  hyprbars-button = rgb(ffBD44), 15, , hyprctl dispatch togglefloating
+          #  hyprbars-button = rgb(00CA4E), 15, , hyprctl dispatch fullscreen 1
+          #}
         }
       '';
 
-  gtk = {
-    enable = true;
-    cursorTheme = {
-      name = "Catppuccin-Macchiato-Dark-Cursors";
-      package = pkgs.catppuccin-cursors.macchiatoDark;
-    };
+  #gtk = {
+  #  enable = true;
+  #  cursorTheme = {
+  #    name = "Catppuccin-Macchiato-Dark-Cursors";
+  #    package = pkgs.catppuccin-cursors.macchiatoDark;
+  #  };
 
-    iconTheme = {
-      package = pkgs.catppuccin-papirus-folders.override {
-        flavor = "macchiato";
-        accent = "mauve";
-      };
-      name = "Papirus-Dark";
-    };
+  #  iconTheme = {
+  #    package = pkgs.catppuccin-papirus-folders.override {
+  #      flavor = "macchiato";
+  #      accent = "mauve";
+  #    };
+  #    name = "Papirus-Dark";
+  #  };
 
-    theme = {
-      package = pkgs.catppuccin-gtk.override {
-        accents = ["mauve"];
-        size = "standard";
-        variant = "macchiato";
-      };
-      name = "Catppuccin-Macchiato-Standard-Mauve-Dark";
-    };
-  };
+  #  theme = {
+  #    package = pkgs.catppuccin-gtk.override {
+  #      accents = ["mauve"];
+  #      size = "standard";
+  #      variant = "macchiato";
+  #    };
+  #    name = "Catppuccin-Macchiato-Standard-Mauve-Dark";
+  #  };
+  #};
 
   };
 }

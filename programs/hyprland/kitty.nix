@@ -2,7 +2,6 @@
 
 {
   config = lib.mkIf config.my.hyprland.enable {
-    # notification daemon
     programs.kitty = {
       enable = true;
       settings = {
@@ -28,5 +27,3 @@
 
   };
 }
-#        "col.active_border" = "rgba(ff6700ee)";
-#        "col.inactive_border" = "rgba(0098ffaa)";
