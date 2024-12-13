@@ -1,0 +1,174 @@
+/**
+ * Rofi Theme File
+ * Rofi Version: 1.7.3
+ **/
+
+/*****----- Configuration -----*****/
+// configuration {
+//     // modi:                       "drun";
+//     // // show-icons:                 true;
+//     // //display-drun:               " ";
+//     // drun-display-format:        "{name}";
+// }
+
+/*****----- Global Properties -----*****/
+
+* {
+    //font: "JetBrainsMono Nerd Font";
+    background-color: transparent;
+    bgcolor: rgba(50, 50, 50, 90%);
+    field: rgba(162, 162, 167, 75%);
+    //primary: rgba(255, 97, 0, 100%);
+    //accent: #0098ff;
+    primary: rgb(255, 133, 20);
+    accent: #148eff;
+    textcolor: white;
+}
+/*****----- Main Window -----*****/
+window {
+    transparency:                "screenshot";
+    location:                    center;
+    anchor:                      center;
+
+    enabled:                     true;
+    margin:                      0px;
+    padding:                     0px;
+    border:                      0px solid;
+    border-radius:               12px;
+    border-color:                @accent;
+    background-color:            transparent;
+    cursor:                      "default";
+}
+
+/*****----- Main Box -----*****/
+mainbox {
+    spacing:                     10px;
+    padding:                     20px;
+    // border:                      1px solid;
+    // border-radius:               0px 0px 0px 0px;
+    // border-color:                @primary;
+    // background-color:            "transparent";
+    background-color: @bgcolor;
+    children:                    [ "inputbar", "message", "listview" ];
+}
+
+/*****----- Inputbar -----*****/
+inputbar {
+    spacing:                     10px;
+    padding:                     15px;
+    border:                      1px solid;
+    border-radius:               12px;
+    border-color:                @accent;
+    background-color:            @field;
+    text-color:                  @textcolor;
+    children:                    [ "prompt", "entry" ];
+}
+
+message {
+    padding:                     5px;
+}
+
+prompt {
+    enabled:                     true;
+    background-color:            transparent;
+    text-color:                  inherit;
+}
+textbox-prompt-colon {
+    enabled:                     true;
+    expand:                      false;
+    str:                         "::";
+    background-color:            transparent;
+    text-color:                  inherit;
+}
+entry {
+    enabled:                     true;
+    background-color:            transparent;
+    text-color:                  inherit;
+    cursor:                      text;
+    placeholder:                 " Search...";
+    placeholder-color:           inherit;
+}
+
+/*****----- Listview -----*****/
+listview {
+    enabled:                     true;
+    columns:                     1;
+    lines:                       10;
+    cycle:                       false;
+    dynamic:                     true;
+    scrollbar:                   false;
+    layout:                      vertical;
+    reverse:                     false;
+    fixed-height:                true;
+    fixed-columns:               true;
+    
+    spacing:                     5px;
+    margin:                      0px;
+    padding:                     0px;
+    border:                      0px solid;
+    border-radius:               0px;
+    border-color:                @primary;
+    background-color:            transparent;
+    text-color:                  @textcolor;
+    cursor:                      "default";
+}
+
+scrollbar {
+    handle-width:                5px ;
+    handle-color:                @primary;
+    border-radius:               0px;
+    background-color:            @field;
+}
+
+/*****----- Elements -----*****/
+element {
+    enabled:                     true;
+    spacing:                     10px;
+    margin:                      0px;
+    padding:                     5px;
+    border:                      0px solid;
+    border-radius:               12px;
+    border-color:                @accent;
+    background-color:            transparent;
+    text-color:                  @textcolor;
+    cursor:                      pointer;
+}
+// element normal.normal {
+//     background-color:            transparent;
+//     text-color:                  @textcolor;
+// }
+element selected.normal {
+    background-color:            @primary;
+    text-color:                  @textcolor;
+}
+element-icon {
+    background-color:            transparent;
+    text-color:                  inherit;
+    size:                        32px;
+    cursor:                      inherit;
+}
+element-text {
+    background-color:            transparent;
+    text-color:                  inherit;
+    highlight:                   inherit;
+    cursor:                      inherit;
+    vertical-align:              0.5;
+    horizontal-align:            0.0;
+}
+
+/*****----- Message -----*****/
+error-message {
+    padding:                     15px;
+    border:                      2px solid;
+    border-radius:               12px;
+    border-color:                @accent;
+    background-color:            @bgcolor;
+    text-color:                  @textcolor;
+}
+textbox {
+    background-color:            @bgcolor;
+    text-color:                  @textcolor;
+    vertical-align:              0.5;
+    horizontal-align:            0.0;
+    highlight:                   none;
+}

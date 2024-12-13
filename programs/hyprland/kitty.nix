@@ -2,6 +2,7 @@
 
 {
   config = lib.mkIf config.my.hyprland.enable {
+    home.packages = with pkgs; [kitty-img];
     programs.kitty = {
       enable = true;
       settings = {

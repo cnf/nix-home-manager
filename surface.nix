@@ -17,7 +17,7 @@
     # EDITOR = "emacs";
   };
 
-  imports = [./configs/gnome.nix];
+  imports = [];
   my.git.enble = true;
   my.vim.enable = true;
   my.zsh.enable = true;

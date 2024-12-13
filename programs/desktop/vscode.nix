@@ -9,6 +9,9 @@
     };
     home.packages = with pkgs; [
       direnv
+      python3
+      #gcc
+      clang
     ];
   };
 }

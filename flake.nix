@@ -2,6 +2,7 @@
   description = "Home Manager configuration";
 
   inputs = {
+    cachix.url = "github:cachix/cachix";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     home-manager = {
@@ -15,6 +16,7 @@
     waybar = {
       url = "github:Alexays/Waybar";
     };
+    hyprswitch.url = "github:h3rmt/hyprswitch/release";
     hyprland-plugins = {
       url = "github:hyprwm/hyprland-plugins";
       inputs.hyprland.follows = "hyprland";
@@ -36,6 +38,10 @@
       url = "github:hyprwm/hyprsysteminfo";
       # inputs.hyprland.follows = "hyprland";
     };
+    hypr-binds = {
+      url = "github:gvolpe/hypr-binds";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, ...} @ inputs:
@@ -46,17 +52,17 @@
       system = "x86_64-linux";  # x86_64-linux, aarch64-multiplatform, etc.
       home = {
         username = "cnf"; # $USER
-        stateVersion = "23.11";     # See https://nixos.org/manual/nixpkgs/stable for most recent
-        homeDirectory = "/${homeDirPrefix}/${home.username}";
+        stateVersion = "24.11";     # See https://nixos.org/manual/nixpkgs/stable for most recent
+        homeDirectory = "${homeDirPrefix}/${home.username}";
       };
-      #pkgs = import nixpkgs {
-      #  inherit system;
-      #  config = {
-      #    allowUnfree = true;
-      #    allowUnfreePredicate = (_: true);
-      #  };
-      #};
-      pkgs = nixpkgs.legacyPackages.${system};
+      pkgs = import nixpkgs {
+        inherit system;
+        config = {
+          allowUnfree = true;
+          allowUnfreePredicate = (_: true);
+        };
+      };
+      #pkgs = nixpkgs.legacyPackages.${system};
       unstable = import nixpkgs-unstable {
         inherit system;
         config = {

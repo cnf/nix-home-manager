@@ -3,35 +3,64 @@
 {
   config = lib.mkIf config.my.hyprland.enable {
     # notification daemon
+    xdg.configFile."dunst/play.sh" = {
+      source = ./dunst-play.sh;
+      executable = true;
+    };
     services.dunst.enable = true;
     services.dunst.settings = {
       global = {
-        frame_color = "#cad3f5";
+        dmenu = "${pkgs.rofi}/bin/rofi -dmenu -p dunst";
+        browser = "/run/current-system/sw/bin/xdg-open";
+        mouse_left_click = "open_url,do_action,close_current";
+        mouse_right_click = "close_current";
+        mouse_middle_click = "close_all";
+        progress_bar = true;
+        sort = true;
+        idle_threshold = 120;
+        stack_duplicates = true;
+        frame_color = "#148eff";
+        frame_width = 0;
         separator_color = "frame";
-        font = "JetBrains Mono Regular 11";
+        font = "JetBrains Mono Regular Nerd Font";
+        icon_theme = "candy-icons, hicolor, Papirus, Adwaita";
+        default_icon = "cs-notifications";
+        enable_recursive_icon_lookup = true;
         corner_radius = 10;
-        offset = "5x5";
+        offset = "15x60";
         origin = "top-right";
         notification_limit = 8;
         gap_size = 7;
-        frame_width = 2;
-        width = 300;
-        height = 100;
+        width = "(250,400)";
+        height = "(80, 250)";
       };
       urgency_low = {
-        background = "#24273A";
-        foreground = "#CAD3F5";
+        background = "#323232";
+        foreground = "white";
       };
 
       urgency_normal = {
-        background = "#24273A";
-        foreground = "#CAD3F5";
+        background = "#323232";
+        foreground = "white";
       };
 
       urgency_critical = {
-        background = "#24273A";
-        foreground = "#CAD3F5";
-        frame_color = "#F5A97F";
+        background = "#323232";
+        foreground = "white";
+        frame_color = "#ff4f44";
+      };
+      # play_sound = {
+      #   summary = "*";
+      #   script = "/home/cnf/.config/dunst/play.sh";
+      # };
+      discord = {
+        desktop_entry="discord";
+        default_icon = "com.discordapp.Discord";
+        script = "/home/cnf/.config/dunst/play.sh discord";
+      };
+      onedrive = {
+        desktop_entry = "onedrive";
+        default_icon = "cozydrive";
       };
     };
   };

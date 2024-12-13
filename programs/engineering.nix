@@ -1,4 +1,4 @@
-{ pkgs, lib, config, inputs, ... }:
+{ pkgs, unstable, lib, config, inputs, ... }:
 {
   options = {
     my.engineering.enable = lib.mkEnableOption "Install engineering stuff";

@@ -1,21 +1,24 @@
 { pkgs, lib, config, inputs, unstable, ... }:
-
 {
-  #options = {
-  #  my.hyprland.enable = lib.mkEnableOption "Enable and configure hyprland";
-  #};
   config = lib.mkIf config.my.hyprland.enable {
     my.desktop.enable = true;
-    # make stuff work on wayland
     home.sessionVariables = {
+        #"QT_QPA_PLATFORM,wayland"
+        #"XDG_CURRENT_DESKTOP,Hyprland"
+        #"XDG_SESSION_TYPE,wayland"
+        #"XDG_SESSION_DESKTOP,Hyprland"
+      XCURSOR_SIZE = 24;
       QT_QPA_PLATFORM = "wayland";
       SDL_VIDEODRIVER = "wayland";
       XDG_SESSION_TYPE = "wayland";
-      MOZ_ENABLE_WAYLAND=1;
+      MOZ_ENABLE_WAYLAND = 1;
+      NIXOS_OZONE_WL = 1;
+      HYPRSHOT_DIR = "${config.xdg.userDirs.pictures}/Screenshots/";
     };
     home.packages = with pkgs; [
       xdg-desktop-portal-hyprland
       xdg-desktop-portal-gtk
+      wlr-randr
       hyprpolkitagent
       hyprsunset
       hyprpicker
@@ -24,54 +27,66 @@
       aquamarine
       hyprshade
       
-      #qt5-wayland
-      #qt6-wayland
+      emojipick
       pavucontrol
+      playerctl
       blueman
      # polkit-kde-agent < TODO
       #kitty
       wev
       networkmanagerapplet
+      networkmanager_dmenu
 
       # screenshots
       grim
       slurp
       hyprshot
       inputs.hyprland-contrib.packages.${pkgs.system}.grimblast
+      inputs.hyprswitch.packages.${pkgs.system}.default
+      inputs.hyprsysteminfo.packages.${pkgs.system}.default
 
       # idle
     ];
 
+    services.gnome-keyring.enable = true;
     services.network-manager-applet.enable = false;
     services.blueman-applet.enable = true;
+    services.swayosd.enable = true;
+    services.playerctld.enable = true;
 
     wayland.windowManager.hyprland = {
       enable  = true;
       package = inputs.hyprland.packages.${pkgs.system}.hyprland;
       plugins  = [
         inputs.hyprgrass.packages.${pkgs.system}.hyprgrass
-        # inputs.hyprsysteminfo.packages.${pkgs.system}.hyprsysteminfo
-        #inputs.hyprspace.packages.${pkgs.system}.Hyprspace
-        #inputs.hyprland-plugins.packages.${pkgs.system}.hyprbars
-        inputs.hyprland-plugins.packages.${pkgs.system}.hyprexpo
+        inputs.hyprspace.packages.${pkgs.system}.Hyprspace
+        # inputs.hyprland-plugins.packages.${pkgs.system}.hyprexo
       ];
     };
     wayland.windowManager.hyprland.settings = {
       # See https://wiki.hyprland.org/Configuring/Monitors/
       monitor = [
-        "desc:BOE NE135A1M-NY1,preferred,auto,2"
+        "desc:BOE NE135A1M-NY1,preferred,auto,2,vrr,1"
         ",preferred,auto,1"
+        "desc:LG Electronics LG ULTRAWIDE 0x0000A6C2,preferred,auto,1"
         "desc:XYK Display demoset-1,preferred,auto,1"
+        "monitor=FALLBACK,1920x1080@60,auto,1"
       ];
       exec-once = [
         "waybar"
         "hypridle"
         "dunst"
         #"hyprpaper"
+        "nm-applet --indicator "
+        "bluetooth-applet"
+        "1password --silent"
         "wl-paste --type text --watch cliphist store #Stores only text data"
         "wl-paste --type image --watch cliphist store #Stores only image data"
-        "1password --silent"
-        ""
+        "systemctl --user start hyprpolkitagent"
+        "[workspace 1 silent] firefox"
+        "[workspace 2 silent] kitty"
+        "[workspace 4 silent] discord"
+
       ];
       "$mod" = "SUPER";
       "$shiftmod" = "SUPER SHIFT";
@@ -79,53 +94,72 @@
       "$sink_volume" = "pactl get-sink-volume @DEFAULT_SINK@ | grep '^Volume:' | cut -d / -f 2 | tr -d ' ' | sed 's/%//'";
       "$sink_volume_mute" = "pactl get-sink-mute @DEFAULT_SINK@ | sed -En \"/no/ s/.*/$($sink_volume)/p; /yes/ s/.*/0/p\"";
 
-      env = [
-        "XCURSOR_SIZE,24"
-        "MOZ_ENABLE_WAYLAND,1"
-        "QT_QPA_PLATFORM,wayland"
-        "XDG_CURRENT_DESKTOP,Hyprland"
-        "XDG_SESSION_TYPE,wayland"
-        "XDG_SESSION_DESKTOP,Hyprland"
-      ];
+      #env = [
+      #  "XCURSOR_SIZE,24"
+      #  "MOZ_ENABLE_WAYLAND,1"
+      #  "NIXOS_OZONE_WL,1"
+      #  "QT_QPA_PLATFORM,wayland"
+      #  "XDG_CURRENT_DESKTOP,Hyprland"
+      #  "XDG_SESSION_TYPE,wayland"
+      #  "XDG_SESSION_DESKTOP,Hyprland"
+      #  "_HYPRSHOT_DIR,$XDG_PICTURES_DIR/Screenshots/"
+      #];
 
       misc.disable_hyprland_logo=true;
+      misc.vrr = 1;
 
       bindd = [
-        # Screenshots
-        #"$mod, PRINT, exec, hyprshot -m window"
-        #", PRINT, exec, hyprshot -m output"
-        #"$shiftmod, PRINT, exec, hyprshot -m region"
-        ", Print, Screenshot entire screen, exec, hyprshot -m output" #grimblast --notify copysave screen"
-        "$mod, Print, Screenshot active window,exec, hyprshot -m active" #grimblast copysave active"
-        "$shiftmod, Print, Screenshot selected area, exec, hyprshot -m area"
+        ## Screenshots
+        ", Print, Screenshot entire screen, exec, hyprshot -m output"
+        "Control_L, Print, Screenshot window, exec, hyprshot -m window"
+        "Control SHIFT, Print, Screenshot selected area, exec, hyprshot -m region"
+        "$mod, Print, Show screen capture menu, exec, rofi-screenshot"
+        "$shiftmod, Print, Stop Recording, exec, rofi-screenshot -s"
+
+        ## Various
+        "$mod, K, Quick Calculator, exec, rofi -show calc -modi calc -no-show-match -no-sort -calc-command 'echo -n {result}| wl-copy'"
+        "$shiftmod, J, Color Picker, exec, hyprpicker -a -n| xargs -I % notify-send hyprpicker 'Copied % to clipboard'"
       ];
       bind = [
+        "$mod, T, fullscreen, 0"
+        # "$mod, Tab, cyclenext,"
         "$mod, G, togglegroup"
-        "$mod, GRAVE, changegroupactive"
+        "alt, GRAVE, changegroupactive"
+        "alt, 1, changegroupactive, 1"
+        "alt, 2, changegroupactive, 2"
+        "alt, 3, changegroupactive, 3"
+        "alt, 4, changegroupactive, 4"
+        "alt, 5, changegroupactive, 5"
+        "alt, 6, changegroupactive, 6"
         # Main keybinds
         "$mod, F4, killactive, # close the active window"
         "$mod, L, exec, hyprlock #lock the active window"
-        #"$mod, M, exec, wlogout --protocol layer-shell # show the logout window"
         "$mod, M, exec, nwg-bar # show the logout window"
-        #"$mod, M, exit,"
         "$shiftmod, M, exit, # Exit Hyprland all together no (force quit Hyprland)"
         # stuff
         "$mod, Q, exec, kitty"
         "$mod, C, killactive,"
-        "$mod, V, togglefloating, # Allow a window to float"
+        "$mod, F, togglefloating, # Allow a window to float"
         "$mod, SPACE, exec, rofi -show drun # Show the graphical app launcher"
-        "$mod, ESCAPE, hyprexpo:expo, toggle"
+        # "$mod, ESCAPE, hyprexpo:expo, toggle"
         #"$mod, SPACE, exec, anyrun"
         "ALT, V, exec, cliphist list | rofi -dmenu | cliphist decode | wl-copy # open clipboard manager"
         "$mod, A, exec, hyprctl keyword general:layout master"
         "$shiftmod, A, exec, hyprctl keyword general:layout dwindle"
         # Master,
         "$mod, S, layoutmsg, orientationcycle right center"
-
         # Dwindle
         "$mod, P, pseudo, # Dwindle"
         "$mod, J, togglesplit, # Dwindle"
+
+        # halp!
+        "$shiftmod, code:61, exec, hypr-binds"
+        "$mod, code:61, exec, hypr-binds"
+
+        ### NAVIGATION ###
+        "$mod, u, focusurgentorlast"
         # Switch workspaces with mainMod + [0-9]
+        "$mod, grave, togglespecialworkspace, visor"
         "$mod, 1, workspace, 1"
         "$mod, 2, workspace, 2"
         "$mod, 3, workspace, 3"
@@ -137,6 +171,7 @@
         "$mod, 9, workspace, 9"
         "$mod, 0, workspace, 0"
         # Move active window to a workspace with mainMod + SHIFT + [0-9]
+        "$shiftmod, grave, movetoworkspace, special, visor"
         "$shiftmod, 1, movetoworkspace, 1"
         "$shiftmod, 2, movetoworkspace, 2"
         "$shiftmod, 3, movetoworkspace, 3"
@@ -150,22 +185,25 @@
         # Scroll through existing workspaces with mainMod + scroll
         "$mod, mouse_down, workspace, e+1"
         "$mod, mouse_up, workspace, e-1"
-        # halp!
-        "$shiftmod, code:61, exec, $HOME/.config/hypr/keys.sh"
-        "$mod, code:61, exec, $HOME/.config/hypr/keys.sh"
-
       ];
       binddl = [
-        ", XF86AudioMute, Mute audio, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
-        ", XF86AudioRaiseVolume, Volume up, exec, wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"
-        ", XF86AudioLowerVolume, Volume down, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
-        ", XF86MonBrightnessUp, Raise brightness, exec, brightnessctl set 5%+"
-        ", XF86MonBrightnessDown, Lower brightness, exec, brightnessctl set 5%-"
+        # ", XF86AudioMute, Mute audio, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+        ", XF86AudioMute, Mute Audio, exec, swayosd-client --output-volume mute-toggle"
+        ", XF86AudioRaiseVolume, Volume up, exec, swayosd-client --output-volume raise --max-volume=100"
+        ", XF86AudioLowerVolume, Volume down, exec,swayosd-client --output-volume lower"
+        ", XF86AudioPlay, Play/Pause, exec, playerctl play-pause"
+        ", XF86AudioPrev, Previous Song, exec, playerctl previous"
+        ", XF86AudioNext, Next Song, exec, playerctl next"
+        ", XF86MonBrightnessUp, Raise brightness, exec, swayosd-client --brightness raise"
+        ", XF86MonBrightnessDown, Lower brightness, exec, swayosd-client --brightness lower"
+        ", XF86AudioMedia, Not Bound Yet, exec, notify-send 'not bound yet'"
+        # ", Super_L, Not Bound yet, exec, notify-send 'Not bound yet'" # fn > F9
+
+        ### LAPTOP LID
         # trigger when the switch is turning off
         ", switch:off:Lid Switch, Laptop open,exec,hyprctl keyword monitor \"eDP-1, preferred,auto,2\""
         # trigger when the switch is turning on
         ", switch:on:Lid Switch, Laptop closes,exec,hyprctl keyword monitor \"eDP-1, disable\""
-
       ];
       bindm = [
         "$mod,mouse:272,movewindow"
@@ -177,6 +215,8 @@
         scroll_factor = 1.5;
         touchpad = {
           natural_scroll = "yes";
+          disable_while_typing = true;
+          clickfinger_behavior = true;
         };
         kb_options = "ctrl:nocaps";
       };
@@ -184,13 +224,13 @@
         gaps_in = 5;
         gaps_out = 5;
         border_size = 4;
-        # "col.active_border" = "rgba(ff6700ee) rgba(ff8939ee) 50deg";
         "col.active_border" = "rgba(ff6700ee)";
         "col.inactive_border" = "rgba(0098ffaa)";
         layout = "master";
+        resize_on_border = true;
       };
       dwindle = {
-        pseudotile = "yes #master switch for pseudoriling. Enabling is bound to mod+P";
+        pseudotile = "yes #master switch for pseudotiling. Enabling is bound to mod+P";
         preserve_split = "yes";
       };
       master = {
@@ -201,6 +241,7 @@
       };
       gestures = {
         workspace_swipe = true;
+        #workspace_swipe_use_r = true;
       };
       decoration = {
         rounding=6;
@@ -208,8 +249,8 @@
           enabled = true;
           range = 10;
           render_power = 4;
-          color = "rgba(ff6700ee)"; #"rgba(1a1a1aee)";
-          color_inactive = "rgba(0098ff33)";
+          #color = "rgba(ff6700ee)"; #"rgba(1a1a1aee)";
+          #color_inactive = "rgba(0098ff33)";
         };
         active_opacity=0.8;
         inactive_opacity=0.7;
@@ -223,47 +264,97 @@
         };
       };
       group = {
-        drag_into_group = 2;
+        auto_group = false;
+        drag_into_group = 1;
         "col.border_active" = "rgba(ff6700ee)";
         "col.border_inactive" = "rgba(0098ff33)";
         groupbar = {
+          gradients = true;
           "col.active" = "rgba(ff6700ee)";
           "col.inactive" = "rgba(0098ff33)";
         };
       };
+      workspace = [
+#        "1, defaultName:browser, persistent:1"
+#        "2, defaultName:shell, persistent:1"
+#        "3, defaultName:code, persistent:1"
+#        "4, defaultName:chat, persistent:1"
+        "special:visor, on-created-empty:kitty"
+      ];
       animations = {
         enabled=true;
 
         # Some default animations, see https://wiki.hyprland.org/Configuring/Animations/ for more
-        bezier="myBezier, 0.10, 0.9, 0.1, 1.05";
+        # https://easings.net/
+        # https://www.cssportal.com/css-cubic-bezier-generator/
+        bezier = [
+        # "myBezier, 0.10, 0.9, 0.1, 1.05"
+        "overshot, 0.05, 0.9, 0.1, 1.1"
+        "easeOutQuart, 0.25, 1, 0.5, 1"
+        ];
 
-        animation= [
-          "windows, 1, 7, myBezier, slide"
-          "windowsOut, 1, 7, myBezier, slide"
+        animation = [
+          "windows, 1, 5, easeOutQuart, slide"
+          "windowsOut, 1, 5, easeOutQuart, slide"
           "border, 1, 10, default"
-          "fade, 1, 7, default"
-          "workspaces, 1, 6, default"
+          "fade, 1, 6, default"
+          "workspaces, 1, 5, easeOutQuart"
+          "specialWorkspace, 1, 3, easeOutQuart, slidefadevert -50%"
         ];
       };
       #windowrule = [
       #  "float, ^(kitty)$"
       #];
       windowrulev2 = [ 
+        # special workspace
+        "float,onworkspace:s[true]"
+        "size 90% 80%, onworkspace:s[true]"
+        "bordercolor rgba(FF6700EE) rgba(0098FF66) 60deg, onworkspace:s[true]"
+
+        # PIN APPS #
+        "workspace 4 silent, class:^(discord)$"
+
+
+        "float,class:(nm-tray)"
         "float,class:^(pavucontrol)$"
         "float,class:^(.blueman.*)$"
         "float,class:^(nm-connection-editor)$"
         "float,class:^(org.pulseaudio.pavucontrol)$"
         "float,class:^(org.gnome.Nautilus)$"
         "float,class:^(org.kde.dolphin)$"
-        "opacity 1.0 0.9,class:^(Code)$"
+        # Code
+        "opacity 0.95 override 0.8 override,class:^(Code)$"
+        # Video
+        "float,class:^(vlc)$"
+        "opacity 1 override 0.8 override,class:^(vlc)$"
         "float,initialTitle:^(Picture-in-Picture)$"
-        "float,class:(1Password)"
-        "size 70% 70%,class:(1Password)"
-        "center,class:(1Password)"
-        "stayfocused,class:(1Password)"
+        # 1Password
+        "float,class:(1Password)$"
+        "size 70% 70%,class:(1Password)$"
+        "center,class:(1Password)$"
+        "stayfocused,class:(1Password)$"
+        # Rofi
         "move cursor -3% -105%,class:^(rofi)$"
         "noanim,class:^(rofi)$"
-        "opacity 0.8 0.6,class:^(rofi)$"
+        "opacity 0.8 override 0.6 override,class:^(rofi)$"
+        ## Steam
+        "tag +steam, initialClass:^(steam)$"
+        "tag +steam, initialTitle:^(Steam)$"
+        "noborder, floating:1, tag:steam"
+        "noshadow, floating:1, tag:steam"
+
+        ## OneDrive GUI ##
+        "tag +onedrive, title:^(OneDriveGUI .*)$"
+        "float, tag:onedrive"
+        "center, tag:onedrive"
+        "size: 80%, tag:onedrive"
+        ### Open/Save Dialogs ###
+        "tag +opensave, class:org.freedesktop.impl.portal.desktop.kde, title:(Enter name of ([a-zA-Z]*) to (open|save to))"
+        "tag +opensave, title:^((Open|Save) ([a-zA-Z]*))$"
+        "float,tag:opensave"
+        "size 70% 70%,tag:opensave"
+        "center, tag:opensave"
+        "stayfocused,tag:opensave"
       ];
     };
     wayland.windowManager.hyprland.extraConfig = ''
@@ -287,57 +378,48 @@
 
         # keybinds further down will be global again...
         plugin {
-          hyprexpo {
-            columns = 2
-            gap_size = 6
-            bg_col = rgba(0098ff77)
-            workspace_method = first 1 # [center/first] [workspace] e.g. first 1 or center m+1
-
-            enable_gesture = true # laptop touchpad
-            gesture_fingers = 4  # 3 or 4
-            gesture_distance = 300 # how far is the "max"
-            gesture_positive = true # positive = swipe down. Negative = swipe up.
+          overview {
+            autoDrag = true
+            affectStrut = false
           }
-          #hyprbars {
-          #  # example config
-          #  bar_height = 20
-          #  bar_part_of_window = true
-          #  bar_precedence_over_border = true
-          #  bar_button_padding = 10
+          # hyprexpo {
+          #   columns = 2
+          #   gap_size = 6
+          #   bg_col = rgba(0098ff77)
+          #   workspace_method = first 1 # [center/first] [workspace] e.g. first 1 or center m+1
 
-          #  # example buttons (R -> L)
-          #  # hyprbars-button = color, size, on-click
-          #  hyprbars-button = rgb(FF605C), 15, , hyprctl dispatch killactive
-          #  hyprbars-button = rgb(ffBD44), 15, , hyprctl dispatch togglefloating
-          #  hyprbars-button = rgb(00CA4E), 15, , hyprctl dispatch fullscreen 1
-          #}
+          #   enable_gesture = true # laptop touchpad
+          #   gesture_fingers = 4  # 3 or 4
+          #   gesture_distance = 300 # how far is the "max"
+          #   gesture_positive = true # positive = swipe down. Negative = swipe up.
+          # }
         }
       '';
 
-  #gtk = {
-  #  enable = true;
-  #  cursorTheme = {
-  #    name = "Catppuccin-Macchiato-Dark-Cursors";
-  #    package = pkgs.catppuccin-cursors.macchiatoDark;
-  #  };
+  gtk = {
+   enable = true;
+   #cursorTheme = {
+   #  name = "Catppuccin-Macchiato-Dark-Cursors";
+   #  package = pkgs.catppuccin-cursors.macchiatoDark;
+   #};
 
-  #  iconTheme = {
-  #    package = pkgs.catppuccin-papirus-folders.override {
-  #      flavor = "macchiato";
-  #      accent = "mauve";
-  #    };
-  #    name = "Papirus-Dark";
-  #  };
+   iconTheme = {
+     package = pkgs.catppuccin-papirus-folders.override {
+       flavor = "macchiato";
+       accent = "mauve";
+     };
+     name = "Papirus-Dark";
+   };
 
-  #  theme = {
-  #    package = pkgs.catppuccin-gtk.override {
-  #      accents = ["mauve"];
-  #      size = "standard";
-  #      variant = "macchiato";
-  #    };
-  #    name = "Catppuccin-Macchiato-Standard-Mauve-Dark";
-  #  };
-  #};
+   theme = {
+     package = pkgs.catppuccin-gtk.override {
+       accents = ["mauve"];
+       size = "standard";
+       variant = "macchiato";
+     };
+     name = "Catppuccin-Macchiato-Standard-Mauve-Dark";
+   };
+  };
 
   };
 }

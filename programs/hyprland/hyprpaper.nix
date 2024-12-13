@@ -1,9 +1,8 @@
 { pkgs, lib, config, inputs, unstable, ... }:
-
 {
   config = lib.mkIf config.my.hyprland.enable {
     # home.packages = with pkgs; [
-    #   hyprpaper
+    #   # hyprpaper
     # ];
     services.hyprpaper = {
       enable = true;
@@ -13,13 +12,11 @@
         splash_offset = 2.0;
 
         preload = [ 
-          "/home/cnf/wallpaper.jpg"
+          "${config.home.homeDirectory}/.wallpaper.jpg"
         ];
 
         wallpaper = [
-          ", /home/cnf/wallpaper.jpg"
-          #"DP-3,/share/wallpapers/buttons.png"
-          #"DP-1,/share/wallpapers/cat_pacman.png"
+          ", ${config.home.homeDirectory}/.wallpaper.jpg" #format is "Monitor, file" or ",/path/file" or all monitorss
         ];
       };
     };

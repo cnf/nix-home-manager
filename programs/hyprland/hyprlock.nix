@@ -10,7 +10,7 @@
         "$primary" = "rgb(ff6700)";
         "$primaryAlpha" = "ff6700";
 
-        "$accent" = "rgb(0098ff)";
+        "$accent" = "rgba(0098FFAA)";
         "$accentAlpha" = "0098ff";
 
         "$text" = "rgb(cad3f5)";
@@ -22,14 +22,14 @@
         "$font" = "JetBrains Mono Regular";
         general = {
           enable_fingerprint = true;
-          fingerprint_ready_message = "Scan finger to unlock";
-          fingerprint_present_message = "Removing fingerprints, please stay still";
+          fingerprint_ready_message = "󰈷 ";
+          fingerprint_present_message = "󰈷 Removing fingerprints, please stay still 󰈷 ";
           disable_loading_bar = false; #true
           hide_cursor = true;
         };
         background = {
           monitor = "";
-          path = "$HOME/wallpaper.jpg";
+          path = "${config.home.homeDirectory}/.wallpaper.jpg";
           blur_passes = 2;
           color = "$primary";
         };
@@ -55,6 +55,20 @@
           halign = "right";
           valign = "top";
           shadow_passes = 2;
+        }
+        {
+          monitor = "";
+          text = ''$FPRINTMESSAGE'';
+          text_align = "center";
+          font_size = 20;
+          font_family = "$font";
+          color = "$accent";
+          halign = "center";
+          valign = "bottom";
+          position = "0, 30";
+          shadow_passes = 2;
+          shadow_size = 7;
+          shadow_boost = 2;
         }
         ];
         input-field = [
