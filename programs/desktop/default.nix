@@ -26,6 +26,7 @@
       unstable._1password-cli
       unstable._1password-gui
       appimage-run
+      pinentry
       # audio
       pavucontrol
       pulseaudio
