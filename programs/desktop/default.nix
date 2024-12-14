@@ -11,14 +11,15 @@
     ./discord.nix
     ./mqtt.nix
     ./gaming.nix
+    ./yubi.nix
   ];
   config = lib.mkIf config.my.desktop.enable {
     # home.preferXdgDirectories = true;
     fonts.fontconfig.enable = true;
     fonts.fontconfig.defaultFonts = {
       emoji = ["Noto Color Emoji"];
-      serif = ["NotoSerif Nerd Font"];
-      sansSerif = ["NotoSans Nerd Font"];
+      serif = ["DejaVu Serif"];
+      sansSerif = ["JetBrainsMono Nerd Font"];
       monospace = ["Source Code Pro NerdFont"];
     };
     programs.jq.enable = true;
@@ -47,6 +48,7 @@
       font-manager
       gucharmap
       source-code-pro
+      source-sans-pro
       font-awesome
       liberation_ttf
       mplus-outline-fonts.githubRelease

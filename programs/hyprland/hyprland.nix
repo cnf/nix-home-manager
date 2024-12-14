@@ -64,14 +64,21 @@
       ];
     };
     wayland.windowManager.hyprland.settings = {
+      "$mod" = "SUPER";
+      "$shiftmod" = "SUPER SHIFT";
+      # $wob_socket        = $XDG_RUNTIME_DIR/wob.sock # Used like $wob_socket <number>
+      "$sink_volume" = "pactl get-sink-volume @DEFAULT_SINK@ | grep '^Volume:' | cut -d / -f 2 | tr -d ' ' | sed 's/%//'";
+      "$sink_volume_mute" = "pactl get-sink-mute @DEFAULT_SINK@ | sed -En \"/no/ s/.*/$($sink_volume)/p; /yes/ s/.*/0/p\"";
+
       # See https://wiki.hyprland.org/Configuring/Monitors/
       monitor = [
         "desc:BOE NE135A1M-NY1,preferred,auto,2,vrr,1"
-        ",preferred,auto,1"
         "desc:LG Electronics LG ULTRAWIDE 0x0000A6C2,preferred,auto,1"
         "desc:XYK Display demoset-1,preferred,auto,1"
-        "monitor=FALLBACK,1920x1080@60,auto,1"
+        ",preferred,auto,1"
+        "FALLBACK,1920x1080@60,auto,1"
       ];
+
       exec-once = [
         "waybar"
         "hypridle"
@@ -88,11 +95,6 @@
         "[workspace 4 silent] discord"
 
       ];
-      "$mod" = "SUPER";
-      "$shiftmod" = "SUPER SHIFT";
-      # $wob_socket        = $XDG_RUNTIME_DIR/wob.sock # Used like $wob_socket <number>
-      "$sink_volume" = "pactl get-sink-volume @DEFAULT_SINK@ | grep '^Volume:' | cut -d / -f 2 | tr -d ' ' | sed 's/%//'";
-      "$sink_volume_mute" = "pactl get-sink-mute @DEFAULT_SINK@ | sed -En \"/no/ s/.*/$($sink_volume)/p; /yes/ s/.*/0/p\"";
 
       #env = [
       #  "XCURSOR_SIZE,24"
@@ -105,8 +107,11 @@
       #  "_HYPRSHOT_DIR,$XDG_PICTURES_DIR/Screenshots/"
       #];
 
-      misc.disable_hyprland_logo=true;
-      misc.vrr = 1;
+      misc = {
+        focus_on_activate = true; # Whether Hyprland should focus an app that requests to be focused (an activate request)
+        disable_hyprland_logo=true;
+        vrr = 1;
+      };
 
       bindd = [
         ## Screenshots
@@ -121,6 +126,8 @@
         "$shiftmod, J, Color Picker, exec, hyprpicker -a -n| xargs -I % notify-send hyprpicker 'Copied % to clipboard'"
       ];
       bind = [
+        # TODO: hyprswitch
+        #"$mod, Tab, exec, hyprswitch gui --mod-key super  --key tab --max-switch-offset 9 --close mod-key" #--hide-active-window-border"
         "$mod, T, fullscreen, 0"
         # "$mod, Tab, cyclenext,"
         "$mod, G, togglegroup"
@@ -140,6 +147,7 @@
         "$mod, Q, exec, kitty"
         "$mod, C, killactive,"
         "$mod, F, togglefloating, # Allow a window to float"
+        "$shiftmod, F, fullscreen, 1, #Toggle Full Screen"
         "$mod, SPACE, exec, rofi -show drun # Show the graphical app launcher"
         # "$mod, ESCAPE, hyprexpo:expo, toggle"
         #"$mod, SPACE, exec, anyrun"
@@ -217,6 +225,7 @@
           natural_scroll = "yes";
           disable_while_typing = true;
           clickfinger_behavior = true;
+          tap-to-click = false;
         };
         kb_options = "ctrl:nocaps";
       };
@@ -228,15 +237,19 @@
         "col.inactive_border" = "rgba(0098ffaa)";
         layout = "master";
         resize_on_border = true;
+        snap = {
+          enabled = true;
+        };
       };
       dwindle = {
-        pseudotile = "yes #master switch for pseudotiling. Enabling is bound to mod+P";
+        pseudotile = "yes"; #master switch for pseudotiling. Enabling is bound to mod+P
         preserve_split = "yes";
       };
       master = {
         always_center_master = true;
         #new_is_master = false;
         orientation = "right";
+        mfact = 0.7; # 0.55 default
   #
       };
       gestures = {
@@ -311,7 +324,7 @@
         "size 90% 80%, onworkspace:s[true]"
         "bordercolor rgba(FF6700EE) rgba(0098FF66) 60deg, onworkspace:s[true]"
 
-        # PIN APPS #
+        # Pin App to workspaces#
         "workspace 4 silent, class:^(discord)$"
 
 
@@ -328,11 +341,18 @@
         "float,class:^(vlc)$"
         "opacity 1 override 0.8 override,class:^(vlc)$"
         "float,initialTitle:^(Picture-in-Picture)$"
-        # 1Password
-        "float,class:(1Password)$"
-        "size 70% 70%,class:(1Password)$"
-        "center,class:(1Password)$"
-        "stayfocused,class:(1Password)$"
+        ### 1Password
+        #"float, class:^(1Password)$"
+        "stayfocused, class:^(1Password)$, title:(Quick Access)"
+        "center, class:^(1Password)$, title:(Quick Access)"
+        "tag +1password, class:^(1Password)$, title:^((?!Quick Access).)*$"
+        #"tag -1password, title:^(Quick Access.*)$"
+        #"tag -1password, title:^((?!Quick Access).)*$"
+        "float, tag:1password"
+        "size 70% 70%, tag:1password"
+        "center, tag:1password"
+        #"stayfocused, tag:1password"
+        "animation popin, tag:1password"
         # Rofi
         "move cursor -3% -105%,class:^(rofi)$"
         "noanim,class:^(rofi)$"
@@ -348,6 +368,9 @@
         "float, tag:onedrive"
         "center, tag:onedrive"
         "size: 80%, tag:onedrive"
+
+        ### Security ###
+        "stayfocused,  class:^(pinentry-) # fix pinentry losing focus"
         ### Open/Save Dialogs ###
         "tag +opensave, class:org.freedesktop.impl.portal.desktop.kde, title:(Enter name of ([a-zA-Z]*) to (open|save to))"
         "tag +opensave, title:^((Open|Save) ([a-zA-Z]*))$"
@@ -365,10 +388,12 @@
         submap=resize
 
         # sets repeatable binds for resizing the active window
-        binde=,right,resizeactive,10 0
-        binde=,left,resizeactive,-10 0
-        binde=,up,resizeactive,0 -10
-        binde=,down,resizeactive,0 10
+        binde=, right, resizeactive,10 0
+        binde=, left, resizeactive,-10 0
+        binde=, up, resizeactive,0 -10
+        binde=, down, resizeactive,0 10
+        binde=, Prior, layoutmsg,mfact +0.01
+        binde=, Next, layoutmsg, mfact -0.01
 
         # use reset to go back to the global submap
         bind=,escape,submap,reset 

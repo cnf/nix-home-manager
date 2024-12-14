@@ -6,6 +6,8 @@
   config = lib.mkIf config.my.golang.enable {
     programs.go = {
       enable = true;
+      goPath = "${config.xdg.dataHome}";
+      packages = {};
     };
   };
 }

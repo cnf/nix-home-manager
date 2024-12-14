@@ -17,7 +17,7 @@
     border: none;
     border-radius: 0;
     font-family: "JetBrainsMono Nerd Font, FontAwesome, sans-serif";
-    font-weight: bold;
+    font-weight: normal;
     font-size: 14px;
     min-height: 0;
 }
@@ -252,6 +252,10 @@ menuitem:hover menu > label {
     border-left: 0px;
     border-right: 0px;
     font-size: 14px;
+}
+
+#pulseaudio.muted {
+    color: @warning;
 }
 
 #pulseaudio.microphone {

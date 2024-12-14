@@ -45,6 +45,7 @@
   my.discord.enable = true;
   my.sdr.enable = true;
   my.engineering.enable = true;
+  my.yubikey.enable = true;
   my.mqtt.enable = true;
   my.gaming.enable = true;
 

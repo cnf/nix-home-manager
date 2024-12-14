@@ -22,7 +22,7 @@
         frame_color = "#148eff";
         frame_width = 0;
         separator_color = "frame";
-        font = "JetBrains Mono Regular Nerd Font";
+        font = "JetBrainsMono Nerd Font";
         icon_theme = "candy-icons, hicolor, Papirus, Adwaita";
         default_icon = "cs-notifications";
         enable_recursive_icon_lookup = true;
@@ -48,6 +48,7 @@
         background = "#323232";
         foreground = "white";
         frame_color = "#ff4f44";
+        timeout = 0;
       };
       # play_sound = {
       #   summary = "*";

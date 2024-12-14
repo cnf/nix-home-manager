@@ -39,9 +39,10 @@
         ];
         "custom/launcher" = {
           on-click = "rofi -show drun";
-          #format = " ";
+          on-click-right = "hyprsysteminfo";
+          format = " ";
           #format = "";
-          format = " ";
+          # format = " ";
           tooltip = true;
           tooltip-format = "Launch Applications";
         };
@@ -87,12 +88,6 @@
         privacy = {
           icon-size = 14;
         };
-        clock = {
-          format = "{:%a %e %b  %H:%M}";
-          tooltip = true;
-          #tooltip-format = "{: %A, %B %e %Y}
-          tooltip-format = "<tt><small>{calendar}</small></tt>";
-        };
         "group/hardware" = {
           orientation = "inherit";
           drawer = {
@@ -111,7 +106,7 @@
           # format = "{icon} {volume}%";
           format-bluetooth = "{volume}%  {icon} {format_source}";
           format-bluetooth-muted = "󰖁 {icon} {format_source}";
-          format-muted = "󰖁  {format_source}";
+          format-muted = "󰖁";#   {format_source}";
           # format-muted = "<span font='Font Awesome 5 Free 11'></span>";
           format-source = ""; # input
           format-source-muted = ""; #input
@@ -155,15 +150,33 @@
         };
         cpu = {
           interval = 10;
-          format = "{}% ";
+          format = "{icon}";
           format-icons = ["▁" "▂" "▃" "▄" "▅" "▆" "▇" "█"];
           max-length = 10;
+          # tooltip-format = "{load} {max_frequency}GHz {usage}%";
         };
         memory = {
           interval = 30;
           format = "{}%  ";
           max-length= 10;
           tooltip-format = "{used:0.1f}G/{total:0.1f}G  ";
+          states = {
+            warning = 30;
+            critical = 15;
+          };
+        };
+        temperature = {
+          format = "{icon}";
+          format-critical = "{temperatureC}°C {icon}";
+          hwmon-path = [
+            "/sys/class/hwmon/hwmon5/temp1_input" # CPU
+            "/sys/class/hwmon/hwmon0/temp1_input" # GPU
+          ];
+          critical-threshold = 85;
+          format-icons = ["" "" "" "" ""];
+          tooltip-format = "{temperatureC}°C ";
+          tooltip = true;
+          # tooltip-format = "GPU : {temperatureC}°C {icon}";
         };
         battery = {
           full-at = 80;
@@ -241,8 +254,8 @@
           "format" = "{icon}";
           "return-type" = "json";
           "format-icons" = {
-              "Playing" = "";
-              "Paused" = "";
+              "Paused" = "";
+              "Playing" = "";
           };
           "max-length" = 70;
           "exec" = "playerctl -a metadata --format '{\"text\": \"{{playerName}}: {{artist}} - {{markup_escape(title)}}\", \"tooltip\": \"{{artist}} : {{markup_escape(title)}}\", \"alt\": \"{{status}}\", \"class\": \"{{status}}\"}' -F";
@@ -250,7 +263,33 @@
           "on-click-right" = "playerctl next";
           "on-click-middle" = "playerctl previous";
       };
+      clock = {
+        format = "{:%H:%M}  ";
+        format-alt = "{:%a %d %b %Y - %R}  ";
+        tooltip-format = "<tt><small>{calendar}</small></tt>";
+        calendar = {
+          mode = "year";
+          mode-mon-col = 3;
+          weeks-pos = "right";
+          on-scroll = 1;
+          format = {
+            months =     "<span color='#ffead3'><b>{}</b></span>";
+            days =       "<span color='#ecc6d9'><b>{}</b></span>";
+            weeks =      "<span color='#99ffdd'><b>W{}</b></span>";
+            weekdays =   "<span color='#ffcc66'><b>{}</b></span>";
+            today =      "<span color='#ff6699'><b><u>{}</u></b></span>";
+          };
+        };
+        actions =  {
+          on-click-right = "mode";
+          on-click-middle = "shift_reset";
+          # on-scroll-up = "tz_up";
+          # on-scroll-down = "tz_down";
+          on-scroll-up = "shift_up";
+          on-scroll-down = "shift_down";
+        };
       };
+    };
     };
     programs.waybar.style = ./style.css;
   };
