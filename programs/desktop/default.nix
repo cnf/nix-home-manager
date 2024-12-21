@@ -4,6 +4,7 @@
     my.desktop.enable = lib.mkEnableOption "Enable a graphical env";
   };
   imports = [
+    ./mime-types.nix
     ./email.nix
     ./vscode.nix
     ./firefox.nix
@@ -12,6 +13,7 @@
     ./mqtt.nix
     ./gaming.nix
     ./yubi.nix
+    ./zotero.nix
   ];
   config = lib.mkIf config.my.desktop.enable {
     # home.preferXdgDirectories = true;
@@ -19,7 +21,7 @@
     fonts.fontconfig.defaultFonts = {
       emoji = ["Noto Color Emoji"];
       serif = ["DejaVu Serif"];
-      sansSerif = ["JetBrainsMono Nerd Font"];
+      sansSerif = ["Helvetica Neue LT Std" "Arimo Nerd Font" "Helvetica Neue LT Std"];
       monospace = ["Source Code Pro NerdFont"];
     };
     programs.jq.enable = true;
@@ -31,12 +33,17 @@
       # audio
       pavucontrol
       pulseaudio
+
+      #video
+      mpv
       vlc
 
       # icons
       candy-icons
       nixos-icons
       cosmic-icons
+      kdePackages.breeze-gtk
+      kdePackages.breeze-icons
       
       
 
@@ -53,6 +60,7 @@
       liberation_ttf
       mplus-outline-fonts.githubRelease
       nerdfonts
+      helvetica-neue-lt-std
       noto-fonts
       noto-fonts-cjk-sans
       noto-fonts-emoji
@@ -66,6 +74,10 @@
       spotify
       onedrive
       onedrivegui
+
+      qalculate-qt
     ];
+    
   };
+
 }

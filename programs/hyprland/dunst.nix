@@ -22,7 +22,8 @@
         frame_color = "#148eff";
         frame_width = 0;
         separator_color = "frame";
-        font = "JetBrainsMono Nerd Font";
+        font = "Arimo Nerd Font";
+        font-weight = "normal";
         icon_theme = "candy-icons, hicolor, Papirus, Adwaita";
         default_icon = "cs-notifications";
         enable_recursive_icon_lookup = true;
@@ -57,7 +58,7 @@
       discord = {
         desktop_entry="discord";
         default_icon = "com.discordapp.Discord";
-        script = "/home/cnf/.config/dunst/play.sh discord";
+        script = "/home/cnf/.config/dunst/play.sh";
       };
       onedrive = {
         desktop_entry = "onedrive";

@@ -13,7 +13,6 @@
       sigrok-firmware-fx2lafw
       smuview
       pulseview
-
     ];
 
 #    xdg.desktopEntries.SDR = {

@@ -36,7 +36,9 @@
       package = pkgs.rofi-wayland;
       terminal = "${pkgs.kitty}/bin/kitty";
       theme = "rofi.rasi";
-      font = "JetBrainsMono Nerd Font";
+      #font = "JetBrainsMono Nerd Font";
+      #font = "Lekton Nerd Font";
+      font = "sans-serif 12";
       extraConfig = {
         sidebar-mode = true;
         show-icons = true;

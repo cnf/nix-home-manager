@@ -24,6 +24,8 @@
       wsjtx
 
       hamlib
+      
+      nanovna-saver
 
       (gnuradio.override {
         extraPackages = with gnuradioPackages; [

@@ -26,6 +26,8 @@
       hyprlang
       aquamarine
       hyprshade
+      # hyprland-monitor-attached
+      # hyprland-autoname-workspaces
       
       emojipick
       pavucontrol
@@ -41,11 +43,17 @@
       grim
       slurp
       hyprshot
-      inputs.hyprland-contrib.packages.${pkgs.system}.grimblast
+      grimblast
+      #inputs.hyprland-contrib.packages.${pkgs.system}.grimblast
       inputs.hyprswitch.packages.${pkgs.system}.default
       inputs.hyprsysteminfo.packages.${pkgs.system}.default
+      inputs.hyprpanel.packages.${pkgs.system}.default
 
       # idle
+      ## TO CHECK OUT
+      # hyprwall
+      # hyprlauncher
+      # hyprnotify
     ];
 
     services.gnome-keyring.enable = true;
@@ -56,11 +64,10 @@
 
     wayland.windowManager.hyprland = {
       enable  = true;
-      package = inputs.hyprland.packages.${pkgs.system}.hyprland;
+      #package = inputs.hyprland.packages.${pkgs.system}.hyprland;
       plugins  = [
-        inputs.hyprgrass.packages.${pkgs.system}.hyprgrass
-        inputs.hyprspace.packages.${pkgs.system}.Hyprspace
-        # inputs.hyprland-plugins.packages.${pkgs.system}.hyprexo
+        pkgs.hyprlandPlugins.hyprgrass
+        pkgs.hyprlandPlugins.hyprspace
       ];
     };
     wayland.windowManager.hyprland.settings = {
@@ -84,9 +91,10 @@
         "hypridle"
         "dunst"
         #"hyprpaper"
-        "nm-applet --indicator "
+        "nm-applet --indicator"
         "bluetooth-applet"
         "1password --silent"
+        "usbguard-notifier"
         "wl-paste --type text --watch cliphist store #Stores only text data"
         "wl-paste --type image --watch cliphist store #Stores only image data"
         "systemctl --user start hyprpolkitagent"
@@ -115,7 +123,7 @@
 
       bindd = [
         ## Screenshots
-        ", Print, Screenshot entire screen, exec, hyprshot -m output"
+        ", Print, Screenshot entire screen, exec, hyprshot -m active -m output"
         "Control_L, Print, Screenshot window, exec, hyprshot -m window"
         "Control SHIFT, Print, Screenshot selected area, exec, hyprshot -m region"
         "$mod, Print, Show screen capture menu, exec, rofi-screenshot"
@@ -124,12 +132,26 @@
         ## Various
         "$mod, K, Quick Calculator, exec, rofi -show calc -modi calc -no-show-match -no-sort -calc-command 'echo -n {result}| wl-copy'"
         "$shiftmod, J, Color Picker, exec, hyprpicker -a -n| xargs -I % notify-send hyprpicker 'Copied % to clipboard'"
-      ];
+      ]
+      ++ (
+        builtins.concatLists (builtins.genList (i:
+            # let ws = i;
+            # in [
+            [
+              "$mod, ${toString i}, Go to workspace ${toString i},workspace, ${toString i}"
+              "$shiftmod, ${toString i}, Move to ${toString i},movetoworkspace, ${toString i}"
+            ]
+            # ]
+          )
+          10)
+      );
       bind = [
+        "$shiftmod, P, resizeactive, exact 700 400"
         # TODO: hyprswitch
         #"$mod, Tab, exec, hyprswitch gui --mod-key super  --key tab --max-switch-offset 9 --close mod-key" #--hide-active-window-border"
         "$mod, T, fullscreen, 0"
-        # "$mod, Tab, cyclenext,"
+        "$shiftmod, T, fullscreen, 1"
+        "$mod, Tab, cyclenext,"
         "$mod, G, togglegroup"
         "alt, GRAVE, changegroupactive"
         "alt, 1, changegroupactive, 1"
@@ -168,28 +190,10 @@
         "$mod, u, focusurgentorlast"
         # Switch workspaces with mainMod + [0-9]
         "$mod, grave, togglespecialworkspace, visor"
-        "$mod, 1, workspace, 1"
-        "$mod, 2, workspace, 2"
-        "$mod, 3, workspace, 3"
-        "$mod, 4, workspace, 4"
-        "$mod, 5, workspace, 5"
-        "$mod, 6, workspace, 6"
-        "$mod, 7, workspace, 7"
-        "$mod, 8, workspace, 8"
-        "$mod, 9, workspace, 9"
-        "$mod, 0, workspace, 0"
+
         # Move active window to a workspace with mainMod + SHIFT + [0-9]
         "$shiftmod, grave, movetoworkspace, special, visor"
-        "$shiftmod, 1, movetoworkspace, 1"
-        "$shiftmod, 2, movetoworkspace, 2"
-        "$shiftmod, 3, movetoworkspace, 3"
-        "$shiftmod, 4, movetoworkspace, 4"
-        "$shiftmod, 5, movetoworkspace, 5"
-        "$shiftmod, 6, movetoworkspace, 6"
-        "$shiftmod, 7, movetoworkspace, 7"
-        "$shiftmod, 8, movetoworkspace, 8"
-        "$shiftmod, 9, movetoworkspace, 9"
-        "$shiftmod, 0, movetoworkspace, 0"
+   
         # Scroll through existing workspaces with mainMod + scroll
         "$mod, mouse_down, workspace, e+1"
         "$mod, mouse_up, workspace, e-1"
@@ -229,6 +233,11 @@
         };
         kb_options = "ctrl:nocaps";
       };
+      device = {
+        name = "razer-razer-naga-trinity";
+        accel_profile = "adaptive";
+        sensitivity = -0.8;
+      };
       general = {
         gaps_in = 5;
         gaps_out = 5;
@@ -249,7 +258,7 @@
         always_center_master = true;
         #new_is_master = false;
         orientation = "right";
-        mfact = 0.7; # 0.55 default
+        mfact = 0.6; # 0.55 default
   #
       };
       gestures = {
@@ -260,8 +269,8 @@
         rounding=6;
         shadow = {
           enabled = true;
-          range = 10;
-          render_power = 4;
+          # range = 10;
+          # render_power = 4;
           #color = "rgba(ff6700ee)"; #"rgba(1a1a1aee)";
           #color_inactive = "rgba(0098ff33)";
         };
@@ -336,11 +345,17 @@
         "float,class:^(org.gnome.Nautilus)$"
         "float,class:^(org.kde.dolphin)$"
         # Code
-        "opacity 0.95 override 0.8 override,class:^(Code)$"
+        "opacity 0.95 override 0.8 override,class:^(code)$"
         # Video
         "float,class:^(vlc)$"
         "opacity 1 override 0.8 override,class:^(vlc)$"
+        # Firefox
+        "opacity 1 override 0.8 override,class:^(firefox)$"
         "float,initialTitle:^(Picture-in-Picture)$"
+        "size 700 400, initialTitle:^(Picture-in-Picture)$"
+        "opacity 1 override 1 override,initialTitle:^(Picture-in-Picture)$"
+        "suppressevent activatefocus, initialTitle:^(Picture-in-Picture)$"
+
         ### 1Password
         #"float, class:^(1Password)$"
         "stayfocused, class:^(1Password)$, title:(Quick Access)"
@@ -353,15 +368,21 @@
         "center, tag:1password"
         #"stayfocused, tag:1password"
         "animation popin, tag:1password"
-        # Rofi
+
+        ## Rofi
         "move cursor -3% -105%,class:^(rofi)$"
         "noanim,class:^(rofi)$"
         "opacity 0.8 override 0.6 override,class:^(rofi)$"
+
         ## Steam
         "tag +steam, initialClass:^(steam)$"
         "tag +steam, initialTitle:^(Steam)$"
         "noborder, floating:1, tag:steam"
         "noshadow, floating:1, tag:steam"
+
+        # ## KiCAD
+        # "tag kicad, class:^(kicad)$"
+        # "group invade, class:^(kicad)$"
 
         ## OneDrive GUI ##
         "tag +onedrive, title:^(OneDriveGUI .*)$"
@@ -373,16 +394,17 @@
         "stayfocused,  class:^(pinentry-) # fix pinentry losing focus"
         ### Open/Save Dialogs ###
         "tag +opensave, class:org.freedesktop.impl.portal.desktop.kde, title:(Enter name of ([a-zA-Z]*) to (open|save to))"
-        "tag +opensave, title:^((Open|Save) ([a-zA-Z]*))$"
+        "tag +opensave, class:org.freedesktop.impl.portal.desktop.kde, title:(Overwrite (.*)\?)"
+        "tag +opensave, title:^((Open|Save|File) ([a-zA-Z]*))$"
         "float,tag:opensave"
         "size 70% 70%,tag:opensave"
         "center, tag:opensave"
-        "stayfocused,tag:opensave"
+        #"stayfocused,tag:opensave"
       ];
     };
     wayland.windowManager.hyprland.extraConfig = ''
         # will switch to a submap called resize
-        bind=ALT,R,submap,resize
+        bindd=ALT, R, Enter the resize submap, submap, resize
 
         # will start a submap called "resize"
         submap=resize
@@ -394,6 +416,9 @@
         binde=, down, resizeactive,0 10
         binde=, Prior, layoutmsg,mfact +0.01
         binde=, Next, layoutmsg, mfact -0.01
+
+        bindm=,mouse:272,movewindow
+        bindm=,mouse:273,resizewindow
 
         # use reset to go back to the global submap
         bind=,escape,submap,reset 
@@ -407,17 +432,6 @@
             autoDrag = true
             affectStrut = false
           }
-          # hyprexpo {
-          #   columns = 2
-          #   gap_size = 6
-          #   bg_col = rgba(0098ff77)
-          #   workspace_method = first 1 # [center/first] [workspace] e.g. first 1 or center m+1
-
-          #   enable_gesture = true # laptop touchpad
-          #   gesture_fingers = 4  # 3 or 4
-          #   gesture_distance = 300 # how far is the "max"
-          #   gesture_positive = true # positive = swipe down. Negative = swipe up.
-          # }
         }
       '';
 
@@ -429,20 +443,24 @@
    #};
 
    iconTheme = {
-     package = pkgs.catppuccin-papirus-folders.override {
-       flavor = "macchiato";
-       accent = "mauve";
-     };
-     name = "Papirus-Dark";
+     #package = pkgs.catppuccin-papirus-folders.override {
+     #  flavor = "macchiato";
+     #  accent = "mauve";
+     #};
+     #name = "Papirus-Dark";
+     package = pkgs.kdePackages.breeze-icons;
+     name = "breeze-dark";
    };
 
    theme = {
-     package = pkgs.catppuccin-gtk.override {
-       accents = ["mauve"];
-       size = "standard";
-       variant = "macchiato";
-     };
-     name = "Catppuccin-Macchiato-Standard-Mauve-Dark";
+     #package = pkgs.catppuccin-gtk.override {
+     #  accents = ["mauve"];
+     #  size = "standard";
+     #  variant = "macchiato";
+     #};
+     #name = "Catppuccin-Macchiato-Standard-Mauve-Dark";
+     package = pkgs.kdePackages.breeze-gtk;
+     name = "Breeze-Dark";
    };
   };
 

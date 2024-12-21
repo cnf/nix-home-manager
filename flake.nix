@@ -9,34 +9,19 @@
       url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # hyprland.url = "github:hyprwm/Hyprland";
-    hyprland = {
-      url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
-    };
+    hyprpanel.url = "github:Jas-SinghFSU/HyprPanel";
     waybar = {
       url = "github:Alexays/Waybar";
     };
     hyprswitch.url = "github:h3rmt/hyprswitch/release";
     hyprland-plugins = {
       url = "github:hyprwm/hyprland-plugins";
-      inputs.hyprland.follows = "hyprland";
     };
     hyprland-contrib = {
       url = "github:hyprwm/contrib";
-      #inputs.hyprland.follows = "hyprland";
-    };
-    hyprgrass = {
-      url = "github:horriblename/hyprgrass";
-      inputs.hyprland.follows = "hyprland"; # IMPORTANT
-    };
-    hyprspace = {
-      url = "github:KZDKM/Hyprspace";
-      # Hyprspace uses latest Hyprland. We declare this to keep them in sync.
-      inputs.hyprland.follows = "hyprland";
     };
     hyprsysteminfo = {
       url = "github:hyprwm/hyprsysteminfo";
-      # inputs.hyprland.follows = "hyprland";
     };
     hypr-binds = {
       url = "github:gvolpe/hypr-binds";
@@ -48,7 +33,6 @@
     let
       inherit (self) outputs;
       homeDirPrefix = if pkgs.stdenv.hostPlatform.isDarwin then "/Users" else "/home";
-      # Values you should modify
       system = "x86_64-linux";  # x86_64-linux, aarch64-multiplatform, etc.
       home = {
         username = "cnf"; # $USER

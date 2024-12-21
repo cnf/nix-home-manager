@@ -16,7 +16,7 @@
     all: initial;
     border: none;
     border-radius: 0;
-    font-family: "JetBrainsMono Nerd Font, FontAwesome, sans-serif";
+    font-family: "Arimo Nerd Font, JetBrainsMono Nerd Font, FontAwesome, sans-serif";
     font-weight: normal;
     font-size: 14px;
     min-height: 0;
@@ -30,10 +30,11 @@ window#waybar {
 }
 
 tooltip {
-    background: @bgcolor;
+    /*background: @bgcolor;*/
+    background: linear-gradient(#525262 0%, @bgcolor 70%);
     color: @textcolor;
     opacity: 0.85;
-    border-radius: 7px;
+    border-radius: 9px;
     border-width: 0px;
     border-style: solid;
     border-color: @accent;
@@ -51,7 +52,8 @@ tooltip label{
 
 
 menu {
-    background: @bgcolor;
+    /*background: @bgcolor;*/
+    background: linear-gradient(#525262 0%, @bgcolor 70%);
     color: @textcolor;
     opacity: 0.85;
     border-radius: 7px;
@@ -63,7 +65,7 @@ menu {
 }
 
 menu label:disabled {
-    font-size: 20px;
+    font-size: larger;
     color: @primary;
 }
 
@@ -111,9 +113,9 @@ menuitem:hover menu > label {
     color: @primary;
 }
 
-#workspaces button.active {
+/*#workspaces button.active {
     background: @bgcolor;
-}
+}*/
 
 #workspaces button.urgent label {
     color: @textcolor;
@@ -156,6 +158,7 @@ menuitem:hover menu > label {
 #clock,
 #battery,
 #pulseaudio,
+#pulseaudio-slider,
 #network,
 #privacy,
 #bluetooth,
@@ -163,8 +166,8 @@ menuitem:hover menu > label {
 #temperature,
 #workspaces,
 #backlight {
-    /* background: #1e1e2e; */
-    background: @bgcolor;
+    /*background: @bgcolor;*/
+    background: linear-gradient(#525262 0%, @bgcolor 70%); /*#5e5e6e);*/
     opacity: 0.8;
     padding: 0px 10px;
     margin: 3px 0px;
@@ -210,6 +213,7 @@ menuitem:hover menu > label {
     margin-right: 10px;
     color: @accent;
 }
+
 /*#custom-hyprlock, #custom-light_dark, #custom-power_btn, #workspaces, #pulseaudio.microphone, #battery, #disk {
     border-radius: 0px 10px 10px 0px;
     margin-right: 10px;
@@ -247,6 +251,7 @@ menuitem:hover menu > label {
     /*border-right: 0px;*/
 }
 
+
 #pulseaudio {
     /* color: #89b4fa; */
     border-left: 0px;
@@ -263,6 +268,39 @@ menuitem:hover menu > label {
     border-left: 0px;
     border-right: 0px;
 }
+
+/*#pulseaudio.bluetooth {
+}*/
+
+#pulseaudio-slider {
+    padding: 0px 1px;
+}
+
+#pulseaudio-slider slider {
+    min-height: 0px;
+    min-width: 0px;
+    opacity: 0;
+    background-image: none;
+    border: none;
+    box-shadow: none;
+}
+
+#pulseaudio-slider trough {
+    /*min-height: 10px;*/
+    min-width: 4px;
+    border-radius: 2px;
+    background-color: @bgcolor;
+    margin: 4px 0px;
+    /*margin-top: 10px;*/
+    border: 0px;
+}
+
+#pulseaudio-slider highlight {
+    min-width: 5px;
+    border-radius: 2px;
+    background-color: white;
+}
+
 
 #battery {
     /* color: #4fe78a; */

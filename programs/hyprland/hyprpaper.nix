@@ -4,6 +4,7 @@
     # home.packages = with pkgs; [
     #   # hyprpaper
     # ];
+    # https://www.deviantart.com/bisbiswas/art/Mountain-Lights-858303874
     services.hyprpaper = {
       enable = true;
       settings = {

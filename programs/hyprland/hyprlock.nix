@@ -19,7 +19,7 @@
         "$surface" = "rgb(363a4f)";
         "$surfaceAlpha" = "363a4f";
 
-        "$font" = "JetBrainsMono Nerd Font";
+        "$font" = "Arimo Nerd Font";
         general = {
           enable_fingerprint = true;
           fingerprint_ready_message = "󰈷 ";

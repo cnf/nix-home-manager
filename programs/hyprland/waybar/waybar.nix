@@ -28,8 +28,7 @@
           "group/hardware"
           "battery"
           "pulseaudio"
-          # "bluetooth"
-          # "network"
+          "pulseaudio/slider"
 
           #"custom/separator"
           "tray"
@@ -56,7 +55,10 @@
             "3" = "󰨞 ";
             "4" = " ";
             empty = " ";
-            urgent = " ";
+            default = " ";
+            urgent = " "; #" ";
+            persistent = " ";
+            special = "󰺕 ";
             #urgent = " ";
             #active = " ";
             #active = " ";
@@ -64,9 +66,9 @@
             #default = "";
           };
           on-click = "activate";
-          persistent-workspaces = {
-            "*" = 4;
-          };
+          #persistent-workspaces = {
+          #  "*" = 4;
+          #};
         };
         "hyprland/submap" = {
           format = " {} ";
@@ -81,6 +83,7 @@
             "(.*) - Visual Studio Code" = "  $1  ";
             "(.*) - Discord" = "  $1  ";
             "(.*) - Obsidian v.*" = " $1";
+            "(.*) - FreeCAD 1.*" = " $1";
             "OneDriveGUI (.*)" = "󰏊 $1";
           };
           separate-outputs = true;
@@ -100,28 +103,37 @@
             "temperature"
           ];
         };
+        "pulseaudio/slider" = {
+          "min" = 0;
+          "max" = 100;
+          "orientation" = "vertical";
+        };
         pulseaudio = {
           #scroll-step": 1, // %, can be a float
           format = "{icon}";
+          format-muted = "󰖁 ";#   {format_source}";
           # format = "{icon} {volume}%";
-          format-bluetooth = "{volume}%  {icon} {format_source}";
-          format-bluetooth-muted = "󰖁 {icon} {format_source}";
-          format-muted = "󰖁";#   {format_source}";
-          # format-muted = "<span font='Font Awesome 5 Free 11'></span>";
+          format-bluetooth = "{icon}"; # {format_source}";
+          format-bluetooth-muted = "{icon}"; # {format_source}";
           format-source = ""; # input
-          format-source-muted = ""; #input
+          format-source-muted = " "; #input
           format-icons = {
-              #headphone = " ";
-              headphone = [" " " " " " " "];
-              hands-free = "";
-              headset = "";
+              headphone = "󱡏 ";
+              headphone-muted = "󱡐 ";
+              hdmi = "󰡁";
+              hifi = "󰓃 ";
+              hifi-muted = "󰓄";
+              speaker = [" " " " " " " " " "];
+              speaker-muted = "󰖁 ";
+              hands-free = " ";
+              headset = " ";
               phone = "";
               portable = "";
               car = "";
-              default = ["󰕿" "󰖀" "󰕾"];
-              # default = ["" " " " "];
+              #default = ["󰕿 " "󰖀 " "󰕾 "];
+              default = [" " " " " "];
           };
-          tooltip-format = "{volume}% {icon} | {format_source}";
+          tooltip-format = "{volume}% {icon} | {format_source}\n{desc}";
           on-click = "pavucontrol";
           reverse-scrolling = true;
         };
@@ -147,6 +159,8 @@
             activated = "";
             deactivated = "";
           };
+          tooltip-format-activated = "Inhibiting Idle";
+          tooltip-format-deactivated = "Free to idle";
         };
         cpu = {
           interval = 10;
@@ -179,7 +193,7 @@
           # tooltip-format = "GPU : {temperatureC}°C {icon}";
         };
         battery = {
-          full-at = 80;
+          full-at = 99;
           format = "{icon}";
           format-icons = {
             discharging = ["󰂎" "󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹"];
@@ -236,11 +250,21 @@
           spacing = 8;
         };
         "custom/hyprlock" = {
-          on-click = "rofi -show power-menu -modi power-menu:rofi-power-menu";
+          on-click-right = "rofi -show power-menu -modi power-menu:rofi-power-menu";
           format = "{icon}";
           format-icons = "  ";
-          tooltip = true;
+          tooltip = false;
           tooltip-format = "Lock Menu";
+          menu = "on-click";
+          menu-file = "$HOME/.config/waybar/power_menu.xml";
+          menu-actions = {
+            shutdown = "systemctl shutdown";
+            reboot = "systemctl reboot";
+            suspend = "systemctl suspend";
+            hibernate = "systemctl hibernate";
+            logout = "loginctl terminate-session $XDG_SESSION_ID";
+            lock = "loginctl lock-sessions";
+          };
         };
         "custom/separator" = {
           format = ":";
@@ -292,5 +316,6 @@
     };
     };
     programs.waybar.style = ./style.css;
+    xdg.configFile."waybar/power_menu.xml".source = ./power_menu.xml;
   };
 }

@@ -6,9 +6,12 @@
   config = lib.mkIf config.my.engineering.enable {
 
     home.packages = with pkgs; [
-      prusa-slicer
+      unstable.prusa-slicer
+      unstable.orca-slicer
       freecad-wayland
       kicad
+      
+      qFlipper
     ];
 
 #    xdg.desktopEntries.SDR = {

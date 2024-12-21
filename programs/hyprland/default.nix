@@ -19,9 +19,5 @@
     ./launcher
     ./clipboard.nix
     ./kanshi.nix
-    ./eww.nix
   ];
-  #config.xdg.mimeApps.defaultApplications = {
-  #  "inode/directory" = "dolphin.desktop";
-  #};
 }

@@ -1,14 +1,11 @@
 { pkgs, lib, config, inputs, ... }:
-#let
-#  unstable = import <nixpkgs-unstable> {config = { allowUnfree = true; };};
-#in 
 {
   nixpkgs.config.allowUnfree = true;
 
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = with pkgs; [
-    assh
+    nvtopPackages.amd
   #  # (pkgs.nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
   ];
 
@@ -45,9 +42,11 @@
   my.discord.enable = true;
   my.sdr.enable = true;
   my.engineering.enable = true;
+  my.sigrok.enable = true;
   my.yubikey.enable = true;
   my.mqtt.enable = true;
   my.gaming.enable = true;
+  my.zotero.enable = true;
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
