@@ -46,6 +46,7 @@
   my.yubikey.enable = true;
   my.mqtt.enable = true;
   my.gaming.enable = true;
+  my.wine.enable = true;
   my.zotero.enable = true;
 
   # Let Home Manager install and manage itself.

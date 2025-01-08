@@ -43,13 +43,19 @@
         sidebar-mode = true;
         show-icons = true;
         icon-theme = "candy-icons";
+        combi-modes = "drun,calc,ssh";
         display-drun = "  ";
+        display-combi = "  ";
+        display-calc = " ";
+        display-ssh = "󰣀 ";
+        display-games = "󰊗 ";
          modes = [
-           "calc"
            "drun"
-           "window"
+           "calc"
            "ssh"
            "emoji"
+           "games"
+           "keys"
          ];
       };
     };

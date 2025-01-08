@@ -11,8 +11,9 @@
       QT_QPA_PLATFORM = "wayland";
       SDL_VIDEODRIVER = "wayland";
       XDG_SESSION_TYPE = "wayland";
-      MOZ_ENABLE_WAYLAND = 1;
       NIXOS_OZONE_WL = 1;
+      #HYPRCURSOR_THEME = "rose-pine-hyprcursor";
+      #HYPRCURSOR_SIZE = 24;
       HYPRSHOT_DIR = "${config.xdg.userDirs.pictures}/Screenshots/";
     };
     home.packages = with pkgs; [
@@ -26,8 +27,11 @@
       hyprlang
       aquamarine
       hyprshade
+      hyprcursor
       # hyprland-monitor-attached
-      # hyprland-autoname-workspaces
+      hyprland-autoname-workspaces
+
+      udiskie
       
       emojipick
       pavucontrol
@@ -47,7 +51,12 @@
       #inputs.hyprland-contrib.packages.${pkgs.system}.grimblast
       inputs.hyprswitch.packages.${pkgs.system}.default
       inputs.hyprsysteminfo.packages.${pkgs.system}.default
-      inputs.hyprpanel.packages.${pkgs.system}.default
+      inputs.rose-pine-hyprcursor.packages.${pkgs.system}.default
+      nordzy-cursor-theme
+      #rose-pine-cursor
+
+      # for gnome-keyring
+      gcr
 
       # idle
       ## TO CHECK OUT
@@ -55,8 +64,12 @@
       # hyprlauncher
       # hyprnotify
     ];
+#    home.pointerCursor = {
+#      hyprcursor.enable = true;
+#    };
 
     services.gnome-keyring.enable = true;
+    services.gnome-keyring.components = ["secrets"];
     services.network-manager-applet.enable = false;
     services.blueman-applet.enable = true;
     services.swayosd.enable = true;
@@ -98,22 +111,23 @@
         "wl-paste --type text --watch cliphist store #Stores only text data"
         "wl-paste --type image --watch cliphist store #Stores only image data"
         "systemctl --user start hyprpolkitagent"
+        "hyprland-autoname-workspaces"
+        "udiskie"
+        "SHOW_DEFAULT_ICON=true hyprswitch init --show-title --size-factor 5 --workspaces-per-row 5"
         "[workspace 1 silent] firefox"
         "[workspace 2 silent] kitty"
         "[workspace 4 silent] discord"
+        #"hyprctl setcursor rose-pine-hyprcursor 24"
 
       ];
 
-      #env = [
-      #  "XCURSOR_SIZE,24"
-      #  "MOZ_ENABLE_WAYLAND,1"
-      #  "NIXOS_OZONE_WL,1"
-      #  "QT_QPA_PLATFORM,wayland"
-      #  "XDG_CURRENT_DESKTOP,Hyprland"
-      #  "XDG_SESSION_TYPE,wayland"
-      #  "XDG_SESSION_DESKTOP,Hyprland"
-      #  "_HYPRSHOT_DIR,$XDG_PICTURES_DIR/Screenshots/"
-      #];
+      env = [
+        "HYPRCURSOR_THEME,Nordzy-cursors"
+        "HYPRCURSOR_SIZE,24"
+        "XCURSOR_THEME,Nordzy-cursors"
+        "XCURSOR_SIZE,24"
+        "XDG_MENU_PREFIX,plasma-"
+      ];
 
       misc = {
         focus_on_activate = true; # Whether Hyprland should focus an app that requests to be focused (an activate request)
@@ -148,7 +162,7 @@
       bind = [
         "$shiftmod, P, resizeactive, exact 700 400"
         # TODO: hyprswitch
-        #"$mod, Tab, exec, hyprswitch gui --mod-key super  --key tab --max-switch-offset 9 --close mod-key" #--hide-active-window-border"
+        "alt, Tab, exec, hyprswitch gui --mod-key alt  --key tab --max-switch-offset 9 --close mod-key-release" #--hide-active-window-border"
         "$mod, T, fullscreen, 0"
         "$shiftmod, T, fullscreen, 1"
         "$mod, Tab, cyclenext,"
@@ -165,12 +179,14 @@
         "$mod, L, exec, hyprlock #lock the active window"
         "$mod, M, exec, nwg-bar # show the logout window"
         "$shiftmod, M, exit, # Exit Hyprland all together no (force quit Hyprland)"
+        "$mod, bracketleft, cyclenext, prev"
+        "$mod, bracketright, cyclenext"
         # stuff
         "$mod, Q, exec, kitty"
         "$mod, C, killactive,"
         "$mod, F, togglefloating, # Allow a window to float"
         "$shiftmod, F, fullscreen, 1, #Toggle Full Screen"
-        "$mod, SPACE, exec, rofi -show drun # Show the graphical app launcher"
+        "$mod, SPACE, exec, rofi -show combi # Show the graphical app launcher"
         # "$mod, ESCAPE, hyprexpo:expo, toggle"
         #"$mod, SPACE, exec, anyrun"
         "ALT, V, exec, cliphist list | rofi -dmenu | cliphist decode | wl-copy # open clipboard manager"
@@ -213,9 +229,9 @@
 
         ### LAPTOP LID
         # trigger when the switch is turning off
-        ", switch:off:Lid Switch, Laptop open,exec,hyprctl keyword monitor \"eDP-1, preferred,auto,2\""
+        #", switch:off:Lid Switch, Laptop open,exec,hyprctl keyword monitor \"eDP-1, preferred,auto,2\""
         # trigger when the switch is turning on
-        ", switch:on:Lid Switch, Laptop closes,exec,hyprctl keyword monitor \"eDP-1, disable\""
+        #", switch:on:Lid Switch, Laptop closes,exec,hyprctl keyword monitor \"eDP-1, disable\""
       ];
       bindm = [
         "$mod,mouse:272,movewindow"
@@ -239,9 +255,9 @@
         sensitivity = -0.8;
       };
       general = {
-        gaps_in = 5;
-        gaps_out = 5;
-        border_size = 4;
+        gaps_in = 4;
+        gaps_out = 4;
+        border_size = 3;
         "col.active_border" = "rgba(ff6700ee)";
         "col.inactive_border" = "rgba(0098ffaa)";
         layout = "master";
@@ -274,7 +290,7 @@
           #color = "rgba(ff6700ee)"; #"rgba(1a1a1aee)";
           #color_inactive = "rgba(0098ff33)";
         };
-        active_opacity=0.8;
+        active_opacity=0.9;
         inactive_opacity=0.7;
         blur = {
           enabled=true;
@@ -380,6 +396,14 @@
         "noborder, floating:1, tag:steam"
         "noshadow, floating:1, tag:steam"
 
+        ## Fusion 360
+        "tag +fusion, initialClass:^(fusion360.exe)$"
+        "opacity 1 override, tag:fusion"
+
+        # FreeCAD
+        "tag freecad, initialClass:^(org.freecad.FreeCAD)$"
+        "opacity 1 override, tag:freecad"
+
         # ## KiCAD
         # "tag kicad, class:^(kicad)$"
         # "group invade, class:^(kicad)$"
@@ -437,31 +461,26 @@
 
   gtk = {
    enable = true;
-   #cursorTheme = {
-   #  name = "Catppuccin-Macchiato-Dark-Cursors";
-   #  package = pkgs.catppuccin-cursors.macchiatoDark;
-   #};
+   cursorTheme = {
+     name = "Nordzy-cursors";
+     #package = pkgs.rose-pine-cursor;
+   };
 
    iconTheme = {
-     #package = pkgs.catppuccin-papirus-folders.override {
-     #  flavor = "macchiato";
-     #  accent = "mauve";
-     #};
-     #name = "Papirus-Dark";
      package = pkgs.kdePackages.breeze-icons;
      name = "breeze-dark";
    };
 
-   theme = {
+   #theme = {
      #package = pkgs.catppuccin-gtk.override {
      #  accents = ["mauve"];
      #  size = "standard";
      #  variant = "macchiato";
      #};
      #name = "Catppuccin-Macchiato-Standard-Mauve-Dark";
-     package = pkgs.kdePackages.breeze-gtk;
-     name = "Breeze-Dark";
-   };
+     #package = pkgs.kdePackages.breeze-gtk;
+     #name = "Breeze-Dark";
+   #};
   };
 
   };

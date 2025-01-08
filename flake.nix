@@ -9,10 +9,7 @@
       url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    hyprpanel.url = "github:Jas-SinghFSU/HyprPanel";
-    waybar = {
-      url = "github:Alexays/Waybar";
-    };
+    #waybar.url = "github:Alexays/Waybar";
     hyprswitch.url = "github:h3rmt/hyprswitch/release";
     hyprland-plugins = {
       url = "github:hyprwm/hyprland-plugins";
@@ -27,6 +24,7 @@
       url = "github:gvolpe/hypr-binds";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    rose-pine-hyprcursor.url = "github:ndom91/rose-pine-hyprcursor";
   };
 
   outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, ...} @ inputs:

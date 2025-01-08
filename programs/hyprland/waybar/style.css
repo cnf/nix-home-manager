@@ -64,14 +64,16 @@ menu {
     padding: 7px 15px;
 }
 
+menu separator {
+    background: linear-gradient(to right, transparent, @textcolor, transparent);
+    margin: 2px 0px;
+    padding: 1px;
+} 
+
 menu label:disabled {
     font-size: larger;
     color: @primary;
 }
-
-/* menu separator {
-    border: @critical;
-} */
 
 menu label {
     font-family: "SauseCodePro, sans-serif";

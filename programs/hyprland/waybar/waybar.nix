@@ -6,7 +6,7 @@
       waybar-mpris
     ];
     programs.waybar.enable = true;
-    programs.waybar.package = inputs.waybar.packages.${pkgs.system}.waybar;
+    #programs.waybar.package = inputs.waybar.packages.${pkgs.system}.waybar;
     programs.waybar.settings = {
       mainBar = {
         layer = "top";
@@ -29,6 +29,7 @@
           "battery"
           "pulseaudio"
           "pulseaudio/slider"
+          "network"
 
           #"custom/separator"
           "tray"
@@ -48,12 +49,17 @@
         "hyprland/workspaces" = {
           active-only = false;
           all-outputs = false;
-          format = "{icon}";
+          format = "{name}"; # we use {name} together with hyprland-autorename-workspaces
+          #format = "{icon}";
           format-icons = {
-            "1" = " ";
-            "2" = " ";
-            "3" = "󰨞 ";
-            "4" = " ";
+            #"1" = " ";
+            #"2" = " ";
+            #"3" = "󰨞 ";
+            #"4" = " ";
+            #"browser" = " ";
+            #"term" = " ";
+            #"code" = "󰨞 ";
+            #"chat" = " ";
             empty = " ";
             default = " ";
             urgent = " "; #" ";
@@ -78,13 +84,15 @@
         };
         "hyprland/window" = {
           format = "{}";
+          icon = true;
+          icon-size = 16;
           rewrite = {
-            "(.*) — Mozilla Firefox" = "  $1   ";
-            "(.*) - Visual Studio Code" = "  $1  ";
-            "(.*) - Discord" = "  $1  ";
-            "(.*) - Obsidian v.*" = " $1";
-            "(.*) - FreeCAD 1.*" = " $1";
-            "OneDriveGUI (.*)" = "󰏊 $1";
+            "(.*) — Mozilla Firefox" = "$1"; # ";
+            "(.*) - Visual Studio Code" = "$1"; # ";
+            "(.*) - Discord" = "$1"; # ";
+            "(.*) - Obsidian v.*" = "$1";
+            "(.*) - FreeCAD 1.*" = "$1";
+            "OneDriveGUI (.*)" = "$1";
           };
           separate-outputs = true;
         };
@@ -135,6 +143,8 @@
           };
           tooltip-format = "{volume}% {icon} | {format_source}\n{desc}";
           on-click = "pavucontrol";
+          on-click-right = "rofi-pulse-select sink";
+          on-click-middle = "rofi-pulse-select source";
           reverse-scrolling = true;
         };
         bluetooth = {
@@ -193,7 +203,7 @@
           # tooltip-format = "GPU : {temperatureC}°C {icon}";
         };
         battery = {
-          full-at = 99;
+          full-at = 85;
           format = "{icon}";
           format-icons = {
             discharging = ["󰂎" "󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹"];
@@ -209,10 +219,20 @@
               critical = 10;
           };
           tooltip = true;
-          tooltip-format = "{capacity}%\n{timeTo}";
+          tooltip-format = "{capacity}%\n{power:4.1f}W\n{timeTo}";
           # on-click = "2";
         };
         network = {
+          interface = "wg0";
+          format = "{icon}";
+          format-icons = {
+            ethernet = [""];
+            linked = [""];
+            inactive = [""];
+            disconnected = [""];
+          };
+        };
+        "network#all" = {
           # interface = "wlp1s0";
           # format = "{ifname}";
           format = "{icon}";
@@ -258,7 +278,7 @@
           menu = "on-click";
           menu-file = "$HOME/.config/waybar/power_menu.xml";
           menu-actions = {
-            shutdown = "systemctl shutdown";
+            shutdown = "systemctl poweroff";
             reboot = "systemctl reboot";
             suspend = "systemctl suspend";
             hibernate = "systemctl hibernate";
@@ -289,7 +309,7 @@
       };
       clock = {
         format = "{:%H:%M}  ";
-        format-alt = "{:%a %d %b %Y - %R}  ";
+        format-alt = "{:%a %d %b %Y - %R %Z}  ";
         tooltip-format = "<tt><small>{calendar}</small></tt>";
         calendar = {
           mode = "year";

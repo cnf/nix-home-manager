@@ -32,8 +32,8 @@
         origin = "top-right";
         notification_limit = 8;
         gap_size = 7;
-        width = "(250,400)";
-        height = "(80, 250)";
+        width = "(250, 400)";
+        height = "(80,  250)";
       };
       urgency_low = {
         background = "#323232";
@@ -58,7 +58,6 @@
       discord = {
         desktop_entry="discord";
         default_icon = "com.discordapp.Discord";
-        script = "/home/cnf/.config/dunst/play.sh";
       };
       onedrive = {
         desktop_entry = "onedrive";

@@ -24,11 +24,11 @@
             on-resume = "brightnessctl -r";                 # monitor backlight restore.
           }
           {
-            timeout = 940;                            # in seconds
+            timeout = 1700;                            # in seconds
             on-timeout = "loginctl lock-session";
           }
           {
-            timeout = 1000;                                # 2.5min.
+            timeout = 1800;                                # 2.5min.
             on-timeout = "hyprctl dispatch dpms off";         # set monitor backlight to minimum, avoid 0 on OLED monitor.
             on-resume = "hyprctl dispatch dpms on";                 # monitor backlight restore.
           }

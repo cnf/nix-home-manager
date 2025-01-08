@@ -8,5 +8,8 @@
       mailspring
       geary
     ];
+    #programs.thunderbird = {
+    #  enable = true;
+    #};
   };
 }

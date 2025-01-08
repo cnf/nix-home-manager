@@ -8,6 +8,7 @@
     ./neovim.nix
     ./ele-lab.nix
     ./engineering.nix
+    #./prusa-slicer.nix
     ./desktop
     ./sdr
     ./hyprland

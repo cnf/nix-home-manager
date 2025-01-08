@@ -5,6 +5,7 @@
   };
   imports = [
     ./mime-types.nix
+    ./pdf.nix
     ./email.nix
     ./vscode.nix
     ./firefox.nix
@@ -14,6 +15,7 @@
     ./gaming.nix
     ./yubi.nix
     ./zotero.nix
+    ./wine.nix
   ];
   config = lib.mkIf config.my.desktop.enable {
     # home.preferXdgDirectories = true;
@@ -21,7 +23,7 @@
     fonts.fontconfig.defaultFonts = {
       emoji = ["Noto Color Emoji"];
       serif = ["DejaVu Serif"];
-      sansSerif = ["Helvetica Neue LT Std" "Arimo Nerd Font" "Helvetica Neue LT Std"];
+      sansSerif = ["Helvetica Neue LT Std" "Arimo Nerd Font"];
       monospace = ["Source Code Pro NerdFont"];
     };
     programs.jq.enable = true;

@@ -5,6 +5,10 @@
     my.firefox.enable = lib.mkEnableOption "Enable and configure firefox";
   };
   config = lib.mkIf config.my.firefox.enable {
+    home.sessionVariables = {
+      MOZ_ENABLE_WAYLAND = 1;
+      MOZ_DISABLE_RDD_SANDBOX = 1; # ?
+    };
     programs.firefox = {
       enable = true;
       profiles = {
@@ -13,6 +17,13 @@
           name = "default";
           isDefault = true;
           settings = {
+            # https://discourse.ubuntu.com/t/enabling-accelerated-video-decoding-in-firefox-on-ubuntu-21-04/22081
+            # accelerated video on firefox
+            "media.ffmpeg.vaapi.enabled" = true;
+            "media.ffvpx.enabled" = false;
+            "media.rdd-vpx.enabled" = false;
+            "media.rdd-ffvpx.enabled" = false;
+            "media.navigator.mediadatadecoder_vpx_enabled" = true;
             # "browser.startup.homepage" = "https://duckduckgo.com";
             "browser.search.defaultenginename" = "DuckDuckGo";
             "browser.search.order.1" = "DuckDuckGo";
