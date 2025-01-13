@@ -69,7 +69,7 @@
       liberation_ttf
       mplus-outline-fonts.githubRelease
       nerdfonts
-      helvetica-neue-lt-std
+      unstable.helvetica-neue-lt-std
       noto-fonts
       noto-fonts-cjk-sans
       noto-fonts-emoji
@@ -80,7 +80,7 @@
       material-icons
       material-design-icons
 
-      spotify
+      unstable.spotify
       onedrive
       onedrivegui
 

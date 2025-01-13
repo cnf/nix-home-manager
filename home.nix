@@ -1,32 +1,20 @@
-{inputs, outputs, pkgs, ...}: 
+{inputs, outputs, pkgs, system, ...}: 
 let
   homeDirPrefix = if pkgs.stdenv.hostPlatform.isDarwin then "/Users" else "/home";
   username = "cnf";
 in {
-   #nixpkgs = {
-    # You can add overlays here
-   # overlays = [
-      # Add overlays your own flake exports (from overlays and pkgs dir):
-   #   outputs.overlays.additions
-   #   outputs.overlays.modifications
-   #   outputs.overlays.unstable-packages
-
-      # You can also add overlays exported from other flakes:
-      # neovim-nightly-overlay.overlays.default
-
-      # Or define it inline, for example:
-      # (final: prev: {
-      #   hi = final.hello.overrideAttrs (oldAttrs: {
-      #     patches = [ ./change-hello-to-hi.patch ];
-      #   });
-      # })
-    #];
-    # Configure your nixpkgs instance
-    #config = {
-    #  # Disable if you don't want unfree packages
-    #  allowUnfree = true;
-    #};
-  #};
+  _module.args.unstable = import inputs.nixpkgs-unstable {
+       inherit system;
+       config = {
+         allowUnfree = true;
+         allowUnfreePredicate = (_: true);
+        };
+        overlays = [
+          (import ./pkgs)
+            # (self: super: {my-freerouting = super.callPackage ./pkgs/freerouting.nix { };})
+            # (self: super: {local = super.callPackage ./pkgs {};})
+        ] ++ (import ./overlays);
+      };
     home = {
       username = "${username}";
       homeDirectory = "${homeDirPrefix}/${username}";

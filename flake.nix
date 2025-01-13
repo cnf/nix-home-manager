@@ -30,47 +30,11 @@
     let
       inherit (self) outputs;
       system = "x86_64-linux";  # x86_64-linux, aarch64-multiplatform, etc.
-
-      # Supported systems for your flake packages, shell, etc.
-      # supportedSystems = [
-      #   #"aarch64-linux"
-      #   #"i686-linux"
-      #   "x86_64-linux"
-      #   #"aarch64-darwin"
-      #   #"x86_64-darwin"
-      # ];
-      pkgs = import nixpkgs {
-       inherit system;
-       config = {
-        #  allowUnfree = true;
-        #  allowUnfreePredicate = (_: true);
-       };
-      };
-      # pkgs = nixpkgs.legacyPackages.${system};
-      unstable = import nixpkgs-unstable {
-       inherit system;
-       config = {
-         allowUnfree = true;
-         allowUnfreePredicate = (_: true);
-        };
-        overlays = [
-          (import ./pkgs)
-            # (self: super: {my-freerouting = super.callPackage ./pkgs/freerouting.nix { };})
-            # (self: super: {local = super.callPackage ./pkgs {};})
-        ] ++ (import ./overlays);
-
-      };
-      # unstable = nixpkgs-unstable.legacyPackages.${system};
-      #unstable.config.allowUnfree = true;
-
-      # This is a function that generates an attribute by calling a function you
-      # pass to it, with each system as an argument
-      # forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
-
+      pkgs = nixpkgs.legacyPackages.${system};
     in {
       homeConfigurations = {
         "cnf@hydra" = home-manager.lib.homeManagerConfiguration {
-          extraSpecialArgs = {inherit inputs outputs unstable;};
+          extraSpecialArgs = {inherit inputs system;};
           inherit pkgs;
           modules = [
             ./home.nix
@@ -79,7 +43,7 @@
           ];
         };
         "cnf@OptiNix" = home-manager.lib.homeManagerConfiguration {
-          extraSpecialArgs = {inherit inputs outputs;};
+          extraSpecialArgs = {inherit inputs;};
           inherit pkgs;
           modules = [
             ./home.nix
@@ -104,7 +68,7 @@
         };
         "funshoot@OptiNix" = home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
-	        extraSpecialArgs = {inherit unstable;};
+	        extraSpecialArgs = {inherit inputs;};
           modules = [
             ./funshoot.nix
           ];
