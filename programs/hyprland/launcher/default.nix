@@ -35,7 +35,7 @@
       };
       package = pkgs.rofi-wayland;
       terminal = "${pkgs.kitty}/bin/kitty";
-      theme = "rofi.rasi";
+      theme = "spotlight.rasi";
       #font = "JetBrainsMono Nerd Font";
       #font = "Lekton Nerd Font";
       font = "sans-serif 12";
@@ -44,19 +44,23 @@
         show-icons = true;
         icon-theme = "candy-icons";
         combi-modes = "drun,calc,ssh";
-        display-drun = "  ";
-        display-combi = "  ";
+        display-drun = " ";
+        display-combi = " ";
         display-calc = " ";
         display-ssh = "󰣀 ";
         display-games = "󰊗 ";
-         modes = [
+        display-emoji = " ";
+        display-keys = "󰘳 ";
+        calc-error-color = "#0098ff";
+        #drun-show-actions = true;
+        modes = [
            "drun"
            "calc"
            "ssh"
            "emoji"
            "games"
            "keys"
-         ];
+        ];
       };
     };
     xdg.configFile."rofi/rofi.rasi".source = ./rofi.rasi;

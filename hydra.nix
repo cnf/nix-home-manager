@@ -48,6 +48,7 @@
   my.gaming.enable = true;
   my.wine.enable = true;
   my.zotero.enable = true;
+  my.tryouts.enable = true;
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;

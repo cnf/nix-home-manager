@@ -29,6 +29,9 @@
     shellAliases = {
       ls = "ls -F --color=auto";
     };
+    initExtraBeforeCompInit = ''
+      setopt print_exit_value
+    '';
     initExtra = ''
       ## initExtra
       # see man zshoptions(1)
@@ -51,6 +54,7 @@
       if [[ -f "$HOME/.config/zsh/local.zsh" ]]; then
         source "$HOME/.config/zsh/local.zsh"
       fi
+
     '';
     # check vcs_info for prompt
     plugins = [

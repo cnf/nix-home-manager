@@ -23,10 +23,18 @@
     fonts.fontconfig.defaultFonts = {
       emoji = ["Noto Color Emoji"];
       serif = ["DejaVu Serif"];
-      sansSerif = ["Helvetica Neue LT Std" "Arimo Nerd Font"];
-      monospace = ["Source Code Pro NerdFont"];
+      sansSerif = ["JetBrainsMono Nerd Font" "Helvetica Neue LT Std" "Arimo Nerd Font"];
+      monospace = ["SauceCodePro Nerd Font" "Source Code Pro NerdFont"];
     };
     programs.jq.enable = true;
+    programs.mpv = {
+      enable = true;
+      scripts = [
+        pkgs.mpvScripts.mpris
+        pkgs.mpvScripts.modernx
+        unstable.mpvScripts.smartskip
+      ];
+    };
     home.packages = with pkgs; [
       unstable._1password-cli
       unstable._1password-gui
@@ -37,7 +45,6 @@
       pulseaudio
 
       #video
-      mpv
       vlc
 
       # icons
@@ -78,6 +85,8 @@
       onedrivegui
 
       qalculate-qt
+
+      qbittorrent
     ];
     
   };

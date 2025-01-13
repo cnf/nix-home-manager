@@ -4,12 +4,11 @@
   inputs = {
     cachix.url = "github:cachix/cachix";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
-    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     home-manager = {
       url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    #waybar.url = "github:Alexays/Waybar";
     hyprswitch.url = "github:h3rmt/hyprswitch/release";
     hyprland-plugins = {
       url = "github:hyprwm/hyprland-plugins";
@@ -30,48 +29,60 @@
   outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, ...} @ inputs:
     let
       inherit (self) outputs;
-      homeDirPrefix = if pkgs.stdenv.hostPlatform.isDarwin then "/Users" else "/home";
       system = "x86_64-linux";  # x86_64-linux, aarch64-multiplatform, etc.
-      home = {
-        username = "cnf"; # $USER
-        stateVersion = "24.11";     # See https://nixos.org/manual/nixpkgs/stable for most recent
-        homeDirectory = "${homeDirPrefix}/${home.username}";
-      };
+
+      # Supported systems for your flake packages, shell, etc.
+      # supportedSystems = [
+      #   #"aarch64-linux"
+      #   #"i686-linux"
+      #   "x86_64-linux"
+      #   #"aarch64-darwin"
+      #   #"x86_64-darwin"
+      # ];
       pkgs = import nixpkgs {
-        inherit system;
-        config = {
-          allowUnfree = true;
-          allowUnfreePredicate = (_: true);
-        };
+       inherit system;
+       config = {
+        #  allowUnfree = true;
+        #  allowUnfreePredicate = (_: true);
+       };
       };
-      #pkgs = nixpkgs.legacyPackages.${system};
+      # pkgs = nixpkgs.legacyPackages.${system};
       unstable = import nixpkgs-unstable {
-        inherit system;
-        config = {
-          allowUnfree = true;
-          allowUnfreePredicate = (_: true);
+       inherit system;
+       config = {
+         allowUnfree = true;
+         allowUnfreePredicate = (_: true);
         };
+        overlays = [
+          (import ./pkgs)
+            # (self: super: {my-freerouting = super.callPackage ./pkgs/freerouting.nix { };})
+            # (self: super: {local = super.callPackage ./pkgs {};})
+        ] ++ (import ./overlays);
+
       };
-      #unstable = nixpkgs-unstable.legacyPackages.${system};
+      # unstable = nixpkgs-unstable.legacyPackages.${system};
       #unstable.config.allowUnfree = true;
 
+      # This is a function that generates an attribute by calling a function you
+      # pass to it, with each system as an argument
+      # forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
 
     in {
       homeConfigurations = {
         "cnf@hydra" = home-manager.lib.homeManagerConfiguration {
-          extraSpecialArgs = {inherit inputs;inherit unstable;};
+          extraSpecialArgs = {inherit inputs outputs unstable;};
           inherit pkgs;
           modules = [
-            {home = home;}
+            ./home.nix
             ./programs
             ./hydra.nix 
           ];
         };
         "cnf@OptiNix" = home-manager.lib.homeManagerConfiguration {
-          extraSpecialArgs = {inherit inputs;inherit unstable;};
+          extraSpecialArgs = {inherit inputs outputs;};
           inherit pkgs;
           modules = [
-            {home = home;}
+            ./home.nix
             ./programs
             ./optinix.nix 
           ];
@@ -79,28 +90,26 @@
         "cnf@surface" = home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
           modules = [
-            {home = home;}
+            ./home.nix
             ./programs
             ./surface.nix 
           ];
         };
-	"cnf@ySL" = home-manager.lib.homeManagerConfiguration {
+        "cnf@ySL" = home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
           modules = [
-            {home = home;}
+            ./home.nix
             ./ysl.nix
           ];
         };
-	"funshoot@OptiNix" = home-manager.lib.homeManagerConfiguration {
+        "funshoot@OptiNix" = home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
-	  extraSpecialArgs = {
-	    inherit unstable;
-	  };
+	        extraSpecialArgs = {inherit unstable;};
           modules = [
             ./funshoot.nix
           ];
         };
       };
-      homeManagerModules.default = ./programs;
+      #homeManagerModules.default = ./programs;
     };
 }

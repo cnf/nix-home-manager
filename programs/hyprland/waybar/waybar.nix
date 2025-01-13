@@ -1,17 +1,27 @@
 { pkgs, lib, config, inputs, unstable, ... }:
-
+let
+  commonDeps = with pkgs; [coreutils gnugrep systemd];
+  mkScript = {
+    name ? "script",
+    deps ? [],
+    script ? "",
+  }:
+    lib.getExe (pkgs.writeShellApplication {
+      inherit name;
+      text = script;
+      runtimeInputs = commonDeps ++ deps;
+    });
+in
 {
   config = lib.mkIf config.my.hyprland.enable {
     home.packages = with pkgs; [
       waybar-mpris
     ];
     programs.waybar.enable = true;
-    #programs.waybar.package = inputs.waybar.packages.${pkgs.system}.waybar;
     programs.waybar.settings = {
       mainBar = {
         layer = "top";
         height = 30;
-        # spacing = 4;
         modules-left = [
           "custom/launcher"
           "hyprland/submap"
@@ -21,20 +31,22 @@
           "hyprland/workspaces"
         ];
         modules-right = [
+          #"group/privacywarn"
           "privacy"
+          "custom/webcam"
 
           "idle_inhibitor"
-          "custom/media"
           "group/hardware"
-          "battery"
+          #"mpris"
+          "custom/media"
           "pulseaudio"
           "pulseaudio/slider"
-          "network"
+          "battery"
+          #"network"
 
-          #"custom/separator"
           "tray"
-          #"custom/separator"
           "custom/hyprlock"
+
           "clock"
         ];
         "custom/launcher" = {
@@ -52,24 +64,11 @@
           format = "{name}"; # we use {name} together with hyprland-autorename-workspaces
           #format = "{icon}";
           format-icons = {
-            #"1" = " ";
-            #"2" = " ";
-            #"3" = "󰨞 ";
-            #"4" = " ";
-            #"browser" = " ";
-            #"term" = " ";
-            #"code" = "󰨞 ";
-            #"chat" = " ";
             empty = " ";
             default = " ";
-            urgent = " "; #" ";
+            urgent = " ";
             persistent = " ";
             special = "󰺕 ";
-            #urgent = " ";
-            #active = " ";
-            #active = " ";
-            #active = " ";
-            #default = "";
           };
           on-click = "activate";
           #persistent-workspaces = {
@@ -92,12 +91,36 @@
             "(.*) - Discord" = "$1"; # ";
             "(.*) - Obsidian v.*" = "$1";
             "(.*) - FreeCAD 1.*" = "$1";
+            "(.*) - PrusaSlicer-.* based on Slic3r" = "$1";
+            "PrusaSlicer-([0-9]+.[0-9]+.[0-9]+).* based on Slic3r" = "PrusaSlicer $1";
             "OneDriveGUI (.*)" = "$1";
           };
           separate-outputs = true;
         };
+        "group/privacywarn" = {
+          orientation = "inherit";
+          modules = [
+            "privacy"
+            "custom/webcam"
+          ];
+        };
         privacy = {
           icon-size = 14;
+        };
+        "custom/webcam" = {
+          return-type = "json";
+          interval = 2;
+          exec = mkScript {
+            name = "webcam-usage";
+            deps = [pkgs.jq pkgs.psmisc];
+            script = ''
+              fuser /dev/video* 2>/dev/null|xargs -r ps --no-headers -eo pid,comm -q \
+              | sed 's/\.\(.*\)-wra\?p\?p\?e\?d\?/\1/g' \
+              | awk '{print "{\"tooltip\": \"" $NF " " "["$1"]" "\"}"}' \
+              | jq -s 'if length > 0 then {text: "󰖠", tooltip: (map(.tooltip) | join("\r"))} else {text: "󱜷", tooltip: "No applications are using your webcam!"} end' \
+              | jq --unbuffered --compact-output
+            '';
+          };
         };
         "group/hardware" = {
           orientation = "inherit";
@@ -112,36 +135,35 @@
           ];
         };
         "pulseaudio/slider" = {
-          "min" = 0;
-          "max" = 100;
-          "orientation" = "vertical";
+          min = 0;
+          max = 100;
+          orientation = "vertical";
         };
         pulseaudio = {
           #scroll-step": 1, // %, can be a float
           format = "{icon}";
-          format-muted = "󰖁 ";#   {format_source}";
-          # format = "{icon} {volume}%";
-          format-bluetooth = "{icon}"; # {format_source}";
-          format-bluetooth-muted = "{icon}"; # {format_source}";
-          format-source = ""; # input
-          format-source-muted = " "; #input
+          format-muted = "󰝟";
+          format-bluetooth = "{icon}";
+          format-bluetooth-muted = "{icon}";
+          format-source = "";
+          format-source-muted = " ";
           format-icons = {
               headphone = "󱡏 ";
               headphone-muted = "󱡐 ";
               hdmi = "󰡁";
-              hifi = "󰓃 ";
+              hifi = "󰓃";
               hifi-muted = "󰓄";
-              speaker = [" " " " " " " " " "];
-              speaker-muted = "󰖁 ";
+              #speaker = ["" "" "" " " " "];
+              speaker = ["󰕿" "󰖀" "󰖀" "󰕾" "󰕾"];
+              speaker-muted = "󰝟"; #"󰖁 ";
               hands-free = " ";
               headset = " ";
               phone = "";
               portable = "";
               car = "";
-              #default = ["󰕿 " "󰖀 " "󰕾 "];
-              default = [" " " " " "];
+              default = ["" "" "" " " " "];
           };
-          tooltip-format = "{volume}% {icon} | {format_source}\n{desc}";
+          tooltip-format = "{icon} {volume:3}% {desc}\n{format_source} {source_volume:3}% {source_desc}";
           on-click = "pavucontrol";
           on-click-right = "rofi-pulse-select sink";
           on-click-middle = "rofi-pulse-select source";
@@ -157,7 +179,7 @@
           on-click = "blueman-manager";
           format-connected = " {device_alias}";
           format-connected-battery = " {device_alias} {device_battery_percentage}%";
-                # format-device-preference= [ "device1", "device2" ]; # preference list deciding the displayed device
+          # format-device-preference= [ "device1", "device2" ]; # preference list deciding the displayed device
           tooltip-format = "{controller_alias}\t{controller_address}\n\n{num_connections} connected";
           tooltip-format-connected = "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}";
           tooltip-format-enumerate-connected = "{device_alias}\t{device_address}";
@@ -209,20 +231,24 @@
             discharging = ["󰂎" "󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹"];
             charging = ["󰢟" "󰢜" "󰂆" "󰂇" "󰂈" "󰢝" "󰂉" "󰢞" "󰂊" "󰂋" "󰂅"];
           };
-          format-time = "{H}h{M}m";
-          # format-charging = "<span font='Font Awesome 5 Free'></span><span font='Font Awesome 5 Free 11'>{icon}</span>";
-          format-full = "󰁹"; #<span font='Font Awesome 5 Free 11'>{icon}</span>";
-          format-plugged = "";
+          #format-time = "{H}:{m}";
+          format-full = "󰂄";
+          format-plugged = "󱐋"; #󰂄"; #";
+          format-critical = "󱃍";
           interval = 30;
           states = {
               warning = 25;
               critical = 10;
           };
           tooltip = true;
-          tooltip-format = "{capacity}%\n{power:4.1f}W\n{timeTo}";
+          tooltip-format = "{capacity}%\t\t{power:.1f}W\n{timeTo}";
+          tooltip-format-charging = "Charging [{capacity}%]\n{power:.1f}W\n{time} to full";
+          tooltip-format-discharging = "Using {power:.1f}W\n{time} remaining";
+          tooltip-format-full = "Full {power:.1f}W";
+          tooltip-format-plugged = "Plugged in {power:.1f}W";
           # on-click = "2";
         };
-        network = {
+        "network#wg" = {
           interface = "wg0";
           format = "{icon}";
           format-icons = {
@@ -232,7 +258,7 @@
             disconnected = [""];
           };
         };
-        "network#all" = {
+        "network" = {
           # interface = "wlp1s0";
           # format = "{ifname}";
           format = "{icon}";
@@ -246,10 +272,10 @@
               linked = [" "];
               disconnected = [" "];
           };
-          tooltip-format-wifi = "{essid} ({signalStrength}%)   \n{tooltip-format}";
-          tooltip-format-ethernet = "{ipaddr}/{cidr}  {ifname}";
+          tooltip-format-wifi = "  {essid}\n   {frequency}GHz ({signalStrength}%)\n   {ipaddr}";
+          tooltip-format-ethernet = "  {ifname}\n   {ipaddr}";
           tooltip-format-disconnected = "Disconnected";
-          tooltip-format = "{ifname} via {gwaddr} 󰊗 ";
+          tooltip-format = "{ipaddr}\n{ifname} via {gwaddr}";
           max-length = 50;
           # on-click = "networkmanager_dmenu";
           on-click = "nm-connection-editor";
@@ -260,9 +286,9 @@
           tooltip = true;
           format-icons = {
             default = "";
-            performance = "󰓅";#"";
-            balanced = "󰾅";#" ";
-            power-saver= "󰾆";#"";
+            performance = "󰓅";
+            balanced = "󰾅";
+            power-saver= "󰾆";
           };
         };
         tray = {
@@ -272,7 +298,7 @@
         "custom/hyprlock" = {
           on-click-right = "rofi -show power-menu -modi power-menu:rofi-power-menu";
           format = "{icon}";
-          format-icons = "  ";
+          format-icons = " ";
           tooltip = false;
           tooltip-format = "Lock Menu";
           menu = "on-click";
@@ -282,58 +308,51 @@
             reboot = "systemctl reboot";
             suspend = "systemctl suspend";
             hibernate = "systemctl hibernate";
-            logout = "loginctl terminate-session $XDG_SESSION_ID";
+            logout = "hyprctl dispatch exit";
             lock = "loginctl lock-sessions";
           };
         };
-        "custom/separator" = {
-          format = ":";
-          tooltip = false;
-        };
-        "custom/leftend" = {
-          format = "";
-          tooltip = false;
-        };
         "custom/media" = {
-          "format" = "{icon}";
-          "return-type" = "json";
-          "format-icons" = {
-              "Paused" = "";
-              "Playing" = "";
+          format = "{icon}";
+          return-type = "json";
+          format-icons = {
+              paused = "";
+              playing = "";
+              stopped = "";
           };
-          "max-length" = 70;
-          "exec" = "playerctl -a metadata --format '{\"text\": \"{{playerName}}: {{artist}} - {{markup_escape(title)}}\", \"tooltip\": \"{{artist}} : {{markup_escape(title)}}\", \"alt\": \"{{status}}\", \"class\": \"{{status}}\"}' -F";
-          "on-click" = "playerctl play-pause";
-          "on-click-right" = "playerctl next";
-          "on-click-middle" = "playerctl previous";
-      };
-      clock = {
-        format = "{:%H:%M}  ";
-        format-alt = "{:%a %d %b %Y - %R %Z}  ";
-        tooltip-format = "<tt><small>{calendar}</small></tt>";
-        calendar = {
-          mode = "year";
-          mode-mon-col = 3;
-          weeks-pos = "right";
-          on-scroll = 1;
-          format = {
-            months =     "<span color='#ffead3'><b>{}</b></span>";
-            days =       "<span color='#ecc6d9'><b>{}</b></span>";
-            weeks =      "<span color='#99ffdd'><b>W{}</b></span>";
-            weekdays =   "<span color='#ffcc66'><b>{}</b></span>";
-            today =      "<span color='#ff6699'><b><u>{}</u></b></span>";
+          max-length = 70;
+          exec = "playerctl -a metadata --format '{\"text\": \"{{playerName}}: {{artist}} - {{markup_escape(title)}}\", \"tooltip\": \"{{artist}} : {{markup_escape(title)}}\", \"alt\": \"{{status}}\", \"class\": \"{{status}}\"}' -F";
+          on-click = "playerctl play-pause";
+          on-click-right = "playerctl next";
+          on-click-middle = "playerctl previous";
+        };
+        mpris = {
+          dynamic-len = 20;
+          dynamic-separator = "   ";
+          player-icons = {
+            default = "▶";
+            spotify = "";
+	    mpv = "";
           };
+          status-icons = {
+            playing = "";
+            paused = "";
+            stopped = "";
+          };
+          ignored-players = ["firefox"];
+          format = "{player_icon}  {status_icon}";
+          format-stopped = "";
+          tooltip-format = "{player_icon}  {player}  {status_icon}\n{dynamic}";
         };
-        actions =  {
-          on-click-right = "mode";
-          on-click-middle = "shift_reset";
-          # on-scroll-up = "tz_up";
-          # on-scroll-down = "tz_down";
-          on-scroll-up = "shift_up";
-          on-scroll-down = "shift_down";
+        clock = {
+          locale = "en_IE.UTF-8";
+          format = "{:%H:%M}  ";
+          format-alt = "{:L%A %R %Z}  ";
+          #format-alt = "{:%a %d %b %Y - %R %Z}  ";
+          #tooltip-format = "<tt><small>{calendar}</small></tt>";
+          tooltip-format = "{:L%A\n%d %B %Y\n%R %Z\nWeek %V}"; #\n{tz_list}";
         };
       };
-    };
     };
     programs.waybar.style = ./style.css;
     xdg.configFile."waybar/power_menu.xml".source = ./power_menu.xml;

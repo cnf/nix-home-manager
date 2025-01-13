@@ -7,8 +7,9 @@
     ./golang.nix
     ./neovim.nix
     ./ele-lab.nix
-    ./engineering.nix
+    ./engineering
     #./prusa-slicer.nix
+    ./tryouts.nix
     ./desktop
     ./sdr
     ./hyprland

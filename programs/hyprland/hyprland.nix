@@ -69,7 +69,7 @@
 #    };
 
     services.gnome-keyring.enable = true;
-    services.gnome-keyring.components = ["secrets"];
+    #services.gnome-keyring.components = ["secrets"];
     services.network-manager-applet.enable = false;
     services.blueman-applet.enable = true;
     services.swayosd.enable = true;
@@ -77,6 +77,7 @@
 
     wayland.windowManager.hyprland = {
       enable  = true;
+      #package = unstable.hyprland;
       #package = inputs.hyprland.packages.${pkgs.system}.hyprland;
       plugins  = [
         pkgs.hyprlandPlugins.hyprgrass
@@ -186,7 +187,7 @@
         "$mod, C, killactive,"
         "$mod, F, togglefloating, # Allow a window to float"
         "$shiftmod, F, fullscreen, 1, #Toggle Full Screen"
-        "$mod, SPACE, exec, rofi -show combi # Show the graphical app launcher"
+        "$mod, SPACE, exec, rofi -show drun # Show the graphical app launcher"
         # "$mod, ESCAPE, hyprexpo:expo, toggle"
         #"$mod, SPACE, exec, anyrun"
         "ALT, V, exec, cliphist list | rofi -dmenu | cliphist decode | wl-copy # open clipboard manager"
@@ -224,7 +225,7 @@
         ", XF86AudioNext, Next Song, exec, playerctl next"
         ", XF86MonBrightnessUp, Raise brightness, exec, swayosd-client --brightness raise"
         ", XF86MonBrightnessDown, Lower brightness, exec, swayosd-client --brightness lower"
-        ", XF86AudioMedia, Not Bound Yet, exec, notify-send 'not bound yet'"
+        ", XF86AudioMedia, Not Bound Yet, exec, notify-send 'not bound yet'" # Framework Key / F12
         # ", Super_L, Not Bound yet, exec, notify-send 'Not bound yet'" # fn > F9
 
         ### LAPTOP LID
@@ -279,6 +280,7 @@
       };
       gestures = {
         workspace_swipe = true;
+        workspace_swipe_create_new = true;
         #workspace_swipe_use_r = true;
       };
       decoration = {
@@ -363,14 +365,18 @@
         # Code
         "opacity 0.95 override 0.8 override,class:^(code)$"
         # Video
-        "float,class:^(vlc)$"
-        "opacity 1 override 0.8 override,class:^(vlc)$"
+        "tag +video,class:^(mpv)$"
+        "tag +video,class:^(vlc)$"
+        "float,tag:video"
+        "opacity 1 override 0.8 override,tag:video"
         # Firefox
         "opacity 1 override 0.8 override,class:^(firefox)$"
         "float,initialTitle:^(Picture-in-Picture)$"
         "size 700 400, initialTitle:^(Picture-in-Picture)$"
         "opacity 1 override 1 override,initialTitle:^(Picture-in-Picture)$"
         "suppressevent activatefocus, initialTitle:^(Picture-in-Picture)$"
+        # PrusaSlicer
+        "opacity 1 override,initialClass:^(PrusaSlicer)$,floating:1"
 
         ### 1Password
         #"float, class:^(1Password)$"

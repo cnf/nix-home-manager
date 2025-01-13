@@ -1,4 +1,5 @@
 @define-color bgcolor #323232;
+@define-color bgaccent #525262;
 @define-color primary #ff8514; 
 @define-color accent #148eff;
 @define-color textcolor white;
@@ -16,7 +17,7 @@
     all: initial;
     border: none;
     border-radius: 0;
-    font-family: "Arimo Nerd Font, JetBrainsMono Nerd Font, FontAwesome, sans-serif";
+    font-family: "JetBrainsMono Nerd Font, FontAwesome, sans-serif";
     font-weight: normal;
     font-size: 14px;
     min-height: 0;
@@ -31,7 +32,7 @@ window#waybar {
 
 tooltip {
     /*background: @bgcolor;*/
-    background: linear-gradient(#525262 0%, @bgcolor 70%);
+    background: linear-gradient(@bgaccent 0%, @bgcolor 70%);
     color: @textcolor;
     opacity: 0.85;
     border-radius: 9px;
@@ -53,7 +54,7 @@ tooltip label{
 
 menu {
     /*background: @bgcolor;*/
-    background: linear-gradient(#525262 0%, @bgcolor 70%);
+    background: linear-gradient(@bgaccent 0%, @bgcolor 70%);
     color: @textcolor;
     opacity: 0.85;
     border-radius: 7px;
@@ -140,48 +141,33 @@ menuitem:hover menu > label {
 }
 
 #taskbar,
-#custom-separator,
 #submap,
 #custom-launcher,
-#custom-lock_screen,
 #custom-hyprlock,
-#custom-light_dark,
-#custom-power_btn,
-#custom-power_profile,
-#custom-weather,
 #custom-media,
+#mpris,
 #idle_inhibitor,
 #power-profiles-daemon,
 #window,
 #cpu,
 #disk,
-#custom-updates,
 #memory,
 #clock,
 #battery,
+#upower,
 #pulseaudio,
 #pulseaudio-slider,
 #network,
-#privacy,
 #bluetooth,
 #tray,
 #temperature,
-#workspaces,
-#backlight {
+#privacy,
+#custom-webcam,
+#workspaces {
     /*background: @bgcolor;*/
-    background: linear-gradient(#525262 0%, @bgcolor 70%); /*#5e5e6e);*/
+    background: linear-gradient(@bgaccent 0%, @bgcolor 70%); /*#5e5e6e);*/
     opacity: 0.8;
     padding: 0px 10px;
-    margin: 3px 0px;
-    margin-top: 5px;
-    border: 0px;
-}
-
-#custom-separator {
-    background: @bgcolor;
-    /*color: #252535;*/
-    opacity: 0.8;
-    /*padding: 0px 10px;*/
     margin: 3px 0px;
     margin-top: 5px;
     border: 0px;
@@ -204,9 +190,23 @@ menuitem:hover menu > label {
     border-radius: 10px 0px 0px 10px;
 } 
  
- #privacy {
+/*#privacywarn {
+    background: transparent;
+    margin-right: 10px;
+    margin: 3px 0px;
+    margin-top: 5px;
+    margin-right: 10px;
+    border: 0px;
+}*/
+
+#privacy, #custom-webcam {
     border-radius: 10px 10px 10px 10px;
     margin-right: 10px;
+    padding: 0px 13px;
+    background: @critical;
+}
+
+#privacy-item {
     color: @primary;
  }
 
@@ -215,16 +215,6 @@ menuitem:hover menu > label {
     margin-right: 10px;
     color: @accent;
 }
-
-/*#custom-hyprlock, #custom-light_dark, #custom-power_btn, #workspaces, #pulseaudio.microphone, #battery, #disk {
-    border-radius: 0px 10px 10px 0px;
-    margin-right: 10px;
-}*/
-
-#temperature.critical {
-    color: @critical;
-}
-
 
 #workspaces {
     border-radius: 10px 10px 10px 10px;
@@ -248,7 +238,7 @@ menuitem:hover menu > label {
     /* color: #89b4fa; */
     color: @accent;
     padding-left: 15px;
-    padding-right: 13px;
+    padding-right: 3px;
     /*margin-left: 10px;*/
     /*border-right: 0px;*/
 }
@@ -291,7 +281,7 @@ menuitem:hover menu > label {
     /*min-height: 10px;*/
     min-width: 4px;
     border-radius: 2px;
-    background-color: @bgcolor;
+    background-color: #222262; /*@bgcolor;*/
     margin: 4px 0px;
     /*margin-top: 10px;*/
     border: 0px;
@@ -336,3 +326,19 @@ menuitem:hover menu > label {
     animation-direction: alternate;
 }
 
+#temperature.critical {
+    color: @critical;
+    animation-name: blink;
+    animation-duration: 0.5s;
+    animation-timing-function: steps(12);
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+#power-profiles-daemon.balanced {}
+
+#power-profiles-daemon.power-saver {}
+
+#power-profiles-daemon.performance {
+    color: @warning;
+}
