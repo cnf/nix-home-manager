@@ -93,6 +93,8 @@ in
             "(.*) - FreeCAD 1.*" = "$1";
             "(.*) - PrusaSlicer-.* based on Slic3r" = "$1";
             "PrusaSlicer-([0-9]+.[0-9]+.[0-9]+).* based on Slic3r" = "PrusaSlicer $1";
+            "(.*) .(.*) - Frank Rosquin. - Autodesk Fusion Personal .Not for Commercial Use." = "$1 - $2";
+            "(.*) (Frank Rosquin) - Autodesk Fusion Personal (Not for Commercial Use)" = "$1";
             "OneDriveGUI (.*)" = "$1";
           };
           separate-outputs = true;

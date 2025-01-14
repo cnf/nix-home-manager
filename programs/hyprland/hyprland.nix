@@ -52,6 +52,7 @@
       inputs.hyprswitch.packages.${pkgs.system}.default
       inputs.hyprsysteminfo.packages.${pkgs.system}.default
       inputs.rose-pine-hyprcursor.packages.${pkgs.system}.default
+      inputs.dmenu-usbguard.defaultPackage.${pkgs.system}
       nordzy-cursor-theme
       #rose-pine-cursor
 
@@ -141,10 +142,10 @@
         ", Print, Screenshot entire screen, exec, hyprshot -m active -m output"
         "Control_L, Print, Screenshot window, exec, hyprshot -m window"
         "Control SHIFT, Print, Screenshot selected area, exec, hyprshot -m region"
-        "$mod, Print, Show screen capture menu, exec, rofi-screenshot"
-        "$shiftmod, Print, Stop Recording, exec, rofi-screenshot -s"
+        #"$mod, Print, Show screen capture menu, exec, rofi-screenshot"
+        #"$shiftmod, Print, Stop Recording, exec, rofi-screenshot -s"
 
-        ## Various
+        ## Various Launchers
         "$mod, K, Quick Calculator, exec, rofi -show calc -modi calc -no-show-match -no-sort -calc-command 'echo -n {result}| wl-copy'"
         "$shiftmod, J, Color Picker, exec, hyprpicker -a -n| xargs -I % notify-send hyprpicker 'Copied % to clipboard'"
       ]
@@ -164,8 +165,10 @@
         "$shiftmod, P, resizeactive, exact 700 400"
         # TODO: hyprswitch
         "alt, Tab, exec, hyprswitch gui --mod-key alt  --key tab --max-switch-offset 9 --close mod-key-release" #--hide-active-window-border"
+
         "$mod, T, fullscreen, 0"
         "$shiftmod, T, fullscreen, 1"
+        ## Groups
         "$mod, Tab, cyclenext,"
         "$mod, G, togglegroup"
         "alt, GRAVE, changegroupactive"
@@ -177,23 +180,24 @@
         "alt, 6, changegroupactive, 6"
         # Main keybinds
         "$mod, F4, killactive, # close the active window"
+        "$mod, C, killactive,"
         "$mod, L, exec, hyprlock #lock the active window"
-        "$mod, M, exec, nwg-bar # show the logout window"
+        #"$mod, M, exec, nwg-bar # show the logout window"
         "$shiftmod, M, exit, # Exit Hyprland all together no (force quit Hyprland)"
         "$mod, bracketleft, cyclenext, prev"
         "$mod, bracketright, cyclenext"
         # stuff
         "$mod, Q, exec, kitty"
-        "$mod, C, killactive,"
+
         "$mod, F, togglefloating, # Allow a window to float"
         "$shiftmod, F, fullscreen, 1, #Toggle Full Screen"
+
         "$mod, SPACE, exec, rofi -show drun # Show the graphical app launcher"
         # "$mod, ESCAPE, hyprexpo:expo, toggle"
-        #"$mod, SPACE, exec, anyrun"
         "ALT, V, exec, cliphist list | rofi -dmenu | cliphist decode | wl-copy # open clipboard manager"
-        "$mod, A, exec, hyprctl keyword general:layout master"
         "$shiftmod, A, exec, hyprctl keyword general:layout dwindle"
         # Master,
+        "$mod, A, exec, hyprctl keyword general:layout master"
         "$mod, S, layoutmsg, orientationcycle right center"
         # Dwindle
         "$mod, P, pseudo, # Dwindle"
@@ -216,7 +220,6 @@
         "$mod, mouse_up, workspace, e-1"
       ];
       binddl = [
-        # ", XF86AudioMute, Mute audio, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
         ", XF86AudioMute, Mute Audio, exec, swayosd-client --output-volume mute-toggle"
         ", XF86AudioRaiseVolume, Volume up, exec, swayosd-client --output-volume raise --max-volume=100"
         ", XF86AudioLowerVolume, Volume down, exec,swayosd-client --output-volume lower"
@@ -235,8 +238,8 @@
         #", switch:on:Lid Switch, Laptop closes,exec,hyprctl keyword monitor \"eDP-1, disable\""
       ];
       bindm = [
-        "$mod,mouse:272,movewindow"
-        "$mod,mouse:273,resizewindow"
+        "$mod,mouse:272,movewindow # left click"
+        "$mod,mouse:273,resizewindow # right click"
       ];
       input = {
         follow_mouse = 1;
@@ -250,11 +253,17 @@
         };
         kb_options = "ctrl:nocaps";
       };
-      device = {
+      device = [
+      {
         name = "razer-razer-naga-trinity";
         accel_profile = "adaptive";
         sensitivity = -0.8;
-      };
+      }
+      # {
+      #   name = "wch.cn-touchscreen-1";
+      #   # output = "desc:XYK Display demoset-1";
+      # }
+      ];
       general = {
         gaps_in = 4;
         gaps_out = 4;
@@ -276,7 +285,6 @@
         #new_is_master = false;
         orientation = "right";
         mfact = 0.6; # 0.55 default
-  #
       };
       gestures = {
         workspace_swipe = true;
@@ -404,7 +412,11 @@
 
         ## Fusion 360
         "tag +fusion, initialClass:^(fusion360.exe)$"
+        "tag +fusion, initialClass:^(steam_proton)$"
         "opacity 1 override, tag:fusion"
+        "noanim, tag:fusion"
+        "noblur, tag:fusion"
+        "suppressevent activatefocus activate, tag:fusion"
 
         # FreeCAD
         "tag freecad, initialClass:^(org.freecad.FreeCAD)$"

@@ -5,7 +5,7 @@
   };
   config = lib.mkIf config.my.wine.enable {
     home.packages = with pkgs; [
-      wine
+      wine-wayland
       bottles
     ];
   };

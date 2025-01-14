@@ -1,0 +1,153 @@
+/* MACOS SPOTLIGHT LIKE DARK THEME FOR ROFI  */
+/* Author: Newman Sanchez (https://github.com/newmanls) */
+
+* {
+    /*font: "JetBrainsMono Nerd Font";*/
+    background-color: transparent;
+    bgcolor: rgba(50, 50, 50, 90%);
+    //bgcolor: #323232;
+    field: rgba(162, 162, 167, 75%);
+    //primary: rgba(255, 97, 0, 100%);
+    //accent: #0098ff;
+    primary: rgb(255, 133, 20);
+    accent: #148eff;
+    text-color: white;
+    dimtext: #DEDEDE80;
+
+    margin:     0;
+    padding:    0;
+    spacing:    0;
+}
+
+window {
+    background-color:   @bgcolor;
+    background-image: linear-gradient(89.5deg, #525262AA, #323232AA);
+
+    transparency:                "screenshot";
+    location:       center;
+    width:          640;
+    border-radius:  12px;
+}
+
+/*****----- Main Box -----*****/
+/*mainbox {
+    //spacing:                     10px;
+    //padding:                     20px;
+    // border:                      1px solid;
+    // border-radius:               0px 0px 0px 0px;
+    // border-color:                @primary;
+    //background-color:            "transparent";
+    background-color: @bgcolor;
+    background-image: linear-gradient(to bottom, #525262AA, #323232AA);
+    children:                    [ "inputbar", "message", "listview" ];
+}*/
+
+inputbar {
+    /*font:       "Montserrat 20";*/
+    padding:    12px;
+    spacing:    12px;
+    children:   [ prompt, entry, overlay, case-indicator, num-filtered-rows];
+}
+
+prompt {
+    enabled:                     true;
+    background-color:            transparent;
+    text-color:                  inherit;
+    //expand:     false;
+    //filename:   "search";
+    //size: 28px;
+}
+
+num-filtered-rows {
+    text-color: @dimtext;
+}
+
+/*textbox-prompt-colon {
+    enabled:                     true;
+    expand:                      false;
+    str:                         "::";
+    background-color:            transparent;
+    text-color:                  inherit;
+}*/
+
+
+prompt, entry, element-icon, element-text {
+    vertical-align: 0.5;
+}
+
+entry {
+    enabled: true;
+    font:    inherit;
+    cursor:  text;
+
+    placeholder         : " Search";
+    placeholder-color   : @dimtext;
+}
+
+message {
+    border:             2px;
+    border-color:       @accent;
+    background-color:   transparent;
+}
+
+error-message {
+    padding:                     15px;
+    border:                      2px solid;
+    border-radius:               12px;
+    border-color:                @accent;
+    background-color:            @bgcolor;
+    text-color:                  @text-color;
+}
+
+textbox {
+    padding:    8px 24px;
+    //text-color: @accent;
+    //background-color: @bgcolor;
+}
+
+listview {
+    lines:      10;
+    columns:    1;
+
+    fixed-height:   false;
+    fixed-columns:  false;
+    border:         1px 0 0;
+    border-color:   @accent;
+    dynamic: true;
+}
+
+element {
+    padding:            8px 16px;
+    spacing:            16px;
+    background-color:   transparent;
+}
+
+element normal active {
+    text-color: @primary;
+}
+
+element alternate active {
+    text-color: @primary;
+}
+
+element selected normal, element selected active {
+    background-color:   @primary;
+    background-image: linear-gradient(89.5deg, #52526210, #32323230);
+    text-color:         @text-color;
+}
+
+element-icon {
+    size:   1em;
+}
+
+element-text {
+    text-color: inherit;
+}
+
+mode-switcher {
+    padding: 5 0 5;
+}
+
+button selected {
+  text-color: @primary;
+}

@@ -35,7 +35,7 @@
       };
       package = pkgs.rofi-wayland;
       terminal = "${pkgs.kitty}/bin/kitty";
-      theme = "spotlight.rasi";
+      theme = "rofi.rasi";
       #font = "JetBrainsMono Nerd Font";
       #font = "Lekton Nerd Font";
       font = "sans-serif 12";
@@ -63,7 +63,8 @@
         ];
       };
     };
-    xdg.configFile."rofi/rofi.rasi".source = ./rofi.rasi;
-    #xdg.configFile."rofi/hypr-binds".source = ./hypr-binds;
+    #xdg.configFile."rofi/rofi.rasi".source = ./rofi.rasi;
+    xdg.configFile."rofi/rofi.rasi".source = ./spotlight.rasi;
+    xdg.configFile."rofi/hypr-binds".source = ./hypr-binds;
   };
 }
