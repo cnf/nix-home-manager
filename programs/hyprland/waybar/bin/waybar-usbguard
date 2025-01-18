@@ -1,0 +1,37 @@
+#!/usr/bin/env sh
+
+listen() {
+    dbus-monitor --system --profile "interface='org.usbguard.Devices1'" |
+        while read -r line; do
+            readarray -t blocked < <(usbguard list-devices -b | grep -Po 'name "\K[^"]+'|tr '\t' ' ')
+            echo "==="
+
+            if [ -n "$blocked" ]; then
+                blocked=( "${blocked[@]/#/󰕓 }" )
+                IFS=$'\n'
+                text="${blocked[*]}"
+                printf '{"text": "%s", "alt": "block", "tooltip": "%s", "icon": "󰕓"}\n' "${text//$'\n'/\\n}" "${text//$'\n'/\\n}" |jq --unbuffered --compact-output
+                #printf '{"text": "%s", "alt": "block", "tooltip": "%s"}\n' "${text//$'\n'/\\n}" "${blocked[*]}" #"${blocked[@]/%/\\n}" "${blocked[@]//$'\n'/\\n}"|jq --unbuffered --compact-output
+            else
+                printf '{"text": ""}\n'
+            fi
+        done
+}
+
+allow() {
+    blocked_id="$(usbguard list-devices -b | head -n1 | grep -Po '^[^:]+')"
+    usbguard allow-device "$blocked_id"
+}
+
+reject() {
+    blocked_id="$(usbguard list-devices -b | head -n1 | grep -Po '^[^:]+')"
+    usbguard reject-device "$blocked_id"
+}
+
+if [ "$1" = "allow" ]; then
+    allow
+elif [ "$1" = "reject" ]; then
+    reject
+else
+    listen
+fi

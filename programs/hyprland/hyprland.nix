@@ -17,19 +17,23 @@
       HYPRSHOT_DIR = "${config.xdg.userDirs.pictures}/Screenshots/";
     };
     home.packages = with pkgs; [
-      xdg-desktop-portal-hyprland
-      xdg-desktop-portal-gtk
-      wlr-randr
+      aquamarine
+      hyprcursor
+      hyprlang
+      hyprpicker
       hyprpolkitagent
       hyprsunset
-      hyprpicker
       hyprutils
-      hyprlang
-      aquamarine
-      hyprshade
-      hyprcursor
+      wlr-randr
+      xdg-desktop-portal-gtk
+      xdg-desktop-portal-hyprland
+      # screenshots
+      grim
+      slurp
+      hyprshot
+      grimblast
+
       # hyprland-monitor-attached
-      hyprland-autoname-workspaces
 
       udiskie
       
@@ -43,27 +47,18 @@
       networkmanagerapplet
       networkmanager_dmenu
 
-      # screenshots
-      grim
-      slurp
-      hyprshot
-      grimblast
+
       #inputs.hyprland-contrib.packages.${pkgs.system}.grimblast
-      inputs.hyprswitch.packages.${pkgs.system}.default
-      inputs.hyprsysteminfo.packages.${pkgs.system}.default
-      inputs.rose-pine-hyprcursor.packages.${pkgs.system}.default
-      inputs.dmenu-usbguard.defaultPackage.${pkgs.system}
+      inputs.dmenu-usbguard.defaultPackage.${pkgs.stdenv.hostPlatform.system}
+      inputs.hyprswitch.packages.${pkgs.stdenv.hostPlatform.system}.default
+      inputs.hyprsysteminfo.packages.${pkgs.stdenv.hostPlatform.system}.default
+      inputs.rose-pine-hyprcursor.packages.${pkgs.stdenv.hostPlatform.system}.default
       nordzy-cursor-theme
       #rose-pine-cursor
 
       # for gnome-keyring
       gcr
 
-      # idle
-      ## TO CHECK OUT
-      # hyprwall
-      # hyprlauncher
-      # hyprnotify
     ];
 #    home.pointerCursor = {
 #      hyprcursor.enable = true;
@@ -71,7 +66,7 @@
 
     services.gnome-keyring.enable = true;
     #services.gnome-keyring.components = ["secrets"];
-    services.network-manager-applet.enable = false;
+    services.network-manager-applet.enable = true;
     services.blueman-applet.enable = true;
     services.swayosd.enable = true;
     services.playerctld.enable = true;
@@ -89,35 +84,35 @@
       "$mod" = "SUPER";
       "$shiftmod" = "SUPER SHIFT";
       # $wob_socket        = $XDG_RUNTIME_DIR/wob.sock # Used like $wob_socket <number>
-      "$sink_volume" = "pactl get-sink-volume @DEFAULT_SINK@ | grep '^Volume:' | cut -d / -f 2 | tr -d ' ' | sed 's/%//'";
-      "$sink_volume_mute" = "pactl get-sink-mute @DEFAULT_SINK@ | sed -En \"/no/ s/.*/$($sink_volume)/p; /yes/ s/.*/0/p\"";
 
       # See https://wiki.hyprland.org/Configuring/Monitors/
       monitor = [
-        "desc:BOE NE135A1M-NY1,preferred,auto,2,vrr,1"
+        "desc:BOE NE135A1M-NY1,preferred,0x0,2,vrr,1"
         "desc:LG Electronics LG ULTRAWIDE 0x0000A6C2,preferred,auto,1"
+        "desc:BNQ BenQ LCD 56G04894019,preferred,auto-up,1"
         "desc:XYK Display demoset-1,preferred,auto,1"
         ",preferred,auto,1"
         "FALLBACK,1920x1080@60,auto,1"
       ];
 
       exec-once = [
-        "waybar"
-        "hypridle"
-        "dunst"
-        #"hyprpaper"
-        "nm-applet --indicator"
-        "bluetooth-applet"
+        #"waybar"
+        #"hypridle"
+        #"dunst" #service?
+        #"hyprpaper" #service?
+        #"nm-applet --indicator" #service?
         "1password --silent"
-        "usbguard-notifier"
+        #"usbguard-notifier" #service?
         "wl-paste --type text --watch cliphist store #Stores only text data"
         "wl-paste --type image --watch cliphist store #Stores only image data"
-        "systemctl --user start hyprpolkitagent"
+        "systemctl --user start hyprpolkitagent.service"
+        "systemctl --user start usbguard-notifier.service"
         "hyprland-autoname-workspaces"
         "udiskie"
-        "SHOW_DEFAULT_ICON=true hyprswitch init --show-title --size-factor 5 --workspaces-per-row 5"
-        "[workspace 1 silent] firefox"
-        "[workspace 2 silent] kitty"
+        #"SHOW_DEFAULT_ICON=true hyprswitch init --show-title --size-factor 5 --workspaces-per-row 5"
+        "hyprswitch init --show-title --size-factor 5 --workspaces-per-row 5"
+        "[workspace 1 silent] kitty"
+        "[workspace 3 silent] firefox"
         "[workspace 4 silent] discord"
         #"hyprctl setcursor rose-pine-hyprcursor 24"
 
@@ -139,29 +134,40 @@
 
       bindd = [
         ## Screenshots
-        ", Print, Screenshot entire screen, exec, hyprshot -m active -m output"
-        "Control_L, Print, Screenshot window, exec, hyprshot -m window"
-        "Control SHIFT, Print, Screenshot selected area, exec, hyprshot -m region"
+        ", Print, Screenshot entire screen, exec, hyprshot -z -m active -m output"
+        "Control_L, Print, Screenshot window, exec, hyprshot -z -m window"
+        "Control SHIFT, Print, Screenshot selected area, exec, hyprshot -z -m region"
         #"$mod, Print, Show screen capture menu, exec, rofi-screenshot"
         #"$shiftmod, Print, Stop Recording, exec, rofi-screenshot -s"
 
         ## Various Launchers
+        "$mod, SPACE, App Launcher Menu, exec, rofi -show drun # Show the graphical app launcher"
+        "$mod, Q, Kitty Terminal, exec, kitty"
         "$mod, K, Quick Calculator, exec, rofi -show calc -modi calc -no-show-match -no-sort -calc-command 'echo -n {result}| wl-copy'"
         "$shiftmod, J, Color Picker, exec, hyprpicker -a -n| xargs -I % notify-send hyprpicker 'Copied % to clipboard'"
+        "ALT, V, Clip Board, exec, cliphist list | rofi -dmenu | cliphist decode | wl-copy # open clipboard manager"
+        "$mod, 0, Go to workspace 0,workspace, 10"
+        "$shiftmod, 0, Move to 0,movetoworkspace, 10"
       ]
       ++ (
         builtins.concatLists (builtins.genList (i:
-            # let ws = i;
-            # in [
-            [
-              "$mod, ${toString i}, Go to workspace ${toString i},workspace, ${toString i}"
-              "$shiftmod, ${toString i}, Move to ${toString i},movetoworkspace, ${toString i}"
+            let
+              ws = if i == 0 then 10 else i;
+            in [
+              "$mod, ${toString i}, Go to workspace ${toString ws},workspace, ${toString ws}"
+              "$shiftmod, ${toString i}, Move to ${toString ws},movetoworkspace, ${toString ws}"
             ]
             # ]
           )
           10)
       );
       bind = [
+        # Main keybinds
+        "$mod, F4, killactive, # close the active window"
+        "$mod, C, killactive, # close the active window"
+        "$mod, L, exec, hyprlock # lock the desktop"
+
+        ## Weirds
         "$shiftmod, P, resizeactive, exact 700 400"
         # TODO: hyprswitch
         "alt, Tab, exec, hyprswitch gui --mod-key alt  --key tab --max-switch-offset 9 --close mod-key-release" #--hide-active-window-border"
@@ -178,28 +184,21 @@
         "alt, 4, changegroupactive, 4"
         "alt, 5, changegroupactive, 5"
         "alt, 6, changegroupactive, 6"
-        # Main keybinds
-        "$mod, F4, killactive, # close the active window"
-        "$mod, C, killactive,"
-        "$mod, L, exec, hyprlock #lock the active window"
         #"$mod, M, exec, nwg-bar # show the logout window"
         "$shiftmod, M, exit, # Exit Hyprland all together no (force quit Hyprland)"
         "$mod, bracketleft, cyclenext, prev"
         "$mod, bracketright, cyclenext"
         # stuff
-        "$mod, Q, exec, kitty"
 
         "$mod, F, togglefloating, # Allow a window to float"
         "$shiftmod, F, fullscreen, 1, #Toggle Full Screen"
 
-        "$mod, SPACE, exec, rofi -show drun # Show the graphical app launcher"
         # "$mod, ESCAPE, hyprexpo:expo, toggle"
-        "ALT, V, exec, cliphist list | rofi -dmenu | cliphist decode | wl-copy # open clipboard manager"
-        "$shiftmod, A, exec, hyprctl keyword general:layout dwindle"
         # Master,
         "$mod, A, exec, hyprctl keyword general:layout master"
         "$mod, S, layoutmsg, orientationcycle right center"
         # Dwindle
+        "$shiftmod, A, exec, hyprctl keyword general:layout dwindle"
         "$mod, P, pseudo, # Dwindle"
         "$mod, J, togglesplit, # Dwindle"
 
@@ -208,12 +207,10 @@
         "$mod, code:61, exec, hypr-binds"
 
         ### NAVIGATION ###
-        "$mod, u, focusurgentorlast"
-        # Switch workspaces with mainMod + [0-9]
+        "$mod, u, focusurgentorlast # toggle between urgent or last workspaces"
         "$mod, grave, togglespecialworkspace, visor"
-
-        # Move active window to a workspace with mainMod + SHIFT + [0-9]
         "$shiftmod, grave, movetoworkspace, special, visor"
+
    
         # Scroll through existing workspaces with mainMod + scroll
         "$mod, mouse_down, workspace, e+1"
@@ -268,8 +265,8 @@
         gaps_in = 4;
         gaps_out = 4;
         border_size = 3;
-        "col.active_border" = "rgba(ff6700ee)";
-        "col.inactive_border" = "rgba(0098ffaa)";
+        "col.active_border" = "rgba(FF6700EE) rgba(FF470099) 60deg";
+        "col.inactive_border" = "rgba(0098ffaa) rgba(0078EE88) 60deg";
         layout = "master";
         resize_on_border = true;
         snap = {
@@ -339,15 +336,16 @@
         # "myBezier, 0.10, 0.9, 0.1, 1.05"
         "overshot, 0.05, 0.9, 0.1, 1.1"
         "easeOutQuart, 0.25, 1, 0.5, 1"
+        "easeOutExpo, 0.16, 1, 0.3, 1"
+        "easeInOutExpo, 0.87, 0, 0.13, 1"
         ];
 
         animation = [
-          "windows, 1, 5, easeOutQuart, slide"
-          "windowsOut, 1, 5, easeOutQuart, slide"
-          "border, 1, 10, default"
-          "fade, 1, 6, default"
-          "workspaces, 1, 5, easeOutQuart"
-          "specialWorkspace, 1, 3, easeOutQuart, slidefadevert -50%"
+          "windows, 1, 3, easeOutExpo, popin 40%"
+          "border, 1, 8, easeOutExpo"
+          "fade, 1, 9, easeOutQuart"
+          "workspaces, 1, 5, easeOutExpo, slidefade"
+          "specialWorkspace, 1, 3, easeOutExpo, slidefadevert -50%"
         ];
       };
       #windowrule = [
@@ -376,7 +374,7 @@
         "tag +video,class:^(mpv)$"
         "tag +video,class:^(vlc)$"
         "float,tag:video"
-        "opacity 1 override 0.8 override,tag:video"
+        "opacity 1 override 1 override,tag:video"
         # Firefox
         "opacity 1 override 0.8 override,class:^(firefox)$"
         "float,initialTitle:^(Picture-in-Picture)$"
@@ -471,8 +469,9 @@
         # keybinds further down will be global again...
         plugin {
           overview {
-            autoDrag = true
             affectStrut = false
+            autoDrag = true
+            showEmptyWorkspace = true
           }
         }
       '';

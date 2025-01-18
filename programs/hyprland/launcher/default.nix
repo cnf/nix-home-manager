@@ -1,39 +1,37 @@
 { pkgs, lib, config, inputs, unstable, ... }:
 
 {
+  #imports = lib.mkIf config.my.hyperland.enable [./hyprbinds.nix];
   config = lib.mkIf config.my.hyprland.enable {
     home.packages = with pkgs; [
-      pinentry-rofi
+      #rofi-calc
+      #rofi-emoji-wayland
+      #rofi-games
+      #rofi-screenshot
       libqalculate # for rofi-calc
-      rofi-menugen
-      rofi-emoji-wayland
       pinentry-rofi
-      rofi-emoji-wayland
+      rofi-menugen
       rofi-power-menu
-      rofi-screenshot
-      rofi-calc
-      rofi-games
-      rofi-systemd
       rofi-pulse-select
+      unstable.rofi-systemd
     ];
     programs.rofi = {
       enable = true;
       plugins = with pkgs; [
-        rofi-menugen
-        rofi-emoji-wayland
+        (rofi-calc.override { rofi-unwrapped = unstable.rofi-wayland-unwrapped; }) # TODO: remove when fixed upstream [2024-12-11]
+        (rofi-games.override {rofi = unstable.rofi-wayland; }) # TODO: remove when fixed upstream [2024-12-11]
         pinentry-rofi
         rofi-emoji-wayland
+        rofi-menugen
         rofi-power-menu
-        rofi-screenshot
-        (rofi-calc.override { rofi-unwrapped = rofi-wayland-unwrapped; }) # TODO: remove when fixed upstream [2024-12-11]
-        (rofi-games.override {rofi = rofi-wayland; }) # TODO: remove when fixed upstream [2024-12-11]
-        rofi-systemd
         rofi-pulse-select
+        #rofi-screenshot
+        unstable.rofi-systemd
       ];
       pass = {
         enable = true;
       };
-      package = pkgs.rofi-wayland;
+      package = unstable.rofi-wayland;
       terminal = "${pkgs.kitty}/bin/kitty";
       theme = "rofi.rasi";
       #font = "JetBrainsMono Nerd Font";
@@ -59,7 +57,6 @@
            "ssh"
            "emoji"
            "games"
-           "keys"
         ];
       };
     };

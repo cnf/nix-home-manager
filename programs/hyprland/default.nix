@@ -5,19 +5,17 @@
     my.hyprland.nwg.enable = lib.mkEnableOption "Enable and configure nwg";
   };
   imports = [
+    ./autoname-workspaces.nix
+    ./clipboard.nix
+    ./dunst.nix
+    ./hypridle.nix
     ./hyprland.nix
     ./hyprlock.nix
-    ./hypridle.nix
     ./hyprpaper.nix
-    ./hyprbinds.nix
-    ./locker.nix
-    ./dunst.nix
-    ./kitty.nix
-    ./waybar
-    ./nwg.nix
-    ./osd.nix
-    ./launcher
-    ./clipboard.nix
     ./kanshi.nix
+    ./kitty.nix
+    ./launcher
+    ./osd.nix
+    ./waybar
   ];
 }

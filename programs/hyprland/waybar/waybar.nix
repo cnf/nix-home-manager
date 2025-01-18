@@ -1,22 +1,37 @@
 { pkgs, lib, config, inputs, unstable, ... }:
 let
-  commonDeps = with pkgs; [coreutils gnugrep systemd];
-  mkScript = {
-    name ? "script",
-    deps ? [],
-    script ? "",
-  }:
-    lib.getExe (pkgs.writeShellApplication {
-      inherit name;
-      text = script;
-      runtimeInputs = commonDeps ++ deps;
-    });
+  app = pkgs.symlinkJoin {
+    name = "waybar-scripts";
+    paths = with pkgs; [
+      (writeShellScriptBin "waybar-usbguard" (builtins.readFile ./bin/waybar-usbguard))
+      (writeShellScriptBin "waybar-webcam" (builtins.readFile ./bin/waybar-webcam))
+      (writeShellScriptBin "waybar-yubikey" (builtins.readFile ./bin/waybar-yubikey))
+      coreutils
+      gnugrep
+      systemd
+      dbus
+      gawk
+      procps
+      jq
+      psmisc
+      #progress
+      usbguard
+    ];
+    buildInputs = [ pkgs.makeWrapper ];
+    postBuild = ''
+      wrapProgram $out/bin/waybar-usbguard  --prefix PATH : $out/bin
+      wrapProgram $out/bin/waybar-webcam  --prefix PATH : $out/bin
+      wrapProgram $out/bin/waybar-yubikey  --prefix PATH : $out/bin
+    '';
+  };
 in
 {
   config = lib.mkIf config.my.hyprland.enable {
     home.packages = with pkgs; [
       waybar-mpris
     ];
+    programs.waybar.systemd.enable = true;
+    programs.waybar.systemd.target = "hyprland-session.target";
     programs.waybar.enable = true;
     programs.waybar.settings = {
       mainBar = {
@@ -34,6 +49,8 @@ in
           #"group/privacywarn"
           "privacy"
           "custom/webcam"
+          "custom/usbguard"
+          "custom/yubikey"
 
           "idle_inhibitor"
           "group/hardware"
@@ -112,17 +129,39 @@ in
         "custom/webcam" = {
           return-type = "json";
           interval = 2;
-          exec = mkScript {
-            name = "webcam-usage";
-            deps = [pkgs.jq pkgs.psmisc];
-            script = ''
-              fuser /dev/video* 2>/dev/null|xargs -r ps --no-headers -eo pid,comm -q \
-              | sed 's/\.\(.*\)-wra\?p\?p\?e\?d\?/\1/g' \
-              | awk '{print "{\"tooltip\": \"" $NF " " "["$1"]" "\"}"}' \
-              | jq -s 'if length > 0 then {text: "󰖠", tooltip: (map(.tooltip) | join("\r"))} else {text: "󱜷", tooltip: "No applications are using your webcam!"} end' \
-              | jq --unbuffered --compact-output
-            '';
+          exec = "${app}/bin/waybar-webcam";
+          format = "{icon}";
+          format-icons = {
+            recording = "󰖠";
           };
+        };
+        "custom/yubikey" = {
+          hide-empty-text = true;
+          return-type = "json";
+          #format = "󰯄 {icon}";
+          format = " {icon}";
+          format-icons = {
+            touch = "";
+            HMAC = "󰌆";
+            PGP = "󰌆";
+            SSH = "󰣀";
+            U2F = "󰦯";
+            warn = "";
+            default = "";
+          };
+          exec = "${app}/bin/waybar-yubikey";
+        };
+        "custom/usbguard" = {
+          format-icons = {
+            block = "󰕓";
+          };
+          format = "{icon}";
+          tooltip-format = "{}";
+          exec = "${app}/bin/waybar-usbguard";
+          return-type = "json";
+          on-click = "dmenu-usbguard -d 'rofi -dmenu -i -p 󰕓 -no-custom -select block'";
+          #on-click-middle = "${app}/bin/waybar-usbguard allow";
+          #on-click-right = "${app}/bin/waybar-usbguard reject";
         };
         "group/hardware" = {
           orientation = "inherit";
@@ -239,13 +278,14 @@ in
           format-critical = "󱃍";
           interval = 30;
           states = {
-              warning = 25;
-              critical = 10;
+            notice = 25;
+            warning = 15;
+            critical = 7;
           };
           tooltip = true;
           tooltip-format = "{capacity}%\t\t{power:.1f}W\n{timeTo}";
           tooltip-format-charging = "Charging [{capacity}%]\n{power:.1f}W\n{time} to full";
-          tooltip-format-discharging = "Using {power:.1f}W\n{time} remaining";
+          tooltip-format-discharging = "{capacity}% Using {power:.1f}W\n{time} remaining";
           tooltip-format-full = "Full {power:.1f}W";
           tooltip-format-plugged = "Plugged in {power:.1f}W";
           # on-click = "2";

@@ -3,10 +3,12 @@
 @define-color primary #ff8514; 
 @define-color accent #148eff;
 @define-color textcolor white;
-@define-color isok #3cff55;
+@define-color isok #32d74b;
+@define-color notice #ffd60a;
 @define-color warning #ffa914;
 @define-color critical #ff4f44;
 
+/*@define-color isok #3cff55;*/
 /* @define-color textcolor #cdd6f4; */
 /* @define-color bgcolor #4e4e5e;*/
 /* @define-color primary #FF6100;*/
@@ -113,7 +115,7 @@ menuitem:hover menu > label {
 }
 
 #workspaces button.active label {
-    color: @primary;
+    color: @accent;
 }
 
 /*#workspaces button.active {
@@ -163,6 +165,9 @@ menuitem:hover menu > label {
 #temperature,
 #privacy,
 #custom-webcam,
+#custom-usbguard,
+#custom-touch,
+#custom-yubikey,
 #workspaces {
     /*background: @bgcolor;*/
     background: linear-gradient(@bgaccent 0%, @bgcolor 70%); /*#5e5e6e);*/
@@ -199,7 +204,7 @@ menuitem:hover menu > label {
     border: 0px;
 }*/
 
-#privacy, #custom-webcam {
+#privacy, #custom-webcam, #custom-usbguard, #custom-touch, #custom-yubikey {
     border-radius: 10px 10px 10px 10px;
     margin-right: 10px;
     padding: 0px 13px;
@@ -304,6 +309,10 @@ menuitem:hover menu > label {
 
 #battery.charging  {
 	color: @isok;
+}
+
+#battery.notice:not(.charging) {
+    color: @notice;
 }
 
 #battery.warning:not(.charging) {

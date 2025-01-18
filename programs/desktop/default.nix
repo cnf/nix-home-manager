@@ -4,18 +4,19 @@
     my.desktop.enable = lib.mkEnableOption "Enable a graphical env";
   };
   imports = [
-    ./mime-types.nix
-    ./pdf.nix
-    ./email.nix
-    ./vscode.nix
-    ./firefox.nix
-    ./obsidian.nix
     ./discord.nix
-    ./mqtt.nix
+    ./email.nix
+    ./firefox.nix
     ./gaming.nix
+    ./mime-types.nix
+    ./mqtt.nix
+    ./nixtools.nix
+    ./obsidian.nix
+    ./pdf.nix
+    ./vscode.nix
+    ./wine.nix
     ./yubi.nix
     ./zotero.nix
-    ./wine.nix
   ];
   config = lib.mkIf config.my.desktop.enable {
     # home.preferXdgDirectories = true;
@@ -38,6 +39,7 @@
     home.packages = with pkgs; [
       unstable._1password-cli
       unstable._1password-gui
+      
       appimage-run
       pinentry
       # audio
@@ -45,7 +47,9 @@
       pulseaudio
 
       #video
+      # mpv has a program. option above
       vlc
+      wf-recorder
 
       # icons
       candy-icons

@@ -6,7 +6,7 @@
   ];
   config = lib.mkIf config.my.hyprland.enable {
     programs.hypr-binds = {
-      enable = true;
+      enable = false;
       settings = {
         launcher = {
           app = "rofi";

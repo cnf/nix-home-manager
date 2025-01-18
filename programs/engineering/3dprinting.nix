@@ -5,6 +5,11 @@
       unstable.prusa-slicer
       orca-slicer
     ];
+     xdg.mimeApps.defaultApplications = {
+        "inode/directory" = ["org.kde.dolphin.desktop" "dolphin.desktop"];
+        "x-scheme-handler/prusaslicer" = ["PrusaSlicer.desktop"];
+    };
+
 
   };
 }
