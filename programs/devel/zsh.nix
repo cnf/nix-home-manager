@@ -12,14 +12,15 @@
     #syntaxHighlighting.enable = true;
     dotDir = ".config/zsh";
     history = {
-      path = "$HOME/.local/zsh/history";
-      size = 10000;
-      ignoreDups = true;
-      ignoreAllDups = false;
-      ignoreSpace = true;
+      append = false;
       expireDuplicatesFirst = false;
+      extended = true;
+      ignoreAllDups = false;
+      ignoreDups = true;
+      ignoreSpace = true;
+      path = "$HOME/.local/zsh/history";
       share = false;
-      extended = false;
+      size = 10000;
     };
     sessionVariables = {
       LC_CTYPE = "en_US.UTF-8";
@@ -35,6 +36,7 @@
     initExtra = ''
       ## initExtra
       # see man zshoptions(1)
+      setopt INC_APPEND_HISTORY
       setopt PRINT_EXIT_VALUE
       setopt TRANSIENT_RPROMPT
       setopt ALWAYS_TO_END

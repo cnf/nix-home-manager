@@ -1,4 +1,4 @@
-{ pkgs, lib, config, inputs, ... }:
+{ pkgs, ... }:
 {
   imports = [
     #./prusa-slicer.nix
@@ -6,6 +6,7 @@
     ./devel
     ./ele-lab.nix
     ./engineering
+    ./funshoot
     ./hyprland
     ./sdr
     ./tryouts.nix
@@ -16,7 +17,6 @@
     package = pkgs.btop.override {rocmSupport = true;};
   };
   home.packages = with pkgs; [
-
     assh
     ncdu
     usbtop

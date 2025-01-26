@@ -28,13 +28,14 @@
     rose-pine-hyprcursor.url = "github:ndom91/rose-pine-hyprcursor";
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, ...} @ inputs:
+  outputs = { nixpkgs, home-manager, ...} @ inputs:
     let
-      inherit (self) outputs;
+      #inherit (self) outputs;
       system = "x86_64-linux";  # x86_64-linux, aarch64-multiplatform, etc.
       pkgs = nixpkgs.legacyPackages.${system};
     in {
-      packages.x86_64-linux.freerouting = pkgs.callPackage ./pkgs/freerouting.nix {};
+      nix.nixPath = ["nixpkgs=${inputs.nixpkgs}"]; # for nixd
+      # packages.x86_64-linux.freerouting = pkgs.callPackage ./pkgs/freerouting.nix {};
       # call it with  inputs.self.packages.x86_64-linux.freerouting in my files
       homeConfigurations = {
         "cnf@hydra" = home-manager.lib.homeManagerConfiguration {

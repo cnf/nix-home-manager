@@ -22,8 +22,10 @@
       #client_dup_fullscreen = "[{icon}]{delim}{icon}{counter_unfocused_sup}"
 
       [class_active]
-      DEFAULT="<span color='#FF8514'>A{icon}</span>"
+      #DEFAULT="<span color='#FF8514'>A{icon}</span>"
+      #"DDDEFAULT": ""
       spotify = "<span foreground='#1ED760'> </span>"
+      "(?i)plexamp" = "<span foreground='#EBAF00'>󰚺 </span>"
       mpv = "<span foreground='#520053'> </span>"
       "[Ff]reecad" = "<span foreground='#ff585d'> </span>"
 
@@ -31,26 +33,40 @@
       DEFAULT = " "
       "(?i)firefox" = "󰈹 "
       "(?i)kitty" = " "
+      #" "
       code = "󰨞 "
       freecad = " "
-      1Password = " "
+      1Password = " "
+      #" "
       vlc = "󰕼 "
       mpv = " "
       kicad = " "
-      obsidian = " "
+      obsidian = " "
+      #" " #
       nm-connection-editor = " "
       pavucontrol = ""
-      steam = " "
+      steam = " "
+      #" "
       spotify = " "
       PrusaSlicer = ""
       qbittorrent = " "
       ".*transmission.*" = " "
       waybar = " "
       calibre-gui = " "
-      plexamp = "󰚺 "
+      "(?i)plexamp" = "󰚺 "
       wire = "󰁀 "
       wireshark-gtk = " "
       wlfreerdp = "󰀄"
+      ".blueman-manager-wrapped" = "󰂳"
+      gcr-prompter = " " 
+      #" "
+      geary = "󰴃 "
+      mailspring = "󰴃 "
+      thunderbird = " "
+
+      # Gnome
+      "org.gnome.Nautilus" = " "
+      evince = " "
 
       # chat
       discord = ""
@@ -62,17 +78,22 @@
       # KDE
       dolphin = " "
       okular = ""
-      gwenview = " "
+      gwenview = " "
 
       # rare
       udiskie = " "
+      chromium-browser = " "
       "(?i).*kooha" = ""
+      gucharmap = " "
+      
 
       # Wine
       bottles = " "
       wine = ""
       "fusion360.exe" = "󰻬"
       "explorer.exe" = " "
+
+      #  
 
       #[initial_class]
       #"com.usebottles.bottles" = " "
@@ -81,29 +102,33 @@
       #[initial_class_active]
 
       [workspaces_name]
-      1 = "I"
-      2 = "II"
-      3 = "III"
-      4 = "IV"
-      5 = "V"
-      6 = "VI"
-      7 = "VII"
-      8 = "VIII"
-      9 = "IX"
-      10 = "X"
+      # 𝐈 𝐕 𝐗 
+      # 🯰 🯱 🯲 🯳 🯴 🯵 🯶 🯷 🯸 🯹
+      1 = "𝐈  "
+      2 = "𝐈𝐈 "
+      3 = "𝐈𝐈𝐈"
+      4 = "I𝐕 "
+      5 = "𝐕  "
+      6 = "𝐕𝐈 "
+      7 = "𝐕𝐈𝐈"
+      8 = "𝐕𝐈𝐈𝐈"
+      9 = "𝐈𝐗"
+      10 = "𝐗"
 
       [title_in_class."(xterm|(?i)kitty|alacritty)"]
-      "(?i)^(n?)vim" = " "
-      "btop" = " "
+      "(?i)^(n?)vim" = " " 
+      # " "
+      btop = ""
+      htop = " "
       "nh " = "󱄅 "
 
       [title_in_class_active."(?i)firefox"]
       "YouTube" = "<span color='red'> </span>"
-      "Amazon" = " "
-      "DuckDuckGo" = "󰇥 "
+      #"Amazon" = " "
+      #"DuckDuckGo" = "󰇥 "
       "Google" = " "
       "gmail" = "󰊫 "
-      "Home Assistant" = "󰟐 "
+      "Home Assistant" = "<span color='#1ABCF2'>󰟐 </span>"
       "GitHub" = " "
 
       #[title_in_initial_class]

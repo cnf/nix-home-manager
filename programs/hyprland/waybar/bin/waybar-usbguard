@@ -4,7 +4,6 @@ listen() {
     dbus-monitor --system --profile "interface='org.usbguard.Devices1'" |
         while read -r line; do
             readarray -t blocked < <(usbguard list-devices -b | grep -Po 'name "\K[^"]+'|tr '\t' ' ')
-            echo "==="
 
             if [ -n "$blocked" ]; then
                 blocked=( "${blocked[@]/#/󰕓 }" )

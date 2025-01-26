@@ -7,6 +7,8 @@
     home.packages = with pkgs; [
       mailspring
       geary
+      thunderbird
+      evolution
     ];
     #programs.thunderbird = {
     #  enable = true;

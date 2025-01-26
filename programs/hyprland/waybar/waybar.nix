@@ -29,6 +29,8 @@ in
   config = lib.mkIf config.my.hyprland.enable {
     home.packages = with pkgs; [
       waybar-mpris
+      gcalcli
+      unstable.my-nextmeeting
     ];
     programs.waybar.systemd.enable = true;
     programs.waybar.systemd.target = "hyprland-session.target";
@@ -46,6 +48,7 @@ in
           "hyprland/workspaces"
         ];
         modules-right = [
+          #"custom/agenda"
           #"group/privacywarn"
           "privacy"
           "custom/webcam"
@@ -59,7 +62,7 @@ in
           "pulseaudio"
           "pulseaudio/slider"
           "battery"
-          #"network"
+          "network"
 
           "tray"
           "custom/hyprlock"
@@ -67,7 +70,7 @@ in
           "clock"
         ];
         "custom/launcher" = {
-          on-click = "rofi -show drun";
+          on-click = "rofi -show drun -drun-show-actions";
           on-click-right = "hyprsysteminfo";
           format = " ";
           #format = "";
@@ -132,7 +135,7 @@ in
           exec = "${app}/bin/waybar-webcam";
           format = "{icon}";
           format-icons = {
-            recording = "󰖠";
+            recording = " "; #"󰖠";
           };
         };
         "custom/yubikey" = {
@@ -158,6 +161,7 @@ in
           format = "{icon}";
           tooltip-format = "{}";
           exec = "${app}/bin/waybar-usbguard";
+          restart-interval = 30;
           return-type = "json";
           on-click = "dmenu-usbguard -d 'rofi -dmenu -i -p 󰕓 -no-custom -select block'";
           #on-click-middle = "${app}/bin/waybar-usbguard allow";
@@ -186,8 +190,8 @@ in
           format-muted = "󰝟";
           format-bluetooth = "{icon}";
           format-bluetooth-muted = "{icon}";
-          format-source = "";
-          format-source-muted = " ";
+          format-source = " ";
+          format-source-muted = " ";
           format-icons = {
               headphone = "󱡏 ";
               headphone-muted = "󱡐 ";
@@ -229,24 +233,26 @@ in
         idle_inhibitor = {
           format = "{icon}";
           format-icons = {
-            activated = "";
-            deactivated = "";
+            activated = ""; #
+            deactivated = ""; #"";
           };
-          tooltip-format-activated = "Inhibiting Idle";
-          tooltip-format-deactivated = "Free to idle";
+          tooltip-format-activated = "No sleep!";
+          tooltip-format-deactivated = "Eh, Relax!";
         };
         cpu = {
           interval = 10;
-          format = "{icon}";
+          format = "{icon}"; #";
           format-icons = ["▁" "▂" "▃" "▄" "▅" "▆" "▇" "█"];
           max-length = 10;
-          # tooltip-format = "{load} {max_frequency}GHz {usage}%";
+          tooltip-format = "{load} {max_frequency}GHz {usage}%";
         };
         memory = {
           interval = 30;
-          format = "{}%  ";
+          #format = "{}%  ";
+          format = "{icon}";
+          format-icons = ["󰪞" "󰪟" "󰪠" "󰪡" "󰪢" "󰪣" "󰪤" "󰪥"];
           max-length= 10;
-          tooltip-format = "{used:0.1f}G/{total:0.1f}G  ";
+          tooltip-format = "{}% {used:0.1f}G/{total:0.1f}G  ";
           states = {
             warning = 30;
             critical = 15;
@@ -266,7 +272,7 @@ in
           # tooltip-format = "GPU : {temperatureC}°C {icon}";
         };
         battery = {
-          full-at = 85;
+          #full-at = 85;
           format = "{icon}";
           format-icons = {
             discharging = ["󰂎" "󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹"];
@@ -306,7 +312,7 @@ in
           format = "{icon}";
           format-alt = "{ipaddr}/{cidr} {icon}";
           format-alt-click = "click-right";
-          format-linked = "linked?";
+          format-linked = "linked?{icon}";
           format-icons = {
               # wifi = ["" " " " "];
               wifi = [" "];
@@ -319,8 +325,8 @@ in
           tooltip-format-disconnected = "Disconnected";
           tooltip-format = "{ipaddr}\n{ifname} via {gwaddr}";
           max-length = 50;
-          # on-click = "networkmanager_dmenu";
-          on-click = "nm-connection-editor";
+          on-click = "networkmanager_dmenu";
+          on-click-middle = "nm-connection-editor";
         };
         power-profiles-daemon = {
           format = "{icon}";
@@ -338,7 +344,7 @@ in
           spacing = 8;
         };
         "custom/hyprlock" = {
-          on-click-right = "rofi -show power-menu -modi power-menu:rofi-power-menu";
+          on-click-middle = "rofi-systemd";
           format = "{icon}";
           format-icons = " ";
           tooltip = false;
@@ -358,9 +364,9 @@ in
           format = "{icon}";
           return-type = "json";
           format-icons = {
-              paused = "";
-              playing = "";
-              stopped = "";
+              Paused = "";
+              Playing = "";
+              Stopped = "";
           };
           max-length = 70;
           exec = "playerctl -a metadata --format '{\"text\": \"{{playerName}}: {{artist}} - {{markup_escape(title)}}\", \"tooltip\": \"{{artist}} : {{markup_escape(title)}}\", \"alt\": \"{{status}}\", \"class\": \"{{status}}\"}' -F";
@@ -374,7 +380,7 @@ in
           player-icons = {
             default = "▶";
             spotify = "";
-	    mpv = "";
+	          mpv = "";
           };
           status-icons = {
             playing = "";
@@ -386,6 +392,15 @@ in
           format-stopped = "";
           tooltip-format = "{player_icon}  {player}  {status_icon}\n{dynamic}";
         };
+        "custom/agenda" = {
+          format = "{}";
+          exec = "env GCALCLI_DEFAULT_CALENDAR=Wassup nextmeeting --max-title-length 30 --waybar";
+          on-click = "env GCALCLI_DEFAULT_CALENDAR=Wassup nextmeeting --open-meet-url";
+          on-click-right = "kitty -- /bin/bash -c \"batz;echo;cal -3;echo;nextmeeting;read;\";";
+          interval = 59;
+          return-type = "json";
+          tooltip = true;
+          };
         clock = {
           locale = "en_IE.UTF-8";
           format = "{:%H:%M}  ";

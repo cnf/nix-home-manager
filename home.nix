@@ -3,7 +3,7 @@ let
   homeDirPrefix = if pkgs.stdenv.hostPlatform.isDarwin then "/Users" else "/home";
   username = "cnf";
 in {
-  _module.args.unstable = import inputs.nixpkgs-unstable {
+    _module.args.unstable = import inputs.nixpkgs-unstable {
        inherit system;
        config = {
          allowUnfree = true;
@@ -14,7 +14,7 @@ in {
             # (self: super: {my-freerouting = super.callPackage ./pkgs/freerouting.nix { };})
             # (self: super: {local = super.callPackage ./pkgs {};})
         ] ++ (import ./overlays);
-      };
+    };
     home = {
       username = "${username}";
       homeDirectory = "${homeDirPrefix}/${username}";

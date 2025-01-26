@@ -4,17 +4,18 @@
     my.desktop.enable = lib.mkEnableOption "Enable a graphical env";
   };
   imports = [
+    ./chromium.nix
     ./discord.nix
     ./email.nix
     ./firefox.nix
     ./gaming.nix
-    ./mime-types.nix
     ./mqtt.nix
     ./nixtools.nix
     ./obsidian.nix
     ./pdf.nix
     ./vscode.nix
     ./wine.nix
+    ./xdg-options.nix
     ./yubi.nix
     ./zotero.nix
   ];
@@ -50,6 +51,7 @@
       # mpv has a program. option above
       vlc
       wf-recorder
+      wl-screenrec
 
       # icons
       candy-icons
@@ -85,6 +87,7 @@
       material-design-icons
 
       unstable.spotify
+      unstable.plexamp
       onedrive
       onedrivegui
 

@@ -142,6 +142,9 @@ menuitem:hover menu > label {
     border-radius: 10px;
 }
 
+#workspaces button.hosting-monitor {
+}
+
 #taskbar,
 #submap,
 #custom-launcher,
@@ -194,6 +197,10 @@ menuitem:hover menu > label {
 #idle_inhibitor {
     border-radius: 10px 0px 0px 10px;
 } 
+
+#idle_inhibitor.activated {
+    color: @notice;
+}
  
 /*#privacywarn {
     background: transparent;
@@ -257,7 +264,7 @@ menuitem:hover menu > label {
 }
 
 #pulseaudio.muted {
-    color: @warning;
+    color: @notice;
 }
 
 #pulseaudio.microphone {
@@ -349,5 +356,5 @@ menuitem:hover menu > label {
 #power-profiles-daemon.power-saver {}
 
 #power-profiles-daemon.performance {
-    color: @warning;
+    color: @notice;
 }

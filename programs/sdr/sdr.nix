@@ -4,6 +4,7 @@
     #hardware.hackrf.enable = true;
 
     home.packages = with pkgs; [
+      aircrack-ng
       hackrf
       kalibrate-hackrf
       soapysdr-with-plugins
@@ -26,6 +27,7 @@
       hamlib
       
       nanovna-saver
+      # https://cemaxecuter.com/?page_id=67
 
       (gnuradio.override {
         extraPackages = with gnuradioPackages; [

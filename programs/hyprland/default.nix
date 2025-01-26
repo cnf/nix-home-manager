@@ -1,4 +1,4 @@
-{ pkgs, lib, config, inputs, ... }:
+{ lib, ... }:
 {
   options = {
     my.hyprland.enable = lib.mkEnableOption "Enable and configure hyprland";

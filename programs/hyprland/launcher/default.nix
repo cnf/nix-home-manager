@@ -8,25 +8,27 @@
       #rofi-emoji-wayland
       #rofi-games
       #rofi-screenshot
+      #unstable.rofi-power-menu
+      #unstable.rofi-systemd
+      (unstable.rofi-systemd.override {rofi = unstable.rofi-wayland;}) # TODO: remove when fixed upstream [2025-01-19] 
       libqalculate # for rofi-calc
-      pinentry-rofi
-      rofi-menugen
-      rofi-power-menu
-      rofi-pulse-select
-      unstable.rofi-systemd
+      unstable.pinentry-rofi
+      unstable.rofi-bluetooth
+      unstable.rofi-menugen
+      unstable.rofi-pulse-select
     ];
     programs.rofi = {
       enable = true;
       plugins = with pkgs; [
         (rofi-calc.override { rofi-unwrapped = unstable.rofi-wayland-unwrapped; }) # TODO: remove when fixed upstream [2024-12-11]
         (rofi-games.override {rofi = unstable.rofi-wayland; }) # TODO: remove when fixed upstream [2024-12-11]
-        pinentry-rofi
-        rofi-emoji-wayland
-        rofi-menugen
-        rofi-power-menu
-        rofi-pulse-select
+        unstable.rofi-emoji-wayland
+        #pinentry-rofi
+        #unstable.rofi-menugen
+        #unstable.rofi-power-menu
+        #rofi-pulse-select
         #rofi-screenshot
-        unstable.rofi-systemd
+        #unstable.rofi-systemd
       ];
       pass = {
         enable = true;
@@ -49,8 +51,9 @@
         display-games = "󰊗 ";
         display-emoji = " ";
         display-keys = "󰘳 ";
+        display-filebrowser = " ";
         calc-error-color = "#0098ff";
-        #drun-show-actions = true;
+        drun-show-actions = true;
         modes = [
            "drun"
            "calc"

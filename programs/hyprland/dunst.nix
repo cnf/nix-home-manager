@@ -10,7 +10,7 @@
     services.dunst.enable = true;
     services.dunst.settings = {
       global = {
-        dmenu = "${pkgs.rofi}/bin/rofi -dmenu -p dunst";
+        dmenu = "${unstable.rofi-wayland}/bin/rofi -dmenu -p dunst";
         browser = "/run/current-system/sw/bin/xdg-open";
         mouse_left_click = "open_url,do_action,close_current";
         mouse_right_click = "close_current";

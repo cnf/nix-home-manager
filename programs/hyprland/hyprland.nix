@@ -3,10 +3,6 @@
   config = lib.mkIf config.my.hyprland.enable {
     my.desktop.enable = true;
     home.sessionVariables = {
-        #"QT_QPA_PLATFORM,wayland"
-        #"XDG_CURRENT_DESKTOP,Hyprland"
-        #"XDG_SESSION_TYPE,wayland"
-        #"XDG_SESSION_DESKTOP,Hyprland"
       XCURSOR_SIZE = 24;
       QT_QPA_PLATFORM = "wayland";
       SDL_VIDEODRIVER = "wayland";
@@ -41,8 +37,6 @@
       pavucontrol
       playerctl
       blueman
-     # polkit-kde-agent < TODO
-      #kitty
       wev
       networkmanagerapplet
       networkmanager_dmenu
@@ -95,6 +89,18 @@
         "FALLBACK,1920x1080@60,auto,1"
       ];
 
+      workspace = [
+        "r[1-10],monitor:0"
+        "11,monitor:1"
+        "21,monitor:2"
+#        "1, defaultName:browser, persistent:1"
+#        "2, defaultName:shell, persistent:1"
+#        "3, defaultName:code, persistent:1"
+#        "4, defaultName:chat, persistent:1"
+        "special:visor, on-created-empty:kitty"
+        "special:music, on-created-empty:spotify"
+      ];
+
       exec-once = [
         #"waybar"
         #"hypridle"
@@ -103,10 +109,11 @@
         #"nm-applet --indicator" #service?
         "1password --silent"
         #"usbguard-notifier" #service?
-        "wl-paste --type text --watch cliphist store #Stores only text data"
-        "wl-paste --type image --watch cliphist store #Stores only image data"
+        "wl-paste --type text --watch cliphist -max-items 25 store #Stores only text data"
+        "wl-paste --type image --watch cliphist -max-items 25 store #Stores only image data"
         "systemctl --user start hyprpolkitagent.service"
         "systemctl --user start usbguard-notifier.service"
+        "systemctl --user restart yubikey-agent.service"
         "hyprland-autoname-workspaces"
         "udiskie"
         #"SHOW_DEFAULT_ICON=true hyprswitch init --show-title --size-factor 5 --workspaces-per-row 5"
@@ -145,9 +152,15 @@
         "$mod, Q, Kitty Terminal, exec, kitty"
         "$mod, K, Quick Calculator, exec, rofi -show calc -modi calc -no-show-match -no-sort -calc-command 'echo -n {result}| wl-copy'"
         "$shiftmod, J, Color Picker, exec, hyprpicker -a -n| xargs -I % notify-send hyprpicker 'Copied % to clipboard'"
-        "ALT, V, Clip Board, exec, cliphist list | rofi -dmenu | cliphist decode | wl-copy # open clipboard manager"
-        "$mod, 0, Go to workspace 0,workspace, 10"
-        "$shiftmod, 0, Move to 0,movetoworkspace, 10"
+        #"ALT, V, Clip Board, exec, cliphist list | rofi -dmenu | cliphist decode | wl-copy # open clipboard manager"
+        "Alt_L, V, Clip Board, exec, rofi -modi clipboard:cliphist-rofi-img -show clipboard -show-icons"
+        "Control_L Alt_L, V, Erase from Clipboard, exec, cliphist list | rofi -dmenu -p Delete| cliphist delete"
+        #"$mod, 0, Go to workspace 0,workspace, 10"
+        #"$shiftmod, 0, Move to 0,movetoworkspace, 10"
+        "$mod, left, Go to previous workspace,workspace, e-1" 
+        "$mod, right, Go to next workspace,workspace, e+1" 
+        "$shiftmod, left, Go to previous workspace,workspace, r-1" 
+        "$shiftmod, right, Go to next workspace,workspace, r+1" 
       ]
       ++ (
         builtins.concatLists (builtins.genList (i:
@@ -209,6 +222,7 @@
         ### NAVIGATION ###
         "$mod, u, focusurgentorlast # toggle between urgent or last workspaces"
         "$mod, grave, togglespecialworkspace, visor"
+        
         "$shiftmod, grave, movetoworkspace, special, visor"
 
    
@@ -225,7 +239,7 @@
         ", XF86AudioNext, Next Song, exec, playerctl next"
         ", XF86MonBrightnessUp, Raise brightness, exec, swayosd-client --brightness raise"
         ", XF86MonBrightnessDown, Lower brightness, exec, swayosd-client --brightness lower"
-        ", XF86AudioMedia, Not Bound Yet, exec, notify-send 'not bound yet'" # Framework Key / F12
+        ", XF86AudioMedia, Music workspace, togglespecialworkspace, music" # Framework Key / F12
         # ", Super_L, Not Bound yet, exec, notify-send 'Not bound yet'" # fn > F9
 
         ### LAPTOP LID
@@ -319,13 +333,6 @@
           "col.inactive" = "rgba(0098ff33)";
         };
       };
-      workspace = [
-#        "1, defaultName:browser, persistent:1"
-#        "2, defaultName:shell, persistent:1"
-#        "3, defaultName:code, persistent:1"
-#        "4, defaultName:chat, persistent:1"
-        "special:visor, on-created-empty:kitty"
-      ];
       animations = {
         enabled=true;
 
@@ -333,13 +340,12 @@
         # https://easings.net/
         # https://www.cssportal.com/css-cubic-bezier-generator/
         bezier = [
-        # "myBezier, 0.10, 0.9, 0.1, 1.05"
-        "overshot, 0.05, 0.9, 0.1, 1.1"
-        "easeOutQuart, 0.25, 1, 0.5, 1"
-        "easeOutExpo, 0.16, 1, 0.3, 1"
-        "easeInOutExpo, 0.87, 0, 0.13, 1"
+          # "myBezier, 0.10, 0.9, 0.1, 1.05"
+          "overshot, 0.05, 0.9, 0.1, 1.1"
+          "easeOutQuart, 0.25, 1, 0.5, 1"
+          "easeOutExpo, 0.16, 1, 0.3, 1"
+          "easeInOutExpo, 0.87, 0, 0.13, 1"
         ];
-
         animation = [
           "windows, 1, 3, easeOutExpo, popin 40%"
           "border, 1, 8, easeOutExpo"

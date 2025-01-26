@@ -6,8 +6,9 @@
       orca-slicer
     ];
      xdg.mimeApps.defaultApplications = {
-        "inode/directory" = ["org.kde.dolphin.desktop" "dolphin.desktop"];
         "x-scheme-handler/prusaslicer" = ["PrusaSlicer.desktop"];
+        "model/stl" = ["PrusaSlicer.desktop" "OrcaSlicer.desktop"];
+        "application/vnd.ms-pki.stl" = ["PrusaSlicer.desktop" "OrcaSlicer.desktop"];
     };
 
 
