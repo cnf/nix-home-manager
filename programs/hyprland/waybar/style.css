@@ -53,6 +53,13 @@ tooltip label{
     padding: 1px 7px;
 }
 
+@keyframes blink {
+    to {
+        background-color: #ffffff;
+        color: black;
+    }
+}
+
 
 menu {
     /*background: @bgcolor;*/
@@ -255,6 +262,33 @@ menuitem:hover menu > label {
     /*border-right: 0px;*/
 }
 
+#bluetooth {
+    color: @textcolor
+}
+
+#bluetooth.on,
+#bluetooth.pairable,
+#bluetooth.connected {
+    color: #0082FC;
+}
+
+#bluetooth.discoverable {
+    color: @notice;
+}
+
+#bluetooth.discovering {
+    color: @warning;
+    animation-name: blink;
+    animation-duration: 1.5s;
+    animation-timing-function: steps(12);
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+#bluetooth.off,
+#bluetooth.disabled {
+    color: gray;
+}
 
 #pulseaudio {
     /* color: #89b4fa; */
@@ -273,8 +307,9 @@ menuitem:hover menu > label {
     border-right: 0px;
 }
 
-/*#pulseaudio.bluetooth {
-}*/
+#pulseaudio.bluetooth {
+    color: #0082FC;
+}
 
 #pulseaudio-slider {
     padding: 0px 1px;
@@ -324,13 +359,6 @@ menuitem:hover menu > label {
 
 #battery.warning:not(.charging) {
     color: @warning;
-}
-
-@keyframes blink {
-    to {
-        background-color: #ffffff;
-        color: black;
-    }
 }
 
 #battery.critical:not(.charging) {

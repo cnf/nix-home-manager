@@ -1,15 +1,29 @@
+# cSpell:words pkgs dmenu stdenv nordzy
+# cSpell:ignoreRegExp hypr\w* 
 { pkgs, lib, config, inputs, unstable, ... }:
+let 
+  # font_name = "JetBrainsMono Nerd Font";
+  font_name = "Helvetica Neue LT Std";
+  font_size = 11;
+  cursor_name = "Nordzy-cursors";
+  cursor_package = pkgs.nordzy-cursor-theme;
+  cursor_size = 24;
+in 
 {
   config = lib.mkIf config.my.hyprland.enable {
     my.desktop.enable = true;
     home.sessionVariables = {
-      XCURSOR_SIZE = 24;
+      EDITOR = "nvim";
+      TERMINAL = "kitty";
+      XCURSOR_SIZE = cursor_size;
       QT_QPA_PLATFORM = "wayland";
       SDL_VIDEODRIVER = "wayland";
       XDG_SESSION_TYPE = "wayland";
       NIXOS_OZONE_WL = 1;
-      #HYPRCURSOR_THEME = "rose-pine-hyprcursor";
-      #HYPRCURSOR_SIZE = 24;
+      ELECTRON_OZONE_PLATFORM_HINT = "wayland";
+      #HYPRCURSOR_THEME = cursor_name;
+      #HYPRCURSOR_SIZE = cursor_size;
+      #GTK_THEME = "Tokyonight-Orange-Dark";
       HYPRSHOT_DIR = "${config.xdg.userDirs.pictures}/Screenshots/";
     };
     home.packages = with pkgs; [
@@ -22,6 +36,7 @@
       hyprutils
       wlr-randr
       xdg-desktop-portal-gtk
+      # xdg-desktop-portal-gnome
       xdg-desktop-portal-hyprland
       # screenshots
       grim
@@ -31,8 +46,6 @@
 
       # hyprland-monitor-attached
 
-      udiskie
-      
       emojipick
       pavucontrol
       playerctl
@@ -54,9 +67,6 @@
       gcr
 
     ];
-#    home.pointerCursor = {
-#      hyprcursor.enable = true;
-#    };
 
     services.gnome-keyring.enable = true;
     #services.gnome-keyring.components = ["secrets"];
@@ -64,11 +74,12 @@
     services.blueman-applet.enable = true;
     services.swayosd.enable = true;
     services.playerctld.enable = true;
-
+#
     wayland.windowManager.hyprland = {
       enable  = true;
-      #package = unstable.hyprland;
+      #package = unstable.hyprland.override {libgbm = unstable.mesa;};
       #package = inputs.hyprland.packages.${pkgs.system}.hyprland;
+      systemd.enableXdgAutostart = true;
       plugins  = [
         pkgs.hyprlandPlugins.hyprgrass
         pkgs.hyprlandPlugins.hyprspace
@@ -77,7 +88,6 @@
     wayland.windowManager.hyprland.settings = {
       "$mod" = "SUPER";
       "$shiftmod" = "SUPER SHIFT";
-      # $wob_socket        = $XDG_RUNTIME_DIR/wob.sock # Used like $wob_socket <number>
 
       # See https://wiki.hyprland.org/Configuring/Monitors/
       monitor = [
@@ -90,14 +100,20 @@
       ];
 
       workspace = [
-        "r[1-10],monitor:0"
-        "11,monitor:1"
-        "21,monitor:2"
-#        "1, defaultName:browser, persistent:1"
-#        "2, defaultName:shell, persistent:1"
-#        "3, defaultName:code, persistent:1"
-#        "4, defaultName:chat, persistent:1"
-        "special:visor, on-created-empty:kitty"
+        "1, monitor:desc:BOE NE135A1M-NY1"
+        "2, monitor:desc:BOE NE135A1M-NY1"
+        "3, monitor:desc:BOE NE135A1M-NY1, default:true"
+        "4, monitor:desc:BOE NE135A1M-NY1"
+        "5, monitor:desc:BOE NE135A1M-NY1"
+        "6, monitor:desc:BOE NE135A1M-NY1"
+        "7, monitor:desc:BOE NE135A1M-NY1"
+        "8, monitor:desc:BOE NE135A1M-NY1"
+        "9, monitor:desc:BOE NE135A1M-NY1"
+        "10, monitor:desc:BOE NE135A1M-NY1"
+        #"15, monitor:ID:1,default:true"
+        #"15, monitor:1,default:true"
+        #"13, monitor:DP-2, default:true"
+        "special:visor, on-created-empty:kitty btop"
         "special:music, on-created-empty:spotify"
       ];
 
@@ -107,60 +123,73 @@
         #"dunst" #service?
         #"hyprpaper" #service?
         #"nm-applet --indicator" #service?
-        "1password --silent"
         #"usbguard-notifier" #service?
-        "wl-paste --type text --watch cliphist -max-items 25 store #Stores only text data"
-        "wl-paste --type image --watch cliphist -max-items 25 store #Stores only image data"
-        "systemctl --user start hyprpolkitagent.service"
-        "systemctl --user start usbguard-notifier.service"
+        "1password --silent"
+        "wl-paste --type text --watch cliphist -max-items 50 store #Stores only text data"
+        "wl-paste --type image --watch cliphist -max-items 50 store #Stores only image data"
+        "systemctl --user restart usbguard-notifier.service"
         "systemctl --user restart yubikey-agent.service"
+        "systemctl --user restart hyprpolkitagent.service"
+        "systemctl --user restart waybar.service"
         "hyprland-autoname-workspaces"
-        "udiskie"
-        #"SHOW_DEFAULT_ICON=true hyprswitch init --show-title --size-factor 5 --workspaces-per-row 5"
+        #"udiskie -t"
         "hyprswitch init --show-title --size-factor 5 --workspaces-per-row 5"
         "[workspace 1 silent] kitty"
         "[workspace 3 silent] firefox"
         "[workspace 4 silent] discord"
-        #"hyprctl setcursor rose-pine-hyprcursor 24"
 
       ];
 
       env = [
-        "HYPRCURSOR_THEME,Nordzy-cursors"
-        "HYPRCURSOR_SIZE,24"
-        "XCURSOR_THEME,Nordzy-cursors"
-        "XCURSOR_SIZE,24"
-        "XDG_MENU_PREFIX,plasma-"
+        "HYPRCURSOR_THEME,${cursor_name}"
+        "HYPRCURSOR_SIZE,${toString cursor_size}"
+        "XCURSOR_THEME,${cursor_name}"
+        "XCURSOR_SIZE,${toString cursor_size}"
+        "GTK_THEME,Tokyonight-Orange-Dark"
+        "NIXOS_OZONE_WL,1"
+        "ELECTRON_OZONE_PLATFORM_HINT,wayland"
+        "HYPRSHOT_DIR,${config.xdg.userDirs.pictures}/Screenshots/"
+        #"XDG_MENU_PREFIX,plasma-"
       ];
 
       misc = {
         focus_on_activate = true; # Whether Hyprland should focus an app that requests to be focused (an activate request)
         disable_hyprland_logo=true;
-        vrr = 1;
+        vrr = true;
+        vfr = true;
       };
 
       bindd = [
+        # Main keybinds
+        "$shiftmod, M, Exit Hyperland now, exit, # Exit Hyprland all together now (force quit Hyprland)"
+        "$mod, F4, Close active window, killactive"
+        "$mod, C, Close active window, killactive"
+        "$mod, L, Locks Desktop, exec, hyprlock"
+        "$mod, F, Toggle fullscreen, fullscreen, 0 # Toggle active window to fullscreen"
+        "$mod, M, Toggle maximize, fullscreen, 1 # Maximize Window"
+        "$mod, T, Toggle floating/tiling, togglefloating # Allow a window to float"
+        "alt, Tab, HyprSwitch, exec, hyprswitch gui --mod-key alt  --key tab --max-switch-offset 9 --close mod-key-release" #--hide-active-window-border"
+
+
         ## Screenshots
         ", Print, Screenshot entire screen, exec, hyprshot -z -m active -m output"
         "Control_L, Print, Screenshot window, exec, hyprshot -z -m window"
         "Control SHIFT, Print, Screenshot selected area, exec, hyprshot -z -m region"
-        #"$mod, Print, Show screen capture menu, exec, rofi-screenshot"
-        #"$shiftmod, Print, Stop Recording, exec, rofi-screenshot -s"
 
         ## Various Launchers
         "$mod, SPACE, App Launcher Menu, exec, rofi -show drun # Show the graphical app launcher"
+        "$mod, Return, Kitty Terminal, exec, kitty"
         "$mod, Q, Kitty Terminal, exec, kitty"
-        "$mod, K, Quick Calculator, exec, rofi -show calc -modi calc -no-show-match -no-sort -calc-command 'echo -n {result}| wl-copy'"
+        "$mod, =, Calculator, exec, rofi -show calc -modi calc -no-show-match -no-sort -calc-command 'echo -n {result}| wl-copy'"
         "$shiftmod, J, Color Picker, exec, hyprpicker -a -n| xargs -I % notify-send hyprpicker 'Copied % to clipboard'"
-        #"ALT, V, Clip Board, exec, cliphist list | rofi -dmenu | cliphist decode | wl-copy # open clipboard manager"
-        "Alt_L, V, Clip Board, exec, rofi -modi clipboard:cliphist-rofi-img -show clipboard -show-icons"
+        "Alt, V, Clip Board, exec, rofi -modi clipboard:cliphist-rofi-img -show clipboard -show-icons"
         "Control_L Alt_L, V, Erase from Clipboard, exec, cliphist list | rofi -dmenu -p Delete| cliphist delete"
-        #"$mod, 0, Go to workspace 0,workspace, 10"
-        #"$shiftmod, 0, Move to 0,movetoworkspace, 10"
+
+        # Workspaces
         "$mod, left, Go to previous workspace,workspace, e-1" 
         "$mod, right, Go to next workspace,workspace, e+1" 
-        "$shiftmod, left, Go to previous workspace,workspace, r-1" 
-        "$shiftmod, right, Go to next workspace,workspace, r+1" 
+        "$shiftmod, left, Go to previous workspace,workspace, m-1" 
+        "$shiftmod, right, Go to next workspace,workspace, m+1" 
       ]
       ++ (
         builtins.concatLists (builtins.genList (i:
@@ -175,21 +204,12 @@
           10)
       );
       bind = [
-        # Main keybinds
-        "$mod, F4, killactive, # close the active window"
-        "$mod, C, killactive, # close the active window"
-        "$mod, L, exec, hyprlock # lock the desktop"
-
         ## Weirds
         "$shiftmod, P, resizeactive, exact 700 400"
-        # TODO: hyprswitch
-        "alt, Tab, exec, hyprswitch gui --mod-key alt  --key tab --max-switch-offset 9 --close mod-key-release" #--hide-active-window-border"
 
-        "$mod, T, fullscreen, 0"
-        "$shiftmod, T, fullscreen, 1"
         ## Groups
-        "$mod, Tab, cyclenext,"
         "$mod, G, togglegroup"
+        "$mod, Tab, cyclenext,"
         "alt, GRAVE, changegroupactive"
         "alt, 1, changegroupactive, 1"
         "alt, 2, changegroupactive, 2"
@@ -198,13 +218,9 @@
         "alt, 5, changegroupactive, 5"
         "alt, 6, changegroupactive, 6"
         #"$mod, M, exec, nwg-bar # show the logout window"
-        "$shiftmod, M, exit, # Exit Hyprland all together no (force quit Hyprland)"
         "$mod, bracketleft, cyclenext, prev"
         "$mod, bracketright, cyclenext"
         # stuff
-
-        "$mod, F, togglefloating, # Allow a window to float"
-        "$shiftmod, F, fullscreen, 1, #Toggle Full Screen"
 
         # "$mod, ESCAPE, hyprexpo:expo, toggle"
         # Master,
@@ -222,7 +238,6 @@
         ### NAVIGATION ###
         "$mod, u, focusurgentorlast # toggle between urgent or last workspaces"
         "$mod, grave, togglespecialworkspace, visor"
-        
         "$shiftmod, grave, movetoworkspace, special, visor"
 
    
@@ -248,9 +263,9 @@
         # trigger when the switch is turning on
         #", switch:on:Lid Switch, Laptop closes,exec,hyprctl keyword monitor \"eDP-1, disable\""
       ];
-      bindm = [
-        "$mod,mouse:272,movewindow # left click"
-        "$mod,mouse:273,resizewindow # right click"
+      binddm = [
+        "$mod,mouse:272,Move window, movewindow # left click"
+        "$mod,mouse:273,Resize window, resizewindow # right click"
       ];
       input = {
         follow_mouse = 1;
@@ -293,6 +308,7 @@
       };
       master = {
         always_center_master = true;
+        #TODO: slave_count_for_center_master 
         #new_is_master = false;
         orientation = "right";
         mfact = 0.6; # 0.55 default
@@ -354,9 +370,6 @@
           "specialWorkspace, 1, 3, easeOutExpo, slidefadevert -50%"
         ];
       };
-      #windowrule = [
-      #  "float, ^(kitty)$"
-      #];
       windowrulev2 = [ 
         # special workspace
         "float,onworkspace:s[true]"
@@ -380,29 +393,17 @@
         "tag +video,class:^(mpv)$"
         "tag +video,class:^(vlc)$"
         "float,tag:video"
-        "opacity 1 override 1 override,tag:video"
+        "opacity 1 override,tag:video"
         # Firefox
         "opacity 1 override 0.8 override,class:^(firefox)$"
         "float,initialTitle:^(Picture-in-Picture)$"
         "size 700 400, initialTitle:^(Picture-in-Picture)$"
-        "opacity 1 override 1 override,initialTitle:^(Picture-in-Picture)$"
+        "opacity 1 override, initialTitle:^(Picture-in-Picture)$"
         "suppressevent activatefocus, initialTitle:^(Picture-in-Picture)$"
         # PrusaSlicer
         "opacity 1 override,initialClass:^(PrusaSlicer)$,floating:1"
 
-        ### 1Password
-        #"float, class:^(1Password)$"
-        "stayfocused, class:^(1Password)$, title:(Quick Access)"
-        "center, class:^(1Password)$, title:(Quick Access)"
-        "tag +1password, class:^(1Password)$, title:^((?!Quick Access).)*$"
-        #"tag -1password, title:^(Quick Access.*)$"
-        #"tag -1password, title:^((?!Quick Access).)*$"
-        "float, tag:1password"
-        "size 70% 70%, tag:1password"
-        "center, tag:1password"
-        #"stayfocused, tag:1password"
-        "animation popin, tag:1password"
-
+        
         ## Rofi
         "move cursor -3% -105%,class:^(rofi)$"
         "noanim,class:^(rofi)$"
@@ -424,7 +425,7 @@
 
         # FreeCAD
         "tag freecad, initialClass:^(org.freecad.FreeCAD)$"
-        "opacity 1 override, tag:freecad"
+        "opacity 1 ovverride, tag:freecad"
 
         # ## KiCAD
         # "tag kicad, class:^(kicad)$"
@@ -436,8 +437,30 @@
         "center, tag:onedrive"
         "size: 80%, tag:onedrive"
 
+        ## Settings
+        "tag +settings, class:^(dev.deedles.Trayscale)$"
+        "float, tag:settings"
+        "center, tag:settings"
+
         ### Security ###
-        "stayfocused,  class:^(pinentry-) # fix pinentry losing focus"
+        "tag +security, initialClass:^(org.gnupg.pinentry.*)"
+        "tag +security, class:^(pinentry-)"
+        "tag +security, initialClass:^(gcr-prompter)$"
+        "stayfocused, tag:security # fix pinentry losing focus"
+
+        ### 1Password
+        #"float, class:^(1Password)$"
+        "stayfocused, class:^(1Password)$, title:(Quick Access)"
+        "center, class:^(1Password)$, title:(Quick Access)"
+        "tag +1password, class:^(1Password)$, title:^((?!Quick Access).)*$"
+        #"tag -1password, title:^(Quick Access.*)$"
+        #"tag -1password, title:^((?!Quick Access).)*$"
+        "float, tag:1password"
+        "size 70% 70%, tag:1password"
+        "center, tag:1password"
+        #"stayfocused, tag:1password"
+        "animation popin, tag:1password"
+
         ### Open/Save Dialogs ###
         "tag +opensave, class:org.freedesktop.impl.portal.desktop.kde, title:(Enter name of ([a-zA-Z]*) to (open|save to))"
         "tag +opensave, class:org.freedesktop.impl.portal.desktop.kde, title:(Overwrite (.*)\?)"
@@ -446,6 +469,12 @@
         "size 70% 70%,tag:opensave"
         "center, tag:opensave"
         #"stayfocused,tag:opensave"
+
+        ### Quick View #
+        "tag +quickview, class:org.gnome.NautilusPreviewer"
+        "float, tag:quickview"
+        "center 1, tag:quickview"
+        "size >80%, tag:quickview"
       ];
     };
     wayland.windowManager.hyprland.extraConfig = ''
@@ -480,31 +509,50 @@
             showEmptyWorkspace = true
           }
         }
-      '';
+    '';
 
-  gtk = {
-   enable = true;
-   cursorTheme = {
-     name = "Nordzy-cursors";
-     #package = pkgs.rose-pine-cursor;
-   };
-
-   iconTheme = {
-     package = pkgs.kdePackages.breeze-icons;
-     name = "breeze-dark";
-   };
-
-   #theme = {
-     #package = pkgs.catppuccin-gtk.override {
-     #  accents = ["mauve"];
-     #  size = "standard";
-     #  variant = "macchiato";
-     #};
-     #name = "Catppuccin-Macchiato-Standard-Mauve-Dark";
-     #package = pkgs.kdePackages.breeze-gtk;
-     #name = "Breeze-Dark";
-   #};
-  };
-
+    home.pointerCursor = {
+      gtk.enable = true;
+      # hyprcursor.enable = true;
+      name = cursor_name;
+      package = cursor_package;
+      size = cursor_size;
+    };
+    gtk = {
+      # gsettings set org.gnome.nautilus.window-state initial-size
+      enable = true;
+      font = {
+        # name = "JetBrainsMono Nerd Font";
+        # name = "Helvetica Neu LT Std";
+        name = font_name;
+        size = font_size;
+      };
+      theme = {
+        name = "Tokyonight-Orange-Dark";
+        package = pkgs.tokyo-night-gtk.override {
+          themeVariants = ["orange" "default"];
+          #iconVariants = ["Dark"];
+        };
+      };
+      iconTheme = {
+        name = "kora";
+        package = pkgs.kora-icon-theme;
+        #package = pkgs.kdePackages.breeze-icons;
+        #name = "breeze-dark";
+      };
+      gtk3.extraConfig = {gtk-application-prefer-dark-theme = 1;};
+      #gtk4.extraConfig = {gtk-application-prefer-dark-theme = 1;};
+    };
+    dconf.settings = {
+      "org/gnome/desktop/wm/preferences" = {
+        button-layout = "icon:close";
+      };
+      "org/gnome/nautilus/window-state" = {
+        initial-size = lib.hm.gvariant.mkTuple [1000 700];
+      };
+      "org/gnome/desktop/interface" = {
+        color-scheme = "prefer-dark";
+      };
+    };
   };
 }

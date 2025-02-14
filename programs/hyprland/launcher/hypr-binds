@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 hyprctl binds -j | jq -r '
     map({mod:.modmask|tostring,key:.key,code:.keycode|tostring,desc:.description,has_desc:.has_description,dp:.dispatcher,arg:.arg,sub:.submap}) |
-    map(.mod |= {"0":"        ","1":"⇧ +     ","4":"󰘴 +     ","5":"⌃ + ⇧ + ","64":"❖ +     ","65":"❖ + ⇧ + ","68":"❖ + 󰘴 + ","8":"⎇ +     "} [.]) |
+    map(.mod |= {"0":"        ","1":"⇧ +     ","4":"󰘴 +     ","5":"⌃ + ⇧ + ","12":"^ + ⎇ + ","64":"❖ +     ","65":"❖ + ⇧ + ","68":"❖ + 󰘴 + ","8":"⎇ +     "} [.]) |
     map(.code |= {"59":"Comma","60":"Dot"} [.]) |
     sort_by(.desc == "") |.[]|
     select(.sub == "") |

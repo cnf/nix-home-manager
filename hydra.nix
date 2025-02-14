@@ -29,11 +29,13 @@
   };
   #imports = [
   #];
+  my.davinci.enable = false;
   my.desktop.enable = true;
   my.discord.enable = true;
   my.email.enable = true;
   my.engineering.enable = true;
   my.firefox.enable = true;
+  my.funshoot.enable = true;
   my.gaming.enable = true;
   my.git.enable = true;
   my.golang.enable = true;
@@ -47,6 +49,7 @@
   my.vim.enable = true;
   my.vscode.enable = true;
   my.wine.enable = true;
+  my.wireshark.enable = true;
   my.yubikey.enable = true;
   my.zotero.enable = true;
   my.zsh.enable = true;

@@ -1,13 +1,15 @@
-{ pkgs, unstable, lib, config, inputs, ... }:
+{ pkgs, unstable, lib, config, ... }:
 {
   options = { 
     my.desktop.enable = lib.mkEnableOption "Enable a graphical env";
   };
   imports = [
     ./chromium.nix
+    ./davinci.nix
     ./discord.nix
     ./email.nix
     ./firefox.nix
+    ./fonts.nix
     ./gaming.nix
     ./mqtt.nix
     ./nixtools.nix
@@ -15,18 +17,16 @@
     ./pdf.nix
     ./vscode.nix
     ./wine.nix
+    ./wireshark.nix
     ./xdg-options.nix
     ./yubi.nix
     ./zotero.nix
   ];
   config = lib.mkIf config.my.desktop.enable {
+    #services.opensnitch-ui.enable = true;
     # home.preferXdgDirectories = true;
-    fonts.fontconfig.enable = true;
-    fonts.fontconfig.defaultFonts = {
-      emoji = ["Noto Color Emoji"];
-      serif = ["DejaVu Serif"];
-      sansSerif = ["JetBrainsMono Nerd Font" "Helvetica Neue LT Std" "Arimo Nerd Font"];
-      monospace = ["SauceCodePro Nerd Font" "Source Code Pro NerdFont"];
+    home.sessionVariables = {
+      VIRTUAL_ENV_DISABLE_PROMPT = 1;
     };
     programs.jq.enable = true;
     programs.mpv = {
@@ -38,14 +38,12 @@
       ];
     };
     home.packages = with pkgs; [
-      unstable._1password-cli
-      unstable._1password-gui
-      
       appimage-run
       pinentry
       # audio
       pavucontrol
       pulseaudio
+      # nautilus-python
 
       #video
       # mpv has a program. option above
@@ -58,30 +56,15 @@
       nixos-icons
       cosmic-icons
       kdePackages.breeze-gtk
-      kdePackages.breeze-icons
+      #kdePackages.breeze-icons
+      dracula-icon-theme
+      kora-icon-theme
       
       
 
       # notification tools
       libnotify
 
-      # fonts
-      fontpreview
-      font-manager
-      gucharmap
-      source-code-pro
-      source-sans-pro
-      font-awesome
-      liberation_ttf
-      mplus-outline-fonts.githubRelease
-      nerdfonts
-      unstable.helvetica-neue-lt-std
-      noto-fonts
-      noto-fonts-cjk-sans
-      noto-fonts-emoji
-      noto-fonts-emoji-blob-bin
-      emojione
-      proggyfonts
       weather-icons
       material-icons
       material-design-icons
@@ -90,11 +73,20 @@
       unstable.plexamp
       onedrive
       onedrivegui
+      #unstable._1password-cli
+      #unstable._1password-gui
+      tailscale-systray
+      ktailctl
+      podman-desktop
+      varia
 
       qalculate-qt
 
       qbittorrent
+
+      mission-center
     ];
+    # services.trayscale.enable = true;
     
   };
 

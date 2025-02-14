@@ -1,5 +1,4 @@
-{ pkgs, lib, config, inputs, unstable, ... }:
-
+{ pkgs, lib, config, ... }:
 {
   config = lib.mkIf config.my.hyprland.enable {
     home.packages = with pkgs; [
@@ -25,16 +24,16 @@
       #DEFAULT="<span color='#FF8514'>A{icon}</span>"
       #"DDDEFAULT": ""
       spotify = "<span foreground='#1ED760'> </span>"
-      "(?i)plexamp" = "<span foreground='#EBAF00'>󰚺 </span>"
       mpv = "<span foreground='#520053'> </span>"
-      "[Ff]reecad" = "<span foreground='#ff585d'> </span>"
+      "(?i)plexamp" = "<span foreground='#EBAF00'>󰚺 </span>"
+      "(?i)freecad" = "<span foreground='#ff585d'> </span>"
+      "(?i)zotero" = "<span background='white' foreground='#DB2C3A'>󰬡 </span>"
 
       [class]
-      DEFAULT = " "
+      DEFAULT = " "
       "(?i)firefox" = "󰈹 "
       "(?i)kitty" = " "
-      #" "
-      code = "󰨞 "
+      "(?i)code" = "󰨞 "
       freecad = " "
       1Password = " "
       #" "
@@ -42,38 +41,54 @@
       mpv = " "
       kicad = " "
       obsidian = " "
-      #" " #
       nm-connection-editor = " "
-      pavucontrol = ""
+      pavucontrol = " "
       steam = " "
-      #" "
       spotify = " "
-      PrusaSlicer = ""
+      PrusaSlicer = " "
       qbittorrent = " "
       ".*transmission.*" = " "
+      Varia = " "
       waybar = " "
       calibre-gui = " "
       "(?i)plexamp" = "󰚺 "
       wire = "󰁀 "
       wireshark-gtk = " "
-      wlfreerdp = "󰀄"
+      wlfreerdp = "󰢹 "
       ".blueman-manager-wrapped" = "󰂳"
       gcr-prompter = " " 
-      #" "
-      geary = "󰴃 "
+      "(?i)zotero" = "󰬡 " 
       mailspring = "󰴃 "
       thunderbird = " "
+      opensnitch-ui = "󰞵 "
+      "Podman.*" = " "
+      "dev.deedles.Trayscale" = "󰖂 "
+      KTailctl = "󱗼"
+
 
       # Gnome
+      "org.gnome.Calendar" = " "
+      "org.gnome.FileRoller" = " "
+      "org.gnome.Logs" = "󱂅 "
+      "org.gnome.Loupe" = "󰥸 "
+      "org.gnome.Maps" = " "
       "org.gnome.Nautilus" = " "
+      "org.gnome.NautilusPreviewer" = " "
+      "org.gnome.Snapshot" = " "
+      "org.gnome.SystemMonitor" = " "
+      "org.gnome.baobab" = " "
+      simple-scan = "󰚫 "
       evince = " "
+      geary = "󰴃 "
+      "(?i)evolution.*" = "󰇯 "
+      "xdg-desktop-portal-gtk" = " "
 
       # chat
-      discord = ""
+      discord = " "
       Signal = " "
       telegramdesktop = " "
-      slack = ""
-      whatsapp-desktop = ""
+      slack = " "
+      whatsapp-desktop = " "
 
       # KDE
       dolphin = " "
@@ -115,11 +130,16 @@
       9 = "𝐈𝐗"
       10 = "𝐗"
 
+      [title_in_class."(xdg-desktop-portal-gtk)"]
+      "File" = " "
+      "Folder" = "󰉓 "
+
       [title_in_class."(xterm|(?i)kitty|alacritty)"]
       "(?i)^(n?)vim" = " " 
       # " "
-      btop = ""
+      btop = " "
       htop = " "
+      nvtop = " "
       "nh " = "󱄅 "
 
       [title_in_class_active."(?i)firefox"]

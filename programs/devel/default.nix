@@ -4,13 +4,17 @@
     ./golang.nix 
     ./neovim.nix 
     ./zsh.nix
+    ./ollama.nix
   ];
 
   programs.direnv.enable = true;
-  home.packages = with pkgs; [ 
+  home.packages = with unstable; [ 
     nil
     nixd
     nixfmt-rfc-style
+
+    bustle
+    httpie
   ];
   nix.nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
 }

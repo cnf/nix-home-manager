@@ -15,7 +15,7 @@ in
   config = lib.mkIf config.my.engineering.enable {
     home.packages = with pkgs; [
       temurin-jre-bin
-      kicad
+      #kicad
       # unstable.my-freerouting # don't need it separate, the plugin has the jar
     ];
   };

@@ -1,11 +1,14 @@
-{ pkgs, lib, config, inputs, unstable, ... }:
+{ pkgs, lib, config, ... }:
 
 {
   config = lib.mkIf config.my.hyprland.enable {
-    home.packages = with pkgs; [kitty-img];
+    home.packages = with pkgs; [
+      kitty-img
+      # nautilus-open-any-terminal
+    ];
     programs.kitty = {
       enable = true;
-      font.name = "family=\"Source Code Pro\"";
+      font.name = "family=\"SauceCodePro Nerd Font\"";
       font.size = 12;
       settings = {
         bold_font = "auto";
@@ -21,12 +24,12 @@
         inactive_tab_font_style = "normal";
         enable_audio_bell = false;
         visual_bell_duration = "0.4 ease-in-out linear";
+        window_padding_width = 5;
       };
       keybindings = {
         "ctrl+c" = "copy_or_interrupt"; 
         "ctrl+v" = "paste_from_clipboard";
       };
     };
-
   };
 }

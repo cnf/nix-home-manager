@@ -62,6 +62,7 @@ in
           "pulseaudio"
           "pulseaudio/slider"
           "battery"
+          "bluetooth"
           "network"
 
           "tray"
@@ -72,8 +73,8 @@ in
         "custom/launcher" = {
           on-click = "rofi -show drun -drun-show-actions";
           on-click-right = "hyprsysteminfo";
-          format = " ";
-          #format = "";
+          #format = " ";
+          format = " ";
           # format = " ";
           tooltip = true;
           tooltip-format = "Launch Applications";
@@ -183,6 +184,9 @@ in
           min = 0;
           max = 100;
           orientation = "vertical";
+          reverse-scrolling = true;
+          on-scroll-down = "swayosd-client --output-volume raise --max-volume=100";
+          on-scroll-up = "swayosd-client --output-volume lower";
         };
         pulseaudio = {
           #scroll-step": 1, // %, can be a float
@@ -191,22 +195,24 @@ in
           format-bluetooth = "{icon}";
           format-bluetooth-muted = "{icon}";
           format-source = " ";
-          format-source-muted = " ";
+          format-source-muted = " ";
           format-icons = {
               headphone = "󱡏 ";
               headphone-muted = "󱡐 ";
               hdmi = "󰡁";
-              hifi = "󰓃";
-              hifi-muted = "󰓄";
+              hifi = "󰴸 ";
+              hifi-muted = "󰓄 ";
               #speaker = ["" "" "" " " " "];
               speaker = ["󰕿" "󰖀" "󰖀" "󰕾" "󰕾"];
-              speaker-muted = "󰝟"; #"󰖁 ";
+              speaker-muted = "󰝟 "; #"󰖁 ";
               hands-free = " ";
-              headset = " ";
+              headset = "󰋋 "; #" ";
+              headset-muted = "󰟎 ";
               phone = "";
               portable = "";
               car = "";
               default = ["" "" "" " " " "];
+              default-muted = "󰝟 ";
           };
           tooltip-format = "{icon} {volume:3}% {desc}\n{format_source} {source_volume:3}% {source_desc}";
           on-click = "pavucontrol";
@@ -220,15 +226,15 @@ in
           format-disabled = "󰂲";
           format-off = "";
           format-no-controller = "";
+          format-connected = "󰂱";
+          #format-connected-battery = "󰂱 {device_battery_percentage}%";
+          # format-device-preference= [ "device1", "device2" ]; # preference list deciding the displayed device
           interval = 30;
           on-click = "blueman-manager";
-          format-connected = " {device_alias}";
-          format-connected-battery = " {device_alias} {device_battery_percentage}%";
-          # format-device-preference= [ "device1", "device2" ]; # preference list deciding the displayed device
-          tooltip-format = "{controller_alias}\t{controller_address}\n\n{num_connections} connected";
-          tooltip-format-connected = "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}";
-          tooltip-format-enumerate-connected = "{device_alias}\t{device_address}";
-          tooltip-format-enumerate-connected-battery = "{device_alias}\t{device_address}\t{device_battery_percentage}%";
+          tooltip-format = "󰂯 {controller_alias} ({status})";
+          tooltip-format-connected = "󰂱 {controller_alias} ({num_connections} connected)\n\n{device_enumerate}";
+          tooltip-format-enumerate-connected = "{device_alias}";
+          tooltip-format-enumerate-connected-battery = "{device_alias} {device_battery_percentage}%";
         };
         idle_inhibitor = {
           format = "{icon}";

@@ -16,6 +16,8 @@
     ./kitty.nix
     ./launcher
     ./osd.nix
+    ./theme.nix
+    ./udiskie.nix
     ./waybar
   ];
 }

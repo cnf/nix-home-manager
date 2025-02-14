@@ -9,6 +9,7 @@
       url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    hyprland.url = "github:hyprwm/Hyprland";
     hyprswitch.url = "github:h3rmt/hyprswitch/release";
     hyprland-plugins = {
       url = "github:hyprwm/hyprland-plugins";

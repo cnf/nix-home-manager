@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }:
+{ pkgs, unstable, lib, config, ... }:
 let
   fromGitHub = rev: ref: repo: pkgs.vimUtils.buildVimPlugin {
     pname = "${lib.strings.sanitizeDerivationName repo}";
@@ -84,6 +84,7 @@ in {
         tcomment_vim
         gitgutter
         vim-nix
+        unstable.vimPlugins.cspell-nvim
         nvim-lspconfig
         (fromGitHub "482a30223f322b6d4e569640ec979946ec873c18" "master" "cnf/vim-pointless")
       ];

@@ -42,7 +42,8 @@
       extraConfig = {
         sidebar-mode = true;
         show-icons = true;
-        icon-theme = "candy-icons";
+        #icon-theme = "candy-icons";
+        icon-theme = "breeze-dark";
         combi-modes = "drun,calc,ssh";
         display-drun = " ";
         display-combi = " ";

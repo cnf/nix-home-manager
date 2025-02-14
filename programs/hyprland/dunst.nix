@@ -1,4 +1,4 @@
-{ pkgs, lib, config, inputs, unstable, ... }:
+{ pkgs, lib, config, unstable, ... }:
 
 {
   config = lib.mkIf config.my.hyprland.enable {
@@ -8,6 +8,7 @@
       executable = true;
     };
     services.dunst.enable = true;
+    services.dunst.package = unstable.dunst;
     services.dunst.settings = {
       global = {
         dmenu = "${unstable.rofi-wayland}/bin/rofi -dmenu -p dunst";
@@ -22,32 +23,34 @@
         frame_color = "#148eff";
         frame_width = 0;
         separator_color = "frame";
-        font = "Arimo Nerd Font";
-        font-weight = "normal";
-        icon_theme = "candy-icons, hicolor, Papirus, Adwaita";
+        font = "Helvetica Neue LT Std 13";
+        #font = "Arimo Nerd Font";
+        #font-weight = "normal";
+        icon_theme = "candy-icons, hicolor, Adwaita";
+        #min_icon_size = 64;
         default_icon = "cs-notifications";
         enable_recursive_icon_lookup = true;
         corner_radius = 10;
-        offset = "15x60";
+        offset = "(15, 60)";
         origin = "top-right";
         notification_limit = 8;
         gap_size = 7;
         width = "(250, 400)";
-        height = "(80,  250)";
+        height = "(40, 250)";
       };
       urgency_low = {
         background = "#323232";
-        foreground = "white";
+        foreground = "#FFFFFF";
       };
 
       urgency_normal = {
         background = "#323232";
-        foreground = "white";
+        foreground = "#FFFFFF";
       };
 
       urgency_critical = {
         background = "#323232";
-        foreground = "white";
+        foreground = "#FFFFFF";
         frame_color = "#ff4f44";
         timeout = 0;
       };
@@ -62,6 +65,10 @@
       onedrive = {
         desktop_entry = "onedrive";
         default_icon = "cozydrive";
+      };
+      spotify = {
+        desktop_entry = "spotify";
+        foreground = "#888888";
       };
     };
   };

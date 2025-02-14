@@ -1,10 +1,10 @@
-{ pkgs, lib, config, ... }:
+{ pkgs, unstable, lib, config, ... }:
 {
   options = { 
-    my.davinvi.enable = lib.mkEnableOption "Install DaVinci Resolve";
+    my.davinci.enable = lib.mkEnableOption "Install DaVinci Resolve";
   };
   config = lib.mkIf config.my.davinci.enable {
-    home.packages = with pkgs; [
+    home.packages = [
       unstable.davinci-resolve
     ];
   };

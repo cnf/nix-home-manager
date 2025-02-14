@@ -5,11 +5,14 @@
     my.zsh.enable = lib.mkEnableOption "Enable and configure zsh";
   };
   config = lib.mkIf config.my.zsh.enable {
+    #home.packages = [
+    #  pkgs.spaceship-prompt
+    #];
     programs.zsh = {
     enable = true;
     enableCompletion = true;
     autosuggestion.enable = true;
-    #syntaxHighlighting.enable = true;
+    syntaxHighlighting.enable = true;
     dotDir = ".config/zsh";
     history = {
       append = false;
@@ -57,31 +60,74 @@
         source "$HOME/.config/zsh/local.zsh"
       fi
 
+      ## Prompt Stuff
+      typeset +x PS1
+
+      if [ $UID -eq 0 ]; then
+        user="%B%F{red}%m%f%b"
+        symbol='#'
+      else
+        user="%B%F{green}%m%f%b"
+        symbol='$'
+      fi
+
+      function rsymbol {
+        git branch >/dev/null 2>/dev/null && echo "%B%F{yellow}±" && return
+        [ -d .svn ] && echo "%B%F{yellow]%}⨰" && return
+        echo $symbol
+      }
+
+      function venv {
+        [ $VIRTUAL_ENV ] || return
+        # echo " %B%F{cyan}$(basename $\{VIRTUAL_ENV\} | tr '[A-Z]' '[a-z]')%f%b"
+        echo " %B%F{cyan}''${VIRTUAL_ENV##*/}%f%b%k"
+      }
+
+      ZSH_THEME_GIT_PROMPT_PREFIX="< "
+      ZSH_THEME_GIT_PROMPT_SUFFIX=" >"
+      ZSH_THEME_GIT_PROMPT_SEPARATOR=" | "
+      ZSH_THEME_GIT_PROMPT_BRANCH="%{$fg_bold[yellow]%}"
+      typeset +x PS1
+
+      setopt PROMPT_SUBST
+      PROMPT='%f%b$user %B%F{blue}%2~ $(rsymbol)%f%b '
+      RPROMPT='%f%b$(gitprompt)%f%b$(venv)  $(battery_pct_prompt)%f%b'
+      SPROMPT='zsh: correct %F{red}%R%f to %F{green}%r%f [nyae]? '
+      export VIRTUAL_ENV_DISABLE_PROMPT=1 # we have our own on the right prompt
+
     '';
+    antidote = {
+      enable = true;
+      plugins = [
+        "ohmyzsh/ohmyzsh path:plugins/battery"
+        "ohmyzsh/ohmyzsh path:plugins/dotenv"
+        "woefe/git-prompt.zsh"
+      ];
+    };
     # check vcs_info for prompt
     plugins = [
-      { 
-        name = "git-prompt";
-        file = "lib/git.zsh";
-        src = pkgs.fetchFromGitHub {
-          owner = "cnf";
-          repo = "zshrc";
-          rev = "ebb9381";
-          #sha256 = "sha256-xpvw1OXJEROsnwHAMi/t4CS0/4aToHv62p/qjDyoMTg=";
-          sha256 = "sha256-+877OI9BFFvdN6H4rmravYUinhBe2WosVSCVCzx28EE=";
-        };
-      }
-      { 
-        name = "prompt";
-        file = "prompt.zsh";
-        src = pkgs.fetchFromGitHub {
-          owner = "cnf";
-          repo = "zshrc";
-          rev = "ebb9381";
-          #sha256 = "sha256-xpvw1OXJEROsnwHAMi/t4CS0/4aToHv62p/qjDyoMTg=";
-          sha256 = "sha256-+877OI9BFFvdN6H4rmravYUinhBe2WosVSCVCzx28EE=";
-        };
-      }
+      #{ 
+      #  name = "git-prompt";
+      #  file = "lib/git.zsh";
+      #  src = pkgs.fetchFromGitHub {
+      #    owner = "cnf";
+      #    repo = "zshrc";
+      #    rev = "ebb9381";
+      #    #sha256 = "sha256-xpvw1OXJEROsnwHAMi/t4CS0/4aToHv62p/qjDyoMTg=";
+      #    sha256 = "sha256-+877OI9BFFvdN6H4rmravYUinhBe2WosVSCVCzx28EE=";
+      #  };
+      #}
+      #{ 
+      #  name = "prompt";
+      #  file = "prompt.zsh";
+      #  src = pkgs.fetchFromGitHub {
+      #    owner = "cnf";
+      #    repo = "zshrc";
+      #    rev = "ebb9381";
+      #    #sha256 = "sha256-xpvw1OXJEROsnwHAMi/t4CS0/4aToHv62p/qjDyoMTg=";
+      #    sha256 = "sha256-+877OI9BFFvdN6H4rmravYUinhBe2WosVSCVCzx28EE=";
+      #  };
+      #}
       { 
         name = "options";
         file = "options.zsh";

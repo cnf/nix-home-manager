@@ -20,5 +20,7 @@
     assh
     ncdu
     usbtop
+
+    dig
   ];
 }
