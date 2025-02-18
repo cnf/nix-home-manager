@@ -7,6 +7,7 @@
   imports = [
     ./autoname-workspaces.nix
     ./clipboard.nix
+    ./backup.nix
     ./dunst.nix
     ./hypridle.nix
     ./hyprland.nix

@@ -1,16 +1,17 @@
-{ pkgs, unstable, lib, config, inputs, ... }:
+{ pkgs, unstable, lib, config, ... }:
 {
   options = { 
     my.gaming.enable = lib.mkEnableOption "Install gaming stuff";
   };
   config = lib.mkIf config.my.gaming.enable {
-    home.packages = with unstable; [
+    home.packages = with pkgs; [
       unstable.minigalaxy
       unstable.steam
-      heroic
-      mangohud
+      #heroic
+      #mangohud
       protonup
-      lutris
+      #lutris
+      cartridges
     ];
     #programs.steam.enable = true;
     #programs.steam.gamescopeSession.enable = true;

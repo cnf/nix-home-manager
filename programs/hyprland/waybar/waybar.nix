@@ -62,8 +62,8 @@ in
           "pulseaudio"
           "pulseaudio/slider"
           "battery"
-          "bluetooth"
-          "network"
+          #"bluetooth"
+          #"network"
 
           "tray"
           "custom/hyprlock"
@@ -192,27 +192,27 @@ in
           #scroll-step": 1, // %, can be a float
           format = "{icon}";
           format-muted = "󰝟";
-          format-bluetooth = "{icon}";
-          format-bluetooth-muted = "{icon}";
+          format-bluetooth = "{icon}󰂱";
+          format-bluetooth-muted = "{icon}󰂱";
           format-source = " ";
           format-source-muted = " ";
           format-icons = {
-              headphone = "󱡏 ";
-              headphone-muted = "󱡐 ";
+              headphone = "󰋋 ";
+              headphone-muted = "󰟎 ";
+              headset = " ";
+              headset-muted = "󰟎 ";
               hdmi = "󰡁";
               hifi = "󰴸 ";
               hifi-muted = "󰓄 ";
               #speaker = ["" "" "" " " " "];
               speaker = ["󰕿" "󰖀" "󰖀" "󰕾" "󰕾"];
-              speaker-muted = "󰝟 "; #"󰖁 ";
+              speaker-muted = " "; #"󰝟 "; #"󰖁 ";
               hands-free = " ";
-              headset = "󰋋 "; #" ";
-              headset-muted = "󰟎 ";
               phone = "";
               portable = "";
               car = "";
               default = ["" "" "" " " " "];
-              default-muted = "󰝟 ";
+              default-muted = " ";
           };
           tooltip-format = "{icon} {volume:3}% {desc}\n{format_source} {source_volume:3}% {source_desc}";
           on-click = "pavucontrol";
@@ -221,7 +221,6 @@ in
           reverse-scrolling = true;
         };
         bluetooth = {
-          icon-size = 14;
           format = "󰂯";
           format-disabled = "󰂲";
           format-off = "";
@@ -231,7 +230,9 @@ in
           # format-device-preference= [ "device1", "device2" ]; # preference list deciding the displayed device
           interval = 30;
           on-click = "blueman-manager";
+          on-click-middle = "rfkill toggle bluetooth";
           tooltip-format = "󰂯 {controller_alias} ({status})";
+          tooltip-format-disabled = "󰂲 {controller_alias} ({status})";
           tooltip-format-connected = "󰂱 {controller_alias} ({num_connections} connected)\n\n{device_enumerate}";
           tooltip-format-enumerate-connected = "{device_alias}";
           tooltip-format-enumerate-connected-battery = "{device_alias} {device_battery_percentage}%";

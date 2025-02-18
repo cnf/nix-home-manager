@@ -4,7 +4,7 @@
     fonts.fontconfig.defaultFonts = {
       emoji = ["Noto Color Emoji"];
       serif = ["DejaVu Serif"];
-      sansSerif = ["Helvetica Neue LT Std" "JetBrainsMono Nerd Font" "Arimo Nerd Font"];
+      sansSerif = ["Inter" "JetBrainsMono Nerd Font"];
       monospace = ["SauceCodePro Nerd Font" "Source Code Pro"];
     };
     #fonts.packages = with pkgs; [

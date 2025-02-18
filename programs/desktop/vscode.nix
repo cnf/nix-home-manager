@@ -17,7 +17,7 @@
         ms-python.black-formatter
         ms-python.debugpy
         ms-python.isort
-        ms-python.python
+        #ms-python.python
         ms-python.vscode-pylance
         ms-vscode.cpptools-extension-pack
         ms-vscode.cpptools
@@ -87,6 +87,12 @@
           version = "1.5.2";
           sha256 = "sha256-Gqb3/fSQS3rYheoFS8ksoidaZrOldxeYPoFSlzSgmVI=";
         }
+        {
+          name = "python";
+          publisher = "ms-python";
+          version = "2025.1.2025021102";
+          hash = "sha256-HzVN4wsuevRCbLkDKTg3SfgVhYcrmxThOQU63IiLV9I=";
+        }
       ];
       userSettings = {
         "window.menuBarVisibility" = "toggle";
@@ -100,6 +106,7 @@
         "editor.fontFamily" = "'SauceCodePro Nerd Font', 'Source Code Pro', 'FontAwesome', Consolas, 'Courier New', monospace";
         "editor.guides.bracketPairs" = true;
         "editor.guides.highlightActiveIndentation" = true;
+        "debug.toolBarLocation" = "docked";
         "problems.showCurrentInStatus" = false;
         "liveshare.launcherClient" = "visualStudioCode";
 
@@ -112,7 +119,11 @@
         "[c]" = {
           "editor.defaultFormatter" = "ms-vscode.cpptools";
         };
+        # Go
+        "go.gopath" = "${config.home.homeDirectory}/${config.programs.go.goPath}";
+        "go.toolsGopath" = "${config.xdg.dataHome}/vscode-tools/go";
         # Python
+        "python.terminal.shellIntegration.enabled" = true;
         "python.testing.pytestEnabled" = true;
         "python.testing.unittestEnabled" = true;
         "[python]" = {

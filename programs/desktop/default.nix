@@ -11,6 +11,7 @@
     ./firefox.nix
     ./fonts.nix
     ./gaming.nix
+    ./gnome.nix
     ./mqtt.nix
     ./nixtools.nix
     ./obsidian.nix
@@ -23,6 +24,9 @@
     ./zotero.nix
   ];
   config = lib.mkIf config.my.desktop.enable {
+    home.shellAliases = {
+      open = "xdg-open";
+    };
     #services.opensnitch-ui.enable = true;
     # home.preferXdgDirectories = true;
     home.sessionVariables = {
@@ -75,8 +79,9 @@
       onedrivegui
       #unstable._1password-cli
       #unstable._1password-gui
-      tailscale-systray
+      #tailscale-systray
       ktailctl
+      unstable.my-tailscale-systray
       podman-desktop
       varia
 

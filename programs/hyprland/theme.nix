@@ -1,9 +1,9 @@
-{ pkgs, lib, config, inputs, unstable, ... }:
+{ lib, config, ... }:
 
 {
   config = lib.mkIf config.my.hyprland.enable {
     qt.enable = true;
-    qt.platformTheme.name = "gtk";
+    qt.platformTheme.name = "gtk3";
     qt.style.name = "gtk2";
   };
 }

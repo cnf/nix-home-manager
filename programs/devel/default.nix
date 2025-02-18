@@ -15,6 +15,8 @@
 
     bustle
     httpie
+
+    gdb
   ];
   nix.nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
 }

@@ -10,9 +10,9 @@
         # "image/jpg" = "org.kde.gwenview.desktop";
         # "application/pdf" = "org.kde.okular.desktop";
       };
-      defaultApplications = {
-        "inode/directory" = [ "org.gnome.Nautilus.desktop" ];
-      };
+      #defaultApplications = {
+      #  "inode/directory" = [ "org.gnome.Nautilus.desktop" ];
+      #};
     };
     xdg.userDirs = {
       desktop = "${config.home.homeDirectory}/.local/share/Desktop";

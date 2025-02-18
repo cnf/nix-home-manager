@@ -26,7 +26,7 @@
         font = "Helvetica Neue LT Std 13";
         #font = "Arimo Nerd Font";
         #font-weight = "normal";
-        icon_theme = "candy-icons, hicolor, Adwaita";
+        icon_theme = "kora, candy-icons, hicolor, Adwaita";
         #min_icon_size = 64;
         default_icon = "cs-notifications";
         enable_recursive_icon_lookup = true;
@@ -70,6 +70,9 @@
         desktop_entry = "spotify";
         foreground = "#888888";
       };
+      #yubi-notifier = {
+      #  icon = "dialog-password";
+      #};
     };
   };
 }

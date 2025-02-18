@@ -115,6 +115,7 @@ in
         #"13, monitor:DP-2, default:true"
         "special:visor, on-created-empty:kitty btop"
         "special:music, on-created-empty:spotify"
+        "special:popterm, on-created-empty:kitty"
       ];
 
       exec-once = [
@@ -124,16 +125,17 @@ in
         #"hyprpaper" #service?
         #"nm-applet --indicator" #service?
         #"usbguard-notifier" #service?
-        "1password --silent"
         "wl-paste --type text --watch cliphist -max-items 50 store #Stores only text data"
         "wl-paste --type image --watch cliphist -max-items 50 store #Stores only image data"
+        "1password --silent"
         "systemctl --user restart usbguard-notifier.service"
         "systemctl --user restart yubikey-agent.service"
         "systemctl --user restart hyprpolkitagent.service"
         "systemctl --user restart waybar.service"
-        "hyprland-autoname-workspaces"
+        #"hyprland-autoname-workspaces"
         #"udiskie -t"
         "hyprswitch init --show-title --size-factor 5 --workspaces-per-row 5"
+        "tailscale-systray"
         "[workspace 1 silent] kitty"
         "[workspace 3 silent] firefox"
         "[workspace 4 silent] discord"
@@ -163,12 +165,12 @@ in
         # Main keybinds
         "$shiftmod, M, Exit Hyperland now, exit, # Exit Hyprland all together now (force quit Hyprland)"
         "$mod, F4, Close active window, killactive"
-        "$mod, C, Close active window, killactive"
+        "$mod, W, Close active window, killactive"
         "$mod, L, Locks Desktop, exec, hyprlock"
         "$mod, F, Toggle fullscreen, fullscreen, 0 # Toggle active window to fullscreen"
         "$mod, M, Toggle maximize, fullscreen, 1 # Maximize Window"
         "$mod, T, Toggle floating/tiling, togglefloating # Allow a window to float"
-        "alt, Tab, HyprSwitch, exec, hyprswitch gui --mod-key alt  --key tab --max-switch-offset 9 --close mod-key-release" #--hide-active-window-border"
+        "alt, Tab, HyprSwitch, exec, hyprswitch gui --mod-key alt --key tab --max-switch-offset 9 --close mod-key-release" #--hide-active-window-border"
 
 
         ## Screenshots
@@ -179,8 +181,8 @@ in
         ## Various Launchers
         "$mod, SPACE, App Launcher Menu, exec, rofi -show drun # Show the graphical app launcher"
         "$mod, Return, Kitty Terminal, exec, kitty"
-        "$mod, Q, Kitty Terminal, exec, kitty"
-        "$mod, =, Calculator, exec, rofi -show calc -modi calc -no-show-match -no-sort -calc-command 'echo -n {result}| wl-copy'"
+        #"$mod, K, Kitty Terminal, exec, kitty"
+        "$mod, equal, Calculator, exec, rofi -show calc -modi calc -no-show-match -no-sort -calc-command 'echo -n {result}| wl-copy'"
         "$shiftmod, J, Color Picker, exec, hyprpicker -a -n| xargs -I % notify-send hyprpicker 'Copied % to clipboard'"
         "Alt, V, Clip Board, exec, rofi -modi clipboard:cliphist-rofi-img -show clipboard -show-icons"
         "Control_L Alt_L, V, Erase from Clipboard, exec, cliphist list | rofi -dmenu -p Delete| cliphist delete"
@@ -239,6 +241,7 @@ in
         "$mod, u, focusurgentorlast # toggle between urgent or last workspaces"
         "$mod, grave, togglespecialworkspace, visor"
         "$shiftmod, grave, movetoworkspace, special, visor"
+        "$mod, Escape, togglespecialworkspace, popterm"
 
    
         # Scroll through existing workspaces with mainMod + scroll
@@ -370,30 +373,43 @@ in
           "specialWorkspace, 1, 3, easeOutExpo, slidefadevert -50%"
         ];
       };
+      windowrule = [
+        "animation slide left, onworkspace:special:popterm"
+      ];
       windowrulev2 = [ 
         # special workspace
-        "float,onworkspace:s[true]"
-        "size 90% 80%, onworkspace:s[true]"
+        "float, onworkspace:s[true]"
         "bordercolor rgba(FF6700EE) rgba(0098FF66) 60deg, onworkspace:s[true]"
+        "animation slidefade -50%, onworkspace:special:popterm"
+        "size 90% 80%, onworkspace:special:visor"
+        "size 90% 80%, onworkspace:special:music"
+        "size 35% 95%, onworkspace:special:popterm"
+        "move 5 38, onworkspace:special:popterm"
 
         # Pin App to workspaces#
         "workspace 4 silent, class:^(discord)$"
 
 
-        "float,class:(nm-tray)"
-        "float,class:^(pavucontrol)$"
-        "float,class:^(.blueman.*)$"
-        "float,class:^(nm-connection-editor)$"
-        "float,class:^(org.pulseaudio.pavucontrol)$"
-        "float,class:^(org.gnome.Nautilus)$"
-        "float,class:^(org.kde.dolphin)$"
+        "tag +float, class:(nm-tray)"
+        "tag +float, class:^(pavucontrol)$"
+        "tag +float, class:^(.blueman.*)$"
+        "tag +fixsize, class:^(.blueman.*)$"
+        "tag +float, class:^(nm-connection-editor)$"
+        "tag +float, class:^(org.pulseaudio.pavucontrol)$"
+        "tag +float, class:^(org.gnome.Nautilus)$"
+        "tag +float, class:^(org.gnome.Calculator)$"
+        "tag +float, class:^(org.kde.dolphin)$"
+        "float, tag:float"
+        "size 60%, tag:fixsize"
+        "center, tag:fixsize"
         # Code
-        "opacity 0.95 override 0.8 override,class:^(code)$"
+        "opacity 0.95 override 0.8 override, class:^(code)$"
         # Video
-        "tag +video,class:^(mpv)$"
-        "tag +video,class:^(vlc)$"
-        "float,tag:video"
-        "opacity 1 override,tag:video"
+        "tag +video, class:^(mpv)$"
+        "tag +video, class:^(vlc)$"
+        "float, tag:video"
+        "opacity 1 override, tag:video"
+        #"opacity 1 override, content:video"
         # Firefox
         "opacity 1 override 0.8 override,class:^(firefox)$"
         "float,initialTitle:^(Picture-in-Picture)$"
@@ -401,7 +417,7 @@ in
         "opacity 1 override, initialTitle:^(Picture-in-Picture)$"
         "suppressevent activatefocus, initialTitle:^(Picture-in-Picture)$"
         # PrusaSlicer
-        "opacity 1 override,initialClass:^(PrusaSlicer)$,floating:1"
+        "opacity 1 override, initialClass:^(PrusaSlicer)$,floating:1"
 
         
         ## Rofi
@@ -424,7 +440,7 @@ in
         "suppressevent activatefocus activate, tag:fusion"
 
         # FreeCAD
-        "tag freecad, initialClass:^(org.freecad.FreeCAD)$"
+        "tag +freecad, initialClass:^(org.freecad.FreeCAD)$"
         "opacity 1 ovverride, tag:freecad"
 
         # ## KiCAD
@@ -435,7 +451,7 @@ in
         "tag +onedrive, title:^(OneDriveGUI .*)$"
         "float, tag:onedrive"
         "center, tag:onedrive"
-        "size: 80%, tag:onedrive"
+        "size 80%, tag:onedrive"
 
         ## Settings
         "tag +settings, class:^(dev.deedles.Trayscale)$"
@@ -446,35 +462,44 @@ in
         "tag +security, initialClass:^(org.gnupg.pinentry.*)"
         "tag +security, class:^(pinentry-)"
         "tag +security, initialClass:^(gcr-prompter)$"
+        "tag +security, initialTitle:^(Hyprland Polkit Agent)$"
         "stayfocused, tag:security # fix pinentry losing focus"
+        "bordercolor rgba(E60000AA), tag:security"
+
 
         ### 1Password
         #"float, class:^(1Password)$"
+        "tag +security, class:^(1Password)$, title:(Lock Screen — 1Password)"
         "stayfocused, class:^(1Password)$, title:(Quick Access)"
         "center, class:^(1Password)$, title:(Quick Access)"
-        "tag +1password, class:^(1Password)$, title:^((?!Quick Access).)*$"
+        #"tag +1password, class:^(1Password)$, title:^((?!Quick Access).)*$"
+        "tag +1password, class:^(1Password)$"
         #"tag -1password, title:^(Quick Access.*)$"
         #"tag -1password, title:^((?!Quick Access).)*$"
         "float, tag:1password"
         "size 70% 70%, tag:1password"
         "center, tag:1password"
-        #"stayfocused, tag:1password"
         "animation popin, tag:1password"
 
+        "stayfocused, tag:keepfocus"
+
         ### Open/Save Dialogs ###
-        "tag +opensave, class:org.freedesktop.impl.portal.desktop.kde, title:(Enter name of ([a-zA-Z]*) to (open|save to))"
-        "tag +opensave, class:org.freedesktop.impl.portal.desktop.kde, title:(Overwrite (.*)\?)"
-        "tag +opensave, title:^((Open|Save|File) ([a-zA-Z]*))$"
-        "float,tag:opensave"
-        "size 70% 70%,tag:opensave"
+        "tag +opensave, class:xdg-desktop-portal-gtk, title:(Enter name of ([a-zA-Z]*) to (open|save to))"
+        "tag +opensave, class:xdg-desktop-portal-gtk, title:(Overwrite (.*)\?)"
+        "tag +opensave, title:^((Open|Save|File) ([a-zA-Z]*)( [a-zA-Z]*)\?)$"
+
+        "float, tag:opensave"
+        "size 70% 70%, tag:opensave"
         "center, tag:opensave"
+        "bordercolor rgba(FF6700EE) rgba(0098FF66) 60deg, tag:opensave"
         #"stayfocused,tag:opensave"
 
         ### Quick View #
         "tag +quickview, class:org.gnome.NautilusPreviewer"
+        "bordercolor rgba(FF6700EE) rgba(0098FF66) 60deg, tag:quickview"
+        "size 80%, tag:quickview"
         "float, tag:quickview"
         "center 1, tag:quickview"
-        "size >80%, tag:quickview"
       ];
     };
     wayland.windowManager.hyprland.extraConfig = ''

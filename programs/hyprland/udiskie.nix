@@ -6,16 +6,11 @@
       enable = true;
       tray = "auto";
       settings = {
+        program_options = {
+          menu = "flat";
+        };
         terminal = "kitty";
         device_config = [
-          { 
-            id_type = "ntfs";
-          }
-          {
-            id_uuid = [
-              "usb-Samsung_SSD_960_EVO_1TB_012345678944-0:0"
-            ];
-          }
         ];
       };
     };

@@ -43,7 +43,8 @@
         sidebar-mode = true;
         show-icons = true;
         #icon-theme = "candy-icons";
-        icon-theme = "breeze-dark";
+        #icon-theme = "breeze-dark";
+        icon-theme = "kora";
         combi-modes = "drun,calc,ssh";
         display-drun = " ";
         display-combi = " ";

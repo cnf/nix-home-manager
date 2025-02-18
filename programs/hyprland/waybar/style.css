@@ -263,7 +263,9 @@ menuitem:hover menu > label {
 }
 
 #bluetooth {
-    color: @textcolor
+    color: @textcolor;
+    font-size: 16px;
+
 }
 
 #bluetooth.on,

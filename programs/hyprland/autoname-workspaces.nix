@@ -4,6 +4,20 @@
     home.packages = with pkgs; [
       hyprland-autoname-workspaces
     ];
+    systemd.user.services.autoname-workspaces = {
+      Unit = {
+        Description = "Hyprland Autoname Workspaces";
+        PartOf = "graphical-session.target";
+        Requires = "tray.target";
+        After = [ "graphical-session-pre.target" "tray.target"];
+      };
+      Install = {
+        WantedBy = [ "graphical-session.target" ];
+      };
+      Service = {
+        ExecStart = ''${pkgs.hyprland-autoname-workspaces}/bin/hyprland-autoname-workspaces'';
+      };
+    };
     xdg.configFile."hyprland-autoname-workspaces/config.toml".text = ''
       version = "1.1.15"
       [format]
@@ -67,16 +81,20 @@
 
 
       # Gnome
+      "org.gnome.Calculator" = " "
       "org.gnome.Calendar" = " "
       "org.gnome.FileRoller" = " "
+      "org.gnome.Firmware" = " "
       "org.gnome.Logs" = "󱂅 "
       "org.gnome.Loupe" = "󰥸 "
-      "org.gnome.Maps" = " "
-      "org.gnome.Nautilus" = " "
+      "org.gnome.Maps" = " "
+      "org.gnome.Nautilus" = "󰪶 "
       "org.gnome.NautilusPreviewer" = " "
       "org.gnome.Snapshot" = " "
       "org.gnome.SystemMonitor" = " "
+      "org.gnome.World.PikaBackup" = "󰁯 "
       "org.gnome.baobab" = " "
+      "org.gnome.font-viewer" = " "
       simple-scan = "󰚫 "
       evince = " "
       geary = "󰴃 "
