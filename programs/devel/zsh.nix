@@ -91,7 +91,12 @@
       function venv {
         [ $VIRTUAL_ENV ] || return
         # echo " %B%F{cyan}$(basename $\{VIRTUAL_ENV\} | tr '[A-Z]' '[a-z]')%f%b"
-        echo " %B%F{cyan}''${VIRTUAL_ENV##*/}%f%b%k"
+        echo "  %B%F{cyan}''${VIRTUAL_ENV##*/}%f%b%k"
+      }
+
+      function nixshell {
+        [ $IN_NIX_SHELL ] || return
+        echo " 󱄅 %B%F{cyan}''${IN_NIX_SHELL}%f%b%k"
       }
 
       ZSH_THEME_GIT_PROMPT_PREFIX="< "
@@ -105,7 +110,7 @@
 
       setopt PROMPT_SUBST
       PROMPT='%f%b$user %B%F{blue}%2~ $(rsymbol)%f%b '
-      RPROMPT='%f%b$(gitprompt)%f%b$(venv)  $(battery_pct_prompt)%f%b'
+      RPROMPT='%f%b$(gitprompt)%f%b$(nixshell)%f%b$(venv)  $(battery_pct_prompt)%f%b'
       SPROMPT='zsh: correct %F{red}%R%f to %F{green}%r%f [nyae]? '
       export VIRTUAL_ENV_DISABLE_PROMPT=1 # we have our own on the right prompt
 
