@@ -66,6 +66,7 @@
           ];
         };
         "cnf@dionysus" = home-manager.lib.homeManagerConfiguration {
+          extraSpecialArgs = {inherit inputs system;};
           inherit pkgs;
           modules = [
             ./home.nix

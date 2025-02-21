@@ -63,9 +63,20 @@
       ## Prompt Stuff
       typeset +x PS1
 
+      if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
+        SESSION_TYPE=remote
+      else
+        case $(ps -o comm= -p "$PPID") in
+          sshd|*/sshd) SESSION_TYPE=remote;;
+        esac
+      fi
+
       if [ $UID -eq 0 ]; then
         user="%B%F{red}%m%f%b"
         symbol='#'
+      elif [[ "$SESSION_TYPE" == "remote" ]]; then
+        user="%B%F{cyan}%m%f%b"
+        symbol='$'
       else
         user="%B%F{green}%m%f%b"
         symbol='$'
@@ -88,6 +99,9 @@
       ZSH_THEME_GIT_PROMPT_SEPARATOR=" | "
       ZSH_THEME_GIT_PROMPT_BRANCH="%{$fg_bold[yellow]%}"
       typeset +x PS1
+
+
+
 
       setopt PROMPT_SUBST
       PROMPT='%f%b$user %B%F{blue}%2~ $(rsymbol)%f%b '
