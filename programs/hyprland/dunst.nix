@@ -23,10 +23,9 @@
         frame_color = "#148eff";
         frame_width = 0;
         separator_color = "frame";
-        font = "Helvetica Neue LT Std 13";
-        #font = "Arimo Nerd Font";
+        font = "${config.my.looks.font.name} ${toString config.my.looks.font.size}";
         #font-weight = "normal";
-        icon_theme = "kora, candy-icons, hicolor, Adwaita";
+        icon_theme = "${config.my.looks.icons.name}, candy-icons, hicolor, Adwaita";
         #min_icon_size = 64;
         default_icon = "cs-notifications";
         enable_recursive_icon_lookup = true;

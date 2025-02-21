@@ -16,6 +16,7 @@
     ./nixtools.nix
     ./obsidian.nix
     ./pdf.nix
+    ./theme-vars.nix
     ./vscode.nix
     ./wine.nix
     ./wireshark.nix
@@ -82,6 +83,7 @@
       #tailscale-systray
       ktailctl
       unstable.my-tailscale-systray
+      unstable.tail-tray
       podman-desktop
       varia
 

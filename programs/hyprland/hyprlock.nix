@@ -1,5 +1,4 @@
-{ pkgs, lib, config, inputs, unstable, ... }:
-
+{ lib, config, ... }:
 {
   config = lib.mkIf config.my.hyprland.enable {
     programs.hyprlock = {
@@ -19,7 +18,8 @@
         "$surface" = "rgb(363a4f)";
         "$surfaceAlpha" = "363a4f";
 
-        "$font" = "Arimo Nerd Font";
+        #"$font" = "Arimo Nerd Font";
+        "$font" = config.my.looks.font.name;
         general = {
           enable_fingerprint = true;
           fingerprint_ready_message = "󰈷 ";

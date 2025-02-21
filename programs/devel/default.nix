@@ -17,6 +17,7 @@
     httpie
 
     gdb
+    sqlite-interactive
   ];
   nix.nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
 }

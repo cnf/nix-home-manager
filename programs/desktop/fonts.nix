@@ -1,11 +1,16 @@
-{ pkgs, unstable, ... }:
+{ config, lib, pkgs, unstable, ... }:
 {
+  config = lib.mkIf config.my.desktop.enable {
     fonts.fontconfig.enable = true;
     fonts.fontconfig.defaultFonts = {
-      emoji = ["Noto Color Emoji"];
-      serif = ["DejaVu Serif"];
-      sansSerif = ["Inter" "JetBrainsMono Nerd Font"];
-      monospace = ["SauceCodePro Nerd Font" "Source Code Pro"];
+      emoji = config.my.looks.font.emoji;
+      serif = config.my.looks.font.serif;
+      sansSerif = config.my.looks.font.sansSerif;
+      monospace = config.my.looks.font.monospace;
+      #emoji = ["Noto Color Emoji"];
+      #serif = ["DejaVu Serif"];
+      #sansSerif = ["Inter" "JetBrainsMono Nerd Font"];
+      #monospace = ["SauceCodePro Nerd Font" "Source Code Pro"];
     };
     #fonts.packages = with pkgs; [
     #  nerd-fonts.sauce-code-pro
@@ -35,5 +40,5 @@
       nerdfonts
       unstable.helvetica-neue-lt-std
    ];
-
+ };
 }

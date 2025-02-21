@@ -91,10 +91,13 @@
           name = "python";
           publisher = "ms-python";
           version = "2025.1.2025021102";
+          #version = "2025.1.2025021701";
           hash = "sha256-HzVN4wsuevRCbLkDKTg3SfgVhYcrmxThOQU63IiLV9I=";
+          #hash = "sha256-6fDqQ587Wvvs3kLg41TIQZRjBoD00riql55viG3ZmNE=";
         }
       ];
       userSettings = {
+        "chat.commandCenter.enabled" = false;
         "window.menuBarVisibility" = "toggle";
         "editor.minimap.enabled" = false;
         "editor.formatOnPaste" = true;
@@ -223,28 +226,30 @@
         #"doxdocgen.generic.useGitUserName" = true;
 
         ## Git Lens
-        "gitlens.graph.allowMultiple" = false;
-        "gitlens.graph.avatars" = false;
-        "gitlens.graph.highlightRowsOnRefHover" = false;
+        "gitlens.graph.allowMultiple" = true;
+        "gitlens.graph.avatars" = true;
+        "gitlens.graph.experimental.location" = "tab";
+        "gitlens.graph.highlightRowsOnRefHover" = true;
+        "gitlens.graph.layout" = "editor";
         "gitlens.graph.minimap.enabled" = false;
-        "gitlens.graph.pullRequests.enabled" = false;
-        "gitlens.graph.scrollMarkers.additionalTypes" = [];
-        "gitlens.graph.showDetailsView" = false;
-        "gitlens.graph.showGhostRefsOnRowHover" = false;
-        "gitlens.graph.showUpstreamStatus" = false;
-        "gitlens.graph.statusBar.enabled" = false;
-        "gitlens.launchpad.indicator.enabled" = false;
+        "gitlens.graph.pullRequests.enabled" = true;
+        "gitlens.graph.scrollMarkers.enabled" = true;
+        "gitlens.graph.showDetailsView" = true;
+        "gitlens.graph.showGhostRefsOnRowHover" = true;
+        "gitlens.graph.showUpstreamStatus" = true;
+        "gitlens.graph.statusBar.enabled" = true;
+        #"gitlens.graph.scrollMarkers.additionalTypes" = [];
+        "gitlens.launchpad.indicator.enabled" = true;
         "gitlens.launchpad.indicator.polling.enabled" = false;
-        "gitlens.plusFeatures.enabled" = false;
+        "gitlens.plusFeatures.enabled" = true;
         "gitlens.telemetry.enabled" = false;
-        "gitlens.views.worktrees.avatars" = false;
-        "gitlens.views.worktrees.pullRequests.enabled" = false;
-        "gitlens.views.worktrees.pullRequests.showForBranches" = false;
-        "gitlens.views.worktrees.pullRequests.showForCommits" = false;
-        "gitlens.views.worktrees.reveal" = false;
-        "gitlens.views.worktrees.showBranchComparison" = false;
-        "gitlens.worktrees.promptForLocation" = false;
-        "gitlens.graph.scrollMarkers.enabled" = false;
+        "gitlens.views.worktrees.avatars" = true;
+        "gitlens.views.worktrees.pullRequests.enabled" = true;
+        "gitlens.views.worktrees.pullRequests.showForBranches" = true;
+        "gitlens.views.worktrees.pullRequests.showForCommits" = true;
+        "gitlens.views.worktrees.reveal" = true;
+        "gitlens.views.worktrees.showBranchComparison" = true;
+        "gitlens.worktrees.promptForLocation" = true;
       };
     };
     xdg.configFile."cspell/words.txt".text = ''

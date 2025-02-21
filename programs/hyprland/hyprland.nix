@@ -1,29 +1,21 @@
 # cSpell:words pkgs dmenu stdenv nordzy
 # cSpell:ignoreRegExp hypr\w* 
 { pkgs, lib, config, inputs, unstable, ... }:
-let 
-  # font_name = "JetBrainsMono Nerd Font";
-  font_name = "Helvetica Neue LT Std";
-  font_size = 11;
-  cursor_name = "Nordzy-cursors";
-  cursor_package = pkgs.nordzy-cursor-theme;
-  cursor_size = 24;
-in 
 {
   config = lib.mkIf config.my.hyprland.enable {
     my.desktop.enable = true;
     home.sessionVariables = {
       EDITOR = "nvim";
       TERMINAL = "kitty";
-      XCURSOR_SIZE = cursor_size;
+      XCURSOR_SIZE = config.my.looks.cursor.size;
       QT_QPA_PLATFORM = "wayland";
       SDL_VIDEODRIVER = "wayland";
       XDG_SESSION_TYPE = "wayland";
       NIXOS_OZONE_WL = 1;
       ELECTRON_OZONE_PLATFORM_HINT = "wayland";
-      #HYPRCURSOR_THEME = cursor_name;
-      #HYPRCURSOR_SIZE = cursor_size;
-      #GTK_THEME = "Tokyonight-Orange-Dark";
+      #HYPRCURSOR_THEME = config.my.looks.cursor.name;
+      #HYPRCURSOR_SIZE = config.my.looks.cursor.size;
+      #GTK_THEME = "${config.my.looks.theme.gtk.name}";
       HYPRSHOT_DIR = "${config.xdg.userDirs.pictures}/Screenshots/";
     };
     home.packages = with pkgs; [
@@ -135,7 +127,8 @@ in
         #"hyprland-autoname-workspaces"
         #"udiskie -t"
         "hyprswitch init --show-title --size-factor 5 --workspaces-per-row 5"
-        "tailscale-systray"
+        #"tailscale-systray"
+        "tail-tray"
         "[workspace 1 silent] kitty"
         "[workspace 3 silent] firefox"
         "[workspace 4 silent] discord"
@@ -143,11 +136,11 @@ in
       ];
 
       env = [
-        "HYPRCURSOR_THEME,${cursor_name}"
-        "HYPRCURSOR_SIZE,${toString cursor_size}"
-        "XCURSOR_THEME,${cursor_name}"
-        "XCURSOR_SIZE,${toString cursor_size}"
-        "GTK_THEME,Tokyonight-Orange-Dark"
+        "HYPRCURSOR_THEME,${config.my.looks.cursor.name}"
+        "HYPRCURSOR_SIZE,${toString config.my.looks.cursor.size}"
+        "XCURSOR_THEME,${config.my.looks.cursor.name}"
+        "XCURSOR_SIZE,${toString config.my.looks.cursor.size}"
+        "GTK_THEME,${config.my.looks.theme.gtk.name}"
         "NIXOS_OZONE_WL,1"
         "ELECTRON_OZONE_PLATFORM_HINT,wayland"
         "HYPRSHOT_DIR,${config.xdg.userDirs.pictures}/Screenshots/"
@@ -399,9 +392,6 @@ in
         "tag +float, class:^(org.gnome.Nautilus)$"
         "tag +float, class:^(org.gnome.Calculator)$"
         "tag +float, class:^(org.kde.dolphin)$"
-        "float, tag:float"
-        "size 60%, tag:fixsize"
-        "center, tag:fixsize"
         # Code
         "opacity 0.95 override 0.8 override, class:^(code)$"
         # Video
@@ -418,6 +408,7 @@ in
         "suppressevent activatefocus, initialTitle:^(Picture-in-Picture)$"
         # PrusaSlicer
         "opacity 1 override, initialClass:^(PrusaSlicer)$,floating:1"
+        "tag +settings, initialClass:^(PrusaSlicer)$, title:Choose one (or more )\?files\?(.*)"
 
         
         ## Rofi
@@ -441,7 +432,10 @@ in
 
         # FreeCAD
         "tag +freecad, initialClass:^(org.freecad.FreeCAD)$"
-        "opacity 1 ovverride, tag:freecad"
+        "tag +settings, initialClass:^(org.freecad.FreeCAD)$, title:^([a-zA-Z]* Manager)$"
+        "tag +settings, initialClass:^(org.freecad.FreeCAD)$, title:^(Location of your .*)$"
+        "tag +settings, initialClass:^(org.freecad.FreeCAD)$, title:^(.* configuration)$"
+        "opacity 1 override, tag:freecad"
 
         # ## KiCAD
         # "tag kicad, class:^(kicad)$"
@@ -452,11 +446,6 @@ in
         "float, tag:onedrive"
         "center, tag:onedrive"
         "size 80%, tag:onedrive"
-
-        ## Settings
-        "tag +settings, class:^(dev.deedles.Trayscale)$"
-        "float, tag:settings"
-        "center, tag:settings"
 
         ### Security ###
         "tag +security, initialClass:^(org.gnupg.pinentry.*)"
@@ -479,13 +468,13 @@ in
         "float, tag:1password"
         "size 70% 70%, tag:1password"
         "center, tag:1password"
-        "animation popin, tag:1password"
+        #"animation popin, tag:1password"
 
-        "stayfocused, tag:keepfocus"
 
         ### Open/Save Dialogs ###
-        "tag +opensave, class:xdg-desktop-portal-gtk, title:(Enter name of ([a-zA-Z]*) to (open|save to))"
-        "tag +opensave, class:xdg-desktop-portal-gtk, title:(Overwrite (.*)\?)"
+        #"tag +opensave, class:xdg-desktop-portal-gtk, title:(Enter name of ([a-zA-Z]*) to (open|save to))"
+        #"tag +opensave, class:xdg-desktop-portal-gtk, title:(Overwrite (.*)\?)"
+        "tag +opensave, class:xdg-desktop-portal-gtk"
         "tag +opensave, title:^((Open|Save|File) ([a-zA-Z]*)( [a-zA-Z]*)\?)$"
 
         "float, tag:opensave"
@@ -500,6 +489,22 @@ in
         "size 80%, tag:quickview"
         "float, tag:quickview"
         "center 1, tag:quickview"
+
+        ## Settings
+        "tag +settings, class:^(dev.deedles.Trayscale)$"
+        "tag +settings, class:^(se.grenangen.)$"
+        #"tag +settings, initialTitle:^(Tail Tray)$"
+        "maxsize 1200 850, initialTitle:^(Tail Tray)$"
+        "float, tag:settings"
+        "center, tag:settings"
+        "maxsize 1200 850, tag:settings"
+        "size 1000 800, tag:settings"
+
+        ## Tag Actions, Generic
+        "float, tag:float"
+        "size 60%, tag:fixsize"
+        "center, tag:fixsize"
+        "stayfocused, tag:keepfocus"
       ];
     };
     wayland.windowManager.hyprland.extraConfig = ''
@@ -536,48 +541,5 @@ in
         }
     '';
 
-    home.pointerCursor = {
-      gtk.enable = true;
-      # hyprcursor.enable = true;
-      name = cursor_name;
-      package = cursor_package;
-      size = cursor_size;
-    };
-    gtk = {
-      # gsettings set org.gnome.nautilus.window-state initial-size
-      enable = true;
-      font = {
-        # name = "JetBrainsMono Nerd Font";
-        # name = "Helvetica Neu LT Std";
-        name = font_name;
-        size = font_size;
-      };
-      theme = {
-        name = "Tokyonight-Orange-Dark";
-        package = pkgs.tokyo-night-gtk.override {
-          themeVariants = ["orange" "default"];
-          #iconVariants = ["Dark"];
-        };
-      };
-      iconTheme = {
-        name = "kora";
-        package = pkgs.kora-icon-theme;
-        #package = pkgs.kdePackages.breeze-icons;
-        #name = "breeze-dark";
-      };
-      gtk3.extraConfig = {gtk-application-prefer-dark-theme = 1;};
-      #gtk4.extraConfig = {gtk-application-prefer-dark-theme = 1;};
-    };
-    dconf.settings = {
-      "org/gnome/desktop/wm/preferences" = {
-        button-layout = "icon:close";
-      };
-      "org/gnome/nautilus/window-state" = {
-        initial-size = lib.hm.gvariant.mkTuple [1000 700];
-      };
-      "org/gnome/desktop/interface" = {
-        color-scheme = "prefer-dark";
-      };
-    };
   };
 }

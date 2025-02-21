@@ -65,6 +65,14 @@
             ./surface.nix 
           ];
         };
+        "cnf@dionysus" = home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+          modules = [
+            ./home.nix
+            ./programs
+            ./dionysus.nix 
+          ];
+        };
         "cnf@ySL" = home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
           modules = [

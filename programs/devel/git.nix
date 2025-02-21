@@ -9,6 +9,13 @@
     enable = true;
     userName = "Frank Rosquin";
     userEmail = "frank.rosquin@gmail.com";
+    difftastic.enable = true;
+    extraConfig = {
+      init = {defaultBranch = "main";};
+      credential.helper = "${
+          pkgs.git.override { withLibsecret = true; }
+      }/bin/git-credential-libsecret";
+    };
     ignores = [
       "### Local testing trash"
       "*-OLD"

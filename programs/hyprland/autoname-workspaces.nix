@@ -30,7 +30,7 @@
       client_active = "<span color='#FF8514'>{icon}</span>"
       # These wrap either client or client_active
       client_dup = "<span>{icon}{counter_sup}</span>"
-      client_fullscreen = "<span>[{icon}]</span>"
+      client_fullscreen = "<span>〔{icon}〕</span>"
 
       #client_dup_fullscreen = "[{icon}]{delim}{icon}{counter_unfocused_sup}"
 
@@ -78,11 +78,14 @@
       "Podman.*" = " "
       "dev.deedles.Trayscale" = "󰖂 "
       KTailctl = "󱗼"
+      "se.grenangen." = "󱗼"
 
 
+      "org.freedesktop.Bustle" = "󰘘 "
       # Gnome
       "org.gnome.Calculator" = " "
       "org.gnome.Calendar" = " "
+      "org.gnome.dspy" = "󰘘 "
       "org.gnome.FileRoller" = " "
       "org.gnome.Firmware" = " "
       "org.gnome.Logs" = "󱂅 "
@@ -96,6 +99,7 @@
       "org.gnome.baobab" = " "
       "org.gnome.font-viewer" = " "
       simple-scan = "󰚫 "
+      gnome-disks = "󰋊 "
       evince = " "
       geary = "󰴃 "
       "(?i)evolution.*" = "󰇯 "
@@ -122,7 +126,7 @@
 
       # Wine
       bottles = " "
-      wine = ""
+      wine = "󰍲 " #""
       "fusion360.exe" = "󰻬"
       "explorer.exe" = " "
 
