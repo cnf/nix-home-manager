@@ -109,6 +109,11 @@
         "editor.fontFamily" = "'SauceCodePro Nerd Font', 'Source Code Pro', 'FontAwesome', Consolas, 'Courier New', monospace";
         "editor.guides.bracketPairs" = true;
         "editor.guides.highlightActiveIndentation" = true;
+        "diffEditor.experimental.showMoves" = true;
+        "diffEditor.experimental.useTrueInlineView" = true;
+        "diffEditor.hideUnchangedRegions.enabled" = false;
+        "diffEditor.renderSideBySide" = false;
+
         "debug.toolBarLocation" = "docked";
         "problems.showCurrentInStatus" = false;
         "liveshare.launcherClient" = "visualStudioCode";
