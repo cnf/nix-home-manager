@@ -49,7 +49,7 @@
           ];
         };
         "cnf@OptiNix" = home-manager.lib.homeManagerConfiguration {
-          extraSpecialArgs = {inherit inputs;};
+          extraSpecialArgs = {inherit inputs system;};
           inherit pkgs;
           modules = [
             ./home.nix
@@ -58,6 +58,7 @@
           ];
         };
         "cnf@surface" = home-manager.lib.homeManagerConfiguration {
+          extraSpecialArgs = {inherit inputs system;};
           inherit pkgs;
           modules = [
             ./home.nix

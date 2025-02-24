@@ -5,5 +5,6 @@
   };
   imports = [
     ./qlc.nix
+    ./settings.nix
   ];
 }

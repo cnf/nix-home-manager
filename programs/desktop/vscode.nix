@@ -92,7 +92,8 @@
           publisher = "ms-python";
           version = "2025.1.2025021102";
           #version = "2025.1.2025021701";
-          hash = "sha256-HzVN4wsuevRCbLkDKTg3SfgVhYcrmxThOQU63IiLV9I=";
+          hash = "sha256-qXQrBEKzZthZu1fdnRJXjryyHjpcxJA4c5LrhOI3deM=";
+          #hash = "sha256-HzVN4wsuevRCbLkDKTg3SfgVhYcrmxThOQU63IiLV9I=";
           #hash = "sha256-6fDqQ587Wvvs3kLg41TIQZRjBoD00riql55viG3ZmNE=";
         }
       ];
@@ -128,8 +129,8 @@
           "editor.defaultFormatter" = "ms-vscode.cpptools";
         };
         # Go
-        "go.gopath" = "${config.home.homeDirectory}/${config.programs.go.goPath}";
-        "go.toolsGopath" = "${config.xdg.dataHome}/vscode-tools/go";
+        #"go.gopath" = "${config.home.homeDirectory}/${config.programs.go.goPath}";
+        #"go.toolsGopath" = "${config.xdg.dataHome}/vscode-tools/go";
         # Python
         "python.terminal.shellIntegration.enabled" = true;
         "python.testing.pytestEnabled" = true;
