@@ -60,6 +60,11 @@ in {
 
         set backspace=2    " make backspace work in insert mode
         " }}}
+        " Indenting Defaults: {{{
+        set expandtab
+        set tabstop=4
+        set shiftwidth=4
+        " }}}
         " Show Syntax Colors: {{{
         syntax enable
         set t_Co=256 "enable 256 colors
