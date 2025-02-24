@@ -60,6 +60,9 @@
         source "$HOME/.config/zsh/local.zsh"
       fi
 
+      # kitty ssh fix
+      [[ "$TERM" == "xterm-kitty" ]] && alias ssh="TERM=xterm-256color ssh" 
+
       ## Prompt Stuff
       typeset +x PS1
 

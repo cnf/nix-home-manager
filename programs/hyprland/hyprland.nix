@@ -12,6 +12,7 @@
       SDL_VIDEODRIVER = "wayland";
       XDG_SESSION_TYPE = "wayland";
       NIXOS_OZONE_WL = 1;
+      NIXOS_XDG_OPEN_USE_PORTAL = 1;
       ELECTRON_OZONE_PLATFORM_HINT = "wayland";
       #HYPRCURSOR_THEME = config.my.looks.cursor.name;
       #HYPRCURSOR_SIZE = config.my.looks.cursor.size;
@@ -35,6 +36,7 @@
       slurp
       hyprshot
       grimblast
+      swappy
 
       # hyprland-monitor-attached
 
@@ -142,6 +144,7 @@
         "XCURSOR_SIZE,${toString config.my.looks.cursor.size}"
         "GTK_THEME,${config.my.looks.theme.gtk.name}"
         "NIXOS_OZONE_WL,1"
+        "NIXOS_XDG_OPEN_USE_PORTAL,1"
         "ELECTRON_OZONE_PLATFORM_HINT,wayland"
         "HYPRSHOT_DIR,${config.xdg.userDirs.pictures}/Screenshots/"
         #"XDG_MENU_PREFIX,plasma-"
@@ -170,6 +173,7 @@
         ", Print, Screenshot entire screen, exec, hyprshot -z -m active -m output"
         "Control_L, Print, Screenshot window, exec, hyprshot -z -m window"
         "Control SHIFT, Print, Screenshot selected area, exec, hyprshot -z -m region"
+        # hyprshot -m region --clipboard-only --freeze && wl-paste | swappy -f
 
         ## Various Launchers
         "$mod, SPACE, App Launcher Menu, exec, rofi -show drun # Show the graphical app launcher"
@@ -432,9 +436,11 @@
 
         # FreeCAD
         "tag +freecad, initialClass:^(org.freecad.FreeCAD)$"
-        "tag +settings, initialClass:^(org.freecad.FreeCAD)$, title:^([a-zA-Z]* Manager)$"
+        "tag +settings, initialClass:^(org.freecad.FreeCAD)$, title:^([ a-zA-Z]* Manager)$"
         "tag +settings, initialClass:^(org.freecad.FreeCAD)$, title:^(Location of your .*)$"
         "tag +settings, initialClass:^(org.freecad.FreeCAD)$, title:^(.* configuration)$"
+        "float, initialClass:^(org.freecad.FreeCAD)$, title:^((Add|Edit) .*)$"
+        "focusonactivate on, initialClass:^(org.freecad.FreeCAD)$, floating:1, title:^(Expression editor)$"
         "opacity 1 override, tag:freecad"
 
         # ## KiCAD
@@ -446,14 +452,6 @@
         "float, tag:onedrive"
         "center, tag:onedrive"
         "size 80%, tag:onedrive"
-
-        ### Security ###
-        "tag +security, initialClass:^(org.gnupg.pinentry.*)"
-        "tag +security, class:^(pinentry-)"
-        "tag +security, initialClass:^(gcr-prompter)$"
-        "tag +security, initialTitle:^(Hyprland Polkit Agent)$"
-        "stayfocused, tag:security # fix pinentry losing focus"
-        "bordercolor rgba(E60000AA), tag:security"
 
 
         ### 1Password
@@ -489,6 +487,14 @@
         "size 80%, tag:quickview"
         "float, tag:quickview"
         "center 1, tag:quickview"
+
+        ### Security ###
+        "tag +security, initialClass:^(org.gnupg.pinentry.*)"
+        "tag +security, class:^(pinentry-)"
+        "tag +security, initialClass:^(gcr-prompter)$"
+        "tag +security, initialTitle:^(Hyprland Polkit Agent)$"
+        "stayfocused, tag:security # fix pinentry losing focus"
+        "bordercolor rgba(E60000AA), tag:security"
 
         ## Settings
         "tag +settings, class:^(dev.deedles.Trayscale)$"

@@ -98,6 +98,7 @@
       "org.gnome.World.PikaBackup" = "󰁯 "
       "org.gnome.baobab" = " "
       "org.gnome.font-viewer" = " "
+      "org.gnome.TextEditor" = " "
       simple-scan = "󰚫 "
       gnome-disks = "󰋊 "
       evince = " "
