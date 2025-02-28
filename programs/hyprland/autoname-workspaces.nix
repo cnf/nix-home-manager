@@ -96,6 +96,7 @@
       "org.gnome.NautilusPreviewer" = " "
       "org.gnome.Snapshot" = " "
       "org.gnome.SystemMonitor" = " "
+      "org.gnome.Settings" = " "
       "org.gnome.World.PikaBackup" = "󰁯 "
       "org.gnome.baobab" = " "
       "org.gnome.font-viewer" = " "
