@@ -5,13 +5,25 @@
   };
   config = lib.mkIf config.my.email.enable {
     home.packages = with pkgs; [
-      mailspring
-      geary
-      thunderbird
       evolution
+      evolution-ews
+      evolution-data-server-gtk4
+
     ];
+    #services.gnome.evolution-data-server.enable = true;
+    #programs.evolution = {
+    #  enable = true;
+    #  plugins = [
+    #    pkgs.evolution-data-server-gtk4
+    #  ];
+    #};
     #programs.thunderbird = {
     #  enable = true;
+    #  settings = {
+    #    "calendar.alarms.showmissed" = false;
+    #    "privacy.donottrackheader.enabled" = true;
+    #    "app.update.auto" = false;
+    #  };
     #};
   };
 }

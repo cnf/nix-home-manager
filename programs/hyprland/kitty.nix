@@ -29,6 +29,7 @@
       keybindings = {
         "ctrl+c" = "copy_or_interrupt"; 
         "ctrl+v" = "paste_from_clipboard";
+        "ctrl+," = "edit_config_file";
       };
     };
   };

@@ -1,4 +1,4 @@
-{ pkgs, lib, config, inputs, ... }:
+{ pkgs, lib, config, ... }:
 {
   options = { 
     my.nixtools.enable = lib.mkEnableOption "Install nix specific dev/search/... tools";
@@ -10,6 +10,7 @@
       nvd # compare generations
     ];
     programs.nh.enable = true; # yet another Nix CLI helper.
+    programs.nh.flake = "${config.xdg.configHome}/home-manager";
     #programs.nix-index.enable = true; # look for packages containing a command.
     #programs.command-not-found.enable = lib.mkIf config.programs.nix-index.enable false;
   };

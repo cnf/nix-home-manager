@@ -70,6 +70,7 @@
   my.desktop.enable = true;
   my.vscode.enable = true;
   my.firefox.enable = true;
+  my.altbrowsers.enable = true;
   my.obsidian.enable = false;
   my.discord.enable = true;
   my.sdr.enable = true;

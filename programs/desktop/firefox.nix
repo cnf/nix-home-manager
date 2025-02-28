@@ -12,6 +12,11 @@
     };
     programs.firefox = {
       enable = true;
+      nativeMessagingHosts = [
+        pkgs.web-eid-app
+        pkgs.fx-cast-bridge
+        pkgs.ff2mpv
+      ];
       profiles = {
         default = {
           id = 0;

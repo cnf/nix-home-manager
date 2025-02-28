@@ -6,6 +6,8 @@
   config = lib.mkIf config.my.tryouts.enable {
 
     home.packages = with pkgs; [
+      graphia
+      unstable.ladybird
     ];
   };
 }

@@ -12,6 +12,7 @@
     ./fonts.nix
     ./gaming.nix
     ./gnome.nix
+    ./altbrowsers.nix
     ./mqtt.nix
     ./nixtools.nix
     ./obsidian.nix

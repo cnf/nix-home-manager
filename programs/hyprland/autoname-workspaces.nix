@@ -46,6 +46,7 @@
       [class]
       DEFAULT = " "
       "(?i)firefox" = "󰈹 "
+      "(?i)librewolf" = " "
       "(?i)kitty" = " "
       "(?i)code" = "󰨞 "
       freecad = " "
@@ -99,6 +100,7 @@
       "org.gnome.baobab" = " "
       "org.gnome.font-viewer" = " "
       "org.gnome.TextEditor" = " "
+      "org.gnome.seahorse.Application" = "󱕴 "
       simple-scan = "󰚫 "
       gnome-disks = "󰋊 "
       evince = " "
