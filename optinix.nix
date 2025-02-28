@@ -8,6 +8,7 @@
   };
   imports = [
   ];
+  my.altbrowsers.enable = true;
   my.desktop.enable = true;
   my.discord.enable = false;
   my.firefox.enable = true;
@@ -16,6 +17,7 @@
   my.golang.enable = true;
   my.hyprland.enable = true;
   my.nixtools.enable = true;
+  my.obsidian.enable = false;
   my.sdr.enable = true;
   my.sigrok.enable = true;
   my.vim.enable = true;

@@ -9,6 +9,7 @@
       TERMINAL = "kitty";
       XCURSOR_SIZE = config.my.looks.cursor.size;
       QT_QPA_PLATFORM = "wayland";
+      QT_QPA_PLATFORMTHEME = "gtk2";
       SDL_VIDEODRIVER = "wayland";
       XDG_SESSION_TYPE = "wayland";
       NIXOS_OZONE_WL = 1;
@@ -153,7 +154,12 @@
       misc = {
         focus_on_activate = true; # Whether Hyprland should focus an app that requests to be focused (an activate request)
         disable_hyprland_logo=true;
-        vrr = true;
+        initial_workspace_tracking = 2;
+        enable_swallow = true;
+        swallow_regex = [
+          "kitty"
+        ];
+        vrr = 1;
         vfr = true;
       };
 
@@ -173,6 +179,7 @@
         ", Print, Screenshot entire screen, exec, hyprshot -z -m active -m output"
         "Control_L, Print, Screenshot window, exec, hyprshot -z -m window"
         "Control SHIFT, Print, Screenshot selected area, exec, hyprshot -z -m region"
+        "$mod, Print, Edit last screenshow, exec, wl-paste | swappy -f | wl-copy"
         # hyprshot -m region --clipboard-only --freeze && wl-paste | swappy -f
 
         ## Various Launchers
@@ -439,9 +446,16 @@
         "tag +settings, initialClass:^(org.freecad.FreeCAD)$, title:^([ a-zA-Z]* Manager)$"
         "tag +settings, initialClass:^(org.freecad.FreeCAD)$, title:^(Location of your .*)$"
         "tag +settings, initialClass:^(org.freecad.FreeCAD)$, title:^(.* configuration)$"
-        "float, initialClass:^(org.freecad.FreeCAD)$, title:^((Add|Edit) .*)$"
+        "tag +float, initialClass:^(org.freecad.FreeCAD)$, title:^((Add|Edit|Select|Updating) .*)$"
+        "tag +float, initialClass:^(org.freecad.FreeCAD)$, title:^(Choose category and set a filename without extension)$"
+        "tag +float, initialClass:^(org.freecad.FreeCAD)$, title:^(Placement)$"
         "focusonactivate on, initialClass:^(org.freecad.FreeCAD)$, floating:1, title:^(Expression editor)$"
         "opacity 1 override, tag:freecad"
+
+        # Evolution
+        "tag +evolution, initialClass:^(org.gnome.Evolution)$"
+        "tag +float, initialTitle:^((Appointment) — .*)$, tag:evolution"
+        "tag +fixsize, initialTitle:^((Appointment) — .*)$, tag:evolution"
 
         # ## KiCAD
         # "tag kicad, class:^(kicad)$"
@@ -499,6 +513,7 @@
         ## Settings
         "tag +settings, class:^(dev.deedles.Trayscale)$"
         "tag +settings, class:^(se.grenangen.)$"
+        "tag +settings, class:^(org.gnome.NetworkDisplays)$"
         #"tag +settings, initialTitle:^(Tail Tray)$"
         "maxsize 1200 850, initialTitle:^(Tail Tray)$"
         "float, tag:settings"
@@ -508,7 +523,7 @@
 
         ## Tag Actions, Generic
         "float, tag:float"
-        "size 60%, tag:fixsize"
+        "size 70%, tag:fixsize"
         "center, tag:fixsize"
         "stayfocused, tag:keepfocus"
       ];

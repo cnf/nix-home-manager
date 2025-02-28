@@ -5,9 +5,7 @@
     my.zsh.enable = lib.mkEnableOption "Enable and configure zsh";
   };
   config = lib.mkIf config.my.zsh.enable {
-    #home.packages = [
-    #  pkgs.spaceship-prompt
-    #];
+    #programs.nix-your-shell.enable = true;
     programs.zsh = {
     enable = true;
     enableCompletion = true;
