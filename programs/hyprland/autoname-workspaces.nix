@@ -80,6 +80,7 @@
       "dev.deedles.Trayscale" = "󰖂 "
       KTailctl = "󱗼"
       "se.grenangen." = "󱗼"
+      "(?i)gitkraken" = " "
 
 
       "org.freedesktop.Bustle" = "󰘘 "

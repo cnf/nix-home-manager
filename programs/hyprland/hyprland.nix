@@ -9,7 +9,7 @@
       TERMINAL = "kitty";
       XCURSOR_SIZE = config.my.looks.cursor.size;
       QT_QPA_PLATFORM = "wayland";
-      QT_QPA_PLATFORMTHEME = "gtk2";
+      #QT_QPA_PLATFORMTHEME = "gtk2";
       SDL_VIDEODRIVER = "wayland";
       XDG_SESSION_TYPE = "wayland";
       NIXOS_OZONE_WL = 1;
@@ -185,6 +185,7 @@
         ## Various Launchers
         "$mod, SPACE, App Launcher Menu, exec, rofi -show drun # Show the graphical app launcher"
         "$mod, Return, Kitty Terminal, exec, kitty"
+        "$mod, BackSpace, Nautilus File Browser, exec, nautilus"
         #"$mod, K, Kitty Terminal, exec, kitty"
         "$mod, equal, Calculator, exec, rofi -show calc -modi calc -no-show-match -no-sort -calc-command 'echo -n {result}| wl-copy'"
         "$shiftmod, J, Color Picker, exec, hyprpicker -a -n| xargs -I % notify-send hyprpicker 'Copied % to clipboard'"
@@ -446,6 +447,7 @@
         "tag +settings, initialClass:^(org.freecad.FreeCAD)$, title:^([ a-zA-Z]* Manager)$"
         "tag +settings, initialClass:^(org.freecad.FreeCAD)$, title:^(Location of your .*)$"
         "tag +settings, initialClass:^(org.freecad.FreeCAD)$, title:^(.* configuration)$"
+        "tag +settings, initialClass:^(org.freecad.FreeCAD)$, title:^(([a-zA-Z] )?(Add|Edit|Delete) .*)$"
         "tag +float, initialClass:^(org.freecad.FreeCAD)$, title:^((Add|Edit|Select|Updating) .*)$"
         "tag +float, initialClass:^(org.freecad.FreeCAD)$, title:^(Choose category and set a filename without extension)$"
         "tag +float, initialClass:^(org.freecad.FreeCAD)$, title:^(Placement)$"

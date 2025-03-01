@@ -36,61 +36,82 @@ in
       pkgs.earlybird
     ];
     programs.git = {
-    enable = true;
-    userName = "Frank Rosquin";
-    userEmail = "frank.rosquin@gmail.com";
-    difftastic = {
       enable = true;
-      display = "inline";
-    };
-    extraConfig = {
-      init = {
-        defaultBranch = "main";
-        templateDir = "${hooks}/share";
+      userName = "Frank Rosquin";
+      userEmail = "frank.rosquin@gmail.com";
+      difftastic = {
+        enable = true;
+        display = "inline";
       };
-      #core.hooksPath = "${hooks}/share/hooks"; 
-      credential.helper = "${
-          pkgs.git.override { withLibsecret = true; }
-      }/bin/git-credential-libsecret";
+      extraConfig = {
+        init = {
+          defaultBranch = "main";
+          #templateDir = "${hooks}/share";
+        };
+        core = {
+          hooksPath = "${config.xdg.configHome}/git/hooks";
+        };
+        credential.helper = "${
+            pkgs.git.override { withLibsecret = true; }
+        }/bin/git-credential-libsecret";
+      };
+      ignores = [
+        "### Local testing trash"
+        "*-OLD"
+        "*-ORIG"
+        "*-TEST"
+        "bucket/"
+        "my_*"
+        "MY_*"
+        "### Archives"
+        "*.7z"
+        "*.dmg"
+        "*.gz"
+        "*.iso"
+        "*.jar"
+        "*.rar"
+        "*.tar"
+        "*.zip"
+        "### Logs and dbases"
+        "*.log"
+        "*.sqlite"
+        "## Directories potentially created on remote AFP share"
+        ".AppleDB"
+        ".AppleDesktop"
+        "Network Trash Folder"
+        "Temporary Items"
+        ".apdisk"
+        "### Vim"
+        "*.swp"
+        "### Direnv"
+        ".envrc" 
+        "### Python"
+        "__pycache__/"
+      ];
     };
-    ignores = [
-      "### Local testing trash"
-      "*-OLD"
-      "*-ORIG"
-      "*-TEST"
-      "bucket/"
-      "my_*"
-      "MY_*"
-      "### Archives"
-      "*.7z"
-      "*.dmg"
-      "*.gz"
-      "*.iso"
-      "*.jar"
-      "*.rar"
-      "*.tar"
-      "*.zip"
-      "### Logs and dbases"
-      "*.log"
-      "*.sqlite"
-      "## Directories potentially created on remote AFP share"
-      ".AppleDB"
-      ".AppleDesktop"
-      "Network Trash Folder"
-      "Temporary Items"
-      ".apdisk"
-      "### Vim"
-      "*.swp"
-      "### Direnv"
-      ".envrc" 
-      "### Python"
-      "__pycache__/"
-    ];
-    #extraConfig = {
-    #  core = {
-    #    excludesfile = "${config.home.homeDirectory}/.config/git/ignore";
-    #  };
-    #};
+    xdg.configFile."git/hooks/pre-commit".text = ''
+      #!/usr/bin/env bash
+      # To prevent debug code from being accidentally committed, simply add a comment near your
+      # debug code containing the keyword !nocommit and this script will abort the commit.
+      #
+      if git commit -v --dry-run | grep '!nocommit' >/dev/null 2>&1
+      then
+        echo "Trying to commit non-committable code."
+        echo "Remove the !nocommit string and try again."
+        exit 1
+      elif ${lib.getExe pkgs.earlybird} --fail-severity=high
+      then
+        echo "Running EarlyBird pre-commit hook"
+        echo "Secrets detection tests must pass before commit!"
+        exit 1
+      else
+        # Run local pre-commit hook if exists
+        if [ -e ./.git/hooks/pre-commit ]; then
+          ./.git/hooks/pre-commit "$@"
+        else
+          exit 0
+        fi
+      fi
+    '';
   };
-};
 }

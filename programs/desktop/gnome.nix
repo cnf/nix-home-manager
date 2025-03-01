@@ -13,6 +13,7 @@
       impression
       paper-clip
       seahorse
+      snapshot
       tuba
     ];
   };
