@@ -47,7 +47,7 @@
       };
     };
     qt.enable = true;
-    qt.platformTheme.name = "gtk3";
+    qt.platformTheme.name = "gtk2";
     qt.style.name = "gtk2";
   };
 }

@@ -125,7 +125,7 @@
         "1password --silent"
         "systemctl --user restart usbguard-notifier.service"
         "systemctl --user restart yubikey-agent.service"
-        "systemctl --user restart hyprpolkitagent.service"
+        #"systemctl --user restart hyprpolkitagent.service"
         "systemctl --user restart waybar.service"
         #"hyprland-autoname-workspaces"
         #"udiskie -t"
