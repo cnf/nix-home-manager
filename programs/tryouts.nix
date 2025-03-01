@@ -11,6 +11,12 @@
       graphia
       unstable.gitkraken
       unstable.gk-cli
+
+      git-backup-go
+      github-backup
+      git-stack
+      git-gone
+
     ];
   };
 }
