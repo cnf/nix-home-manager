@@ -35,7 +35,7 @@
       setopt print_exit_value
     '';
     initExtra = ''
-      ## initExtra
+      # initExtra: {{{
       # see man zshoptions(1)
       setopt INC_APPEND_HISTORY
       setopt PRINT_EXIT_VALUE
@@ -59,7 +59,8 @@
       fi
 
       # kitty ssh fix
-      [[ "$TERM" == "xterm-kitty" ]] && alias ssh="TERM=xterm-256color ssh" 
+      #[[ "$TERM" == "xterm-kitty" ]] && alias ssh="TERM=xterm-256color ssh" 
+      [[ "$TERM" == "xterm-kitty" ]] && alias ssh="kitten ssh" 
 
       ## Prompt Stuff
       typeset +x PS1
@@ -114,7 +115,7 @@
       RPROMPT='%f%b$(gitprompt)%f%b$(nixshell)%f%b$(venv)  $(battery_pct_prompt)%f%b'
       SPROMPT='zsh: correct %F{red}%R%f to %F{green}%r%f [nyae]? '
       export VIRTUAL_ENV_DISABLE_PROMPT=1 # we have our own on the right prompt
-
+      # }}}
     '';
     antidote = {
       enable = true;

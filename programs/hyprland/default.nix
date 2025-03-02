@@ -14,7 +14,6 @@
     ./hyprlock.nix
     ./hyprpaper.nix
     ./kanshi.nix
-    ./kitty.nix
     ./launcher
     ./osd.nix
     ./theme.nix

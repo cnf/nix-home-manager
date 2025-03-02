@@ -18,6 +18,8 @@
 
     gdb
     sqlite-interactive
+
+    rpi-imager
   ];
   nix.nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
 }

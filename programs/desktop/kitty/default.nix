@@ -1,7 +1,10 @@
 { pkgs, lib, config, ... }:
 
 {
-  config = lib.mkIf config.my.hyprland.enable {
+  options = {
+    my.kitty.enable = lib.mkEnableOption "Enable and configure Kitty";
+  };
+  config = lib.mkIf config.my.kitty.enable {
     home.packages = with pkgs; [
       kitty-img
       # nautilus-open-any-terminal
@@ -32,5 +35,12 @@
         "ctrl+," = "edit_config_file";
       };
     };
+    #xdg.configFile."kitty/ssh.conf" = {
+    #  enable = true;
+    #  text = ''
+    #    env PS1="(REMOTE) $PS1"
+    #    env _TEST_VAR=hello
+    #  '';
+    #};
   };
 }

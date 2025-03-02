@@ -4,6 +4,7 @@
 {
   config = lib.mkIf config.my.hyprland.enable {
     my.desktop.enable = true;
+    my.kitty.enable = true;
     home.sessionVariables = {
       EDITOR = "nvim";
       TERMINAL = "kitty";
@@ -456,8 +457,8 @@
 
         # Evolution
         "tag +evolution, initialClass:^(org.gnome.Evolution)$"
-        "tag +float, initialTitle:^((Appointment) — .*)$, tag:evolution"
-        "tag +fixsize, initialTitle:^((Appointment) — .*)$, tag:evolution"
+        "tag +float, initialTitle:^((Appointment|Meeting|Memo|Task) — .*)$, tag:evolution"
+        "tag +fixsize, initialTitle:^((Appointment|Meeting|Memo|Task|Contact Editor) — .*)$, tag:evolution"
 
         # ## KiCAD
         # "tag kicad, class:^(kicad)$"
@@ -527,6 +528,7 @@
         "float, tag:float"
         "size 70%, tag:fixsize"
         "center, tag:fixsize"
+        "maxsize 1200 850, tag:fixsize"
         "stayfocused, tag:keepfocus"
       ];
     };

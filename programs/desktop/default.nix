@@ -6,6 +6,7 @@
   imports = [
     ./chromium.nix
     ./davinci.nix
+    ./kitty
     ./discord.nix
     ./email.nix
     ./firefox.nix
