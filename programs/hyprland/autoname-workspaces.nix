@@ -103,6 +103,7 @@
       "org.gnome.font-viewer" = " "
       "org.gnome.TextEditor" = " "
       "org.gnome.seahorse.Application" = "󱕴 "
+      "org.gnome.Boxes" = " "
       simple-scan = "󰚫 "
       gnome-disks = "󰋊 "
       evince = " "

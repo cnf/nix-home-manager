@@ -10,6 +10,7 @@
     ./backup.nix
     ./dunst.nix
     ./hypridle.nix
+    ./hyprsunset.nix
     ./hyprland.nix
     ./hyprlock.nix
     ./hyprpaper.nix

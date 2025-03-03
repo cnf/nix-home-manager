@@ -13,6 +13,8 @@
     nixd
     nixfmt-rfc-style
 
+    gum
+
     bustle
     httpie
 

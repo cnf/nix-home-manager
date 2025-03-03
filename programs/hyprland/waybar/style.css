@@ -152,33 +152,36 @@ menuitem:hover menu > label {
 #workspaces button.hosting-monitor {
 }
 
-#taskbar,
-#submap,
-#custom-launcher,
-#custom-hyprlock,
-#custom-media,
-#mpris,
-#idle_inhibitor,
-#power-profiles-daemon,
-#window,
-#cpu,
-#disk,
-#memory,
-#clock,
+#backlight,
 #battery,
-#upower,
+#bluetooth,
+#clock,
+#cpu,
+#custom-hyprlock,
+#custom-launcher,
+#custom-leftend,
+#custom-media,
+#custom-touch,
+#custom-usbguard,
+#custom-webcam,
+#custom-yubikey,
+#disk,
+#idle_inhibitor,
+#memory,
+#mpris,
+#network,
+#power-profiles-daemon,
+#privacy,
 #pulseaudio,
 #pulseaudio-slider,
-#network,
-#bluetooth,
-#tray,
+#submap,
+#taskbar,
 #temperature,
-#privacy,
-#custom-webcam,
-#custom-usbguard,
-#custom-touch,
-#custom-yubikey,
-#workspaces {
+#tray,
+#upower,
+#window,
+#workspaces 
+{
     /*background: @bgcolor;*/
     background: linear-gradient(@bgaccent 0%, @bgcolor 70%); /*#5e5e6e);*/
     opacity: 0.8;
@@ -186,6 +189,22 @@ menuitem:hover menu > label {
     margin: 3px 0px;
     margin-top: 5px;
     border: 0px;
+}
+
+.modules-right > widget:first-child > label {
+    border-radius: 10px 0px 0px 10px;
+}
+
+.modules-right > widget:first-child > box label {
+    border-radius: 10px 0px 0px 10px;
+}
+
+.modules-right > widget:first-child > box:hover label {
+    border-radius: 0px 0px 0px 0px;
+}
+
+.modules-right > widget:first-child > box > revealer > box > widget:first-child label {
+    border-radius: 10px 0px 0px 10px;
 }
 
 #clock {
@@ -201,8 +220,7 @@ menuitem:hover menu > label {
     font-weight: bold;
 }
 
-#idle_inhibitor {
-    border-radius: 10px 0px 0px 10px;
+#custom-leftend {
 } 
 
 #idle_inhibitor.activated {

@@ -27,7 +27,6 @@
       hyprlang
       hyprpicker
       hyprpolkitagent
-      hyprsunset
       hyprutils
       wlr-randr
       xdg-desktop-portal-gtk
@@ -76,10 +75,10 @@
       #package = unstable.hyprland.override {libgbm = unstable.mesa;};
       #package = inputs.hyprland.packages.${pkgs.system}.hyprland;
       systemd.enableXdgAutostart = true;
-      plugins  = [
-        pkgs.hyprlandPlugins.hyprgrass
-        pkgs.hyprlandPlugins.hyprspace
-      ];
+      #plugins  = [
+      #  pkgs.hyprlandPlugins.hyprgrass
+      #  pkgs.hyprlandPlugins.hyprspace
+      #];
     };
     wayland.windowManager.hyprland.settings = {
       "$mod" = "SUPER";
@@ -126,7 +125,7 @@
         "1password --silent"
         "systemctl --user restart usbguard-notifier.service"
         "systemctl --user restart yubikey-agent.service"
-        #"systemctl --user restart hyprpolkitagent.service"
+        "systemctl --user restart hyprpolkitagent.service"
         "systemctl --user restart waybar.service"
         #"hyprland-autoname-workspaces"
         #"udiskie -t"
@@ -316,7 +315,7 @@
         preserve_split = "yes";
       };
       master = {
-        always_center_master = true;
+        #always_center_master = true;
         #TODO: slave_count_for_center_master 
         #new_is_master = false;
         orientation = "right";

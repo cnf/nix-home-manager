@@ -9,6 +9,7 @@
       url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
     hyprland.url = "github:hyprwm/Hyprland";
     hyprswitch.url = "github:h3rmt/hyprswitch/release";
     hyprland-plugins = {
@@ -34,13 +35,14 @@
       #inherit (self) outputs;
       system = "x86_64-linux";  # x86_64-linux, aarch64-multiplatform, etc.
       pkgs = nixpkgs.legacyPackages.${system};
+      vscode-extensions = inputs.nix-vscode-extensions.extensions.${system};
     in {
       nix.nixPath = ["nixpkgs=${inputs.nixpkgs}"]; # for nixd
       # packages.x86_64-linux.freerouting = pkgs.callPackage ./pkgs/freerouting.nix {};
       # call it with  inputs.self.packages.x86_64-linux.freerouting in my files
       homeConfigurations = {
         "cnf@hydra" = home-manager.lib.homeManagerConfiguration {
-          extraSpecialArgs = {inherit inputs system;};
+          extraSpecialArgs = {inherit inputs system vscode-extensions;};
           inherit pkgs;
           modules = [
             ./home.nix
