@@ -101,10 +101,14 @@
         echo " 󱄅 %B%F{cyan}''${IN_NIX_SHELL}%f%b%k"
       }
 
-      ZSH_THEME_GIT_PROMPT_PREFIX="< "
-      ZSH_THEME_GIT_PROMPT_SUFFIX=" >"
-      ZSH_THEME_GIT_PROMPT_SEPARATOR=" | "
+      ZSH_THEME_GIT_PROMPT_PREFIX="⟮"
+      ZSH_THEME_GIT_PROMPT_SUFFIX="⟯"
+      ZSH_THEME_GIT_PROMPT_SEPARATOR="⸽"
       ZSH_THEME_GIT_PROMPT_BRANCH="%{$fg_bold[yellow]%}"
+      ZSH_THEME_GIT_PROMPT_UPSTREAM_SYMBOL="%{$fg_bold[yellow]%} ⟳"
+      ZSH_THEME_GIT_PROMPT_UPSTREAM_NO_TRACKING="%{$fg_bold[red]%}!"
+      ZSH_GIT_PROMPT_SHOW_UPSTREAM=symbol
+      ZSH_GIT_PROMPT_SHOW_STASH=1
       typeset +x PS1
 
 
@@ -112,7 +116,7 @@
 
       setopt PROMPT_SUBST
       PROMPT='%f%b$user %B%F{blue}%2~ $(rsymbol)%f%b '
-      RPROMPT='%f%b$(gitprompt)%f%b$(nixshell)%f%b$(venv)  $(battery_pct_prompt)%f%b'
+      RPROMPT='%f%b$(gitprompt)%f%b$(gitprompt_secondary)%f%b$(nixshell)%f%b$(venv) $(battery_pct_prompt)%f%b'
       SPROMPT='zsh: correct %F{red}%R%f to %F{green}%r%f [nyae]? '
       export VIRTUAL_ENV_DISABLE_PROMPT=1 # we have our own on the right prompt
       # }}}

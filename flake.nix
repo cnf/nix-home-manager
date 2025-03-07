@@ -9,17 +9,36 @@
       url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
-    hyprland.url = "github:hyprwm/Hyprland";
-    hyprswitch.url = "github:h3rmt/hyprswitch/release";
-    hyprland-plugins = {
-      url = "github:hyprwm/hyprland-plugins";
+    nix-vscode-extensions = {
+      url = "github:nix-community/nix-vscode-extensions";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
+    hyprland = {
+      url = "github:hyprwm/Hyprland";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    hyprpolkitagent = {
+      url = "github:hyprwm/hyprpolkitagent";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    hyprswitch = {
+      url = "github:h3rmt/hyprswitch/release";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    hyprspace = {
+      url = "github:KZDKM/Hyprspace";
+      inputs.hyprland.follows = "hyprland";
+    };
+    #hyprland-plugins = {
+    #  url = "github:hyprwm/hyprland-plugins";
+    #};
     hyprland-contrib = {
       url = "github:hyprwm/contrib";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     hyprsysteminfo = {
       url = "github:hyprwm/hyprsysteminfo";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     hypr-binds = {
       url = "github:gvolpe/hypr-binds";

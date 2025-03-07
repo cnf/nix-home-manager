@@ -1,10 +1,13 @@
-{ lib, config, pkgs, ... }:
+{ lib, config, pkgs, unstable, ... }:
 
 {
   options = {
     my.altbrowsers.enable = lib.mkEnableOption "Enable and configure alternate browsers";
   };
   config = lib.mkIf config.my.altbrowsers.enable {
+    home.packages = [
+      unstable.opera
+    ];
     home.sessionVariables = {
     };
     ## LibreWolf

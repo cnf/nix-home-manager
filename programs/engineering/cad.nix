@@ -3,7 +3,7 @@
   config = lib.mkIf config.my.engineering.enable {
     home.packages = with pkgs;[
       #freecad-wayland
-      unstable.freecad
+      unstable.freecad-wayland
       graphviz
     ];
 

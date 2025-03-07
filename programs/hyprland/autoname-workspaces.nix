@@ -26,7 +26,7 @@
       delim = " "
       workspace = "{clients}"
       workspace_empty = "{name}"
-      client = "<span>{icon}</span>" 
+      client = "{icon}" 
       client_active = "<span color='#FF8514'>{icon}</span>"
       # These wrap either client or client_active
       client_dup = "<span>{icon}{counter_sup}</span>"
@@ -37,6 +37,7 @@
       [class_active]
       #DEFAULT="<span color='#FF8514'>A{icon}</span>"
       #"DDDEFAULT": ""
+      "(?i)opera" = "<span foreground='#FF2338'> </span>"
       spotify = "<span foreground='#1ED760'> </span>"
       mpv = "<span foreground='#520053'> </span>"
       "(?i)plexamp" = "<span foreground='#EBAF00'>󰚺 </span>"
@@ -46,11 +47,13 @@
       [class]
       DEFAULT = " "
       "(?i)firefox" = "󰈹 "
-      "(?i)librewolf" = " "
+      "(?i)librewolf" = " "
+      "(?i)opera" = " "
       "(?i)kitty" = " "
       "(?i)code" = "󰨞 "
-      freecad = " "
-      1Password = " "
+      "(?i)freecad" = " "
+      1Password = "󰝳 "
+      #""
       #" "
       vlc = "󰕼 "
       mpv = " "

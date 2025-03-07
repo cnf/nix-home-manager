@@ -46,14 +46,14 @@ in
         ];
         modules-center = [
           "hyprland/workspaces"
-        ];
-        modules-right = [
-          #"custom/agenda"
-          #"group/privacywarn"
           "privacy"
           "custom/webcam"
           "custom/usbguard"
           "custom/yubikey"
+        ];
+        modules-right = [
+          #"custom/agenda"
+          #"group/privacywarn"
 
           "custom/leftend"
           "group/hardware"
@@ -289,7 +289,7 @@ in
           hwmon-path = [
             "/sys/class/hwmon/hwmon6/temp1_input" # CPU
           ];
-          critical-threshold = 85;
+          critical-threshold = 95;
           format-icons = ["" "" "" "" " "];
           tooltip-format = "CPU {temperatureC}°C";
           tooltip = true;
