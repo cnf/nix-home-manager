@@ -11,7 +11,7 @@
       libsigrok
       libsigrokdecode
       sigrok-firmware-fx2lafw
-      #smuview # new in 24.11
+      smuview # new in 24.11
       pulseview
 
     ];
