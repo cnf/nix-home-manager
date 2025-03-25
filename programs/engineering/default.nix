@@ -5,6 +5,7 @@
   };
   imports = [
     ./bulk.nix
+    ./sigrok.nix
     ./3dprinting.nix
     ./cad.nix
     ./kicad.nix

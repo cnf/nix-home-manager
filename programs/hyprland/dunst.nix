@@ -11,6 +11,7 @@
     services.dunst.package = unstable.dunst;
     services.dunst.settings = {
       global = {
+        monitor = 0;
         dmenu = "${unstable.rofi-wayland}/bin/rofi -dmenu -p dunst";
         browser = "/run/current-system/sw/bin/xdg-open";
         mouse_left_click = "open_url,do_action,close_current";
@@ -25,7 +26,7 @@
         separator_color = "frame";
         font = "${config.my.looks.font.name} ${toString config.my.looks.font.size}";
         #font-weight = "normal";
-        icon_theme = "${config.my.looks.icons.name}, candy-icons, hicolor, Adwaita";
+        icon_theme = "${config.my.looks.icons.name}, hicolor, candy-icons, Adwaita";
         #min_icon_size = 64;
         default_icon = "cs-notifications";
         enable_recursive_icon_lookup = true;

@@ -4,7 +4,7 @@ final: prev: let
     hash = "sha256-zgpGg1jtdnCBaWjR6oUcHo5sGuZx5oEzpux3dpRdMAM=";
   };
 in {
-  prusa-slicer = prev.prusa-slicer.overrideAttrs (prevAttrs: {
+  prusa-slicer-overlay = prev.prusa-slicer.overrideAttrs (prevAttrs: {
     patches = (prevAttrs.patches or []) ++ [patch];
   });
 }

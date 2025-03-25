@@ -290,7 +290,7 @@ in
             "/sys/class/hwmon/hwmon6/temp1_input" # CPU
           ];
           critical-threshold = 95;
-          format-icons = ["" "" "" "" " "];
+          format-icons = ["" "" "" "" ""];
           tooltip-format = "CPU {temperatureC}°C";
           tooltip = true;
         };
@@ -301,7 +301,7 @@ in
             "/sys/class/hwmon/hwmon0/temp1_input" # GPU
           ];
           critical-threshold = 85;
-          format-icons = ["" "" "" "" " "];
+          format-icons = ["" "" "" "" ""];
           tooltip-format = "GPU {temperatureC}°C";
           tooltip = true;
         };

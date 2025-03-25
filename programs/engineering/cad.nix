@@ -4,6 +4,7 @@
     home.packages = with pkgs;[
       #freecad-wayland
       unstable.freecad-wayland
+      openscad
       graphviz
     ];
 

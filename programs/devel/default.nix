@@ -1,5 +1,6 @@
 { pkgs, inputs, unstable, ... }: {
   imports = [ 
+    ./tio.nix
     ./git.nix 
     ./golang.nix 
     ./neovim.nix 
