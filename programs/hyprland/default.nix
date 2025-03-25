@@ -6,6 +6,7 @@
   };
   imports = [
     ./autoname-workspaces.nix
+    ./blueman.nix
     ./clipboard.nix
     ./backup.nix
     ./dunst.nix

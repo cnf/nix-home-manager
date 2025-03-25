@@ -4,28 +4,21 @@
 let
   #hyprland-pkg = pkgs.hyprland;
   #hyprland-pkg = unstable.hyprland.override {libgbm = unstable.mesa;};
-  hyprland-pkg = inputs.hyprland.packages.${pkgs.system}.hyprland;
-  hypr-packages = with inputs.hyprland.packages.${pkgs.system}; [
-    xdg-desktop-portal-hyprland
-    #aquamarine
-    #hyprcursor
-    #hyprgraphics
-    #hyprlang
-    #hyprpicker
-    #hyprpolkitagent
-    #hyprutils
-  ] ++ [
+  hyprland-pkg = inputs.hyprland.packages.${pkgs.system}.hyprland; #.override {libgbm = unstable.mesa;};
+  hypr-packages = [ 
+    inputs.hyprland.packages.${pkgs.system}.xdg-desktop-portal-hyprland
     inputs.hyprpolkitagent.packages.${pkgs.stdenv.hostPlatform.system}.default
-      #inputs.hyprland-contrib.packages.${pkgs.system}.grimblast
-      inputs.dmenu-usbguard.defaultPackage.${pkgs.stdenv.hostPlatform.system}
-      inputs.hyprswitch.packages.${pkgs.stdenv.hostPlatform.system}.default
-      inputs.hyprsysteminfo.packages.${pkgs.stdenv.hostPlatform.system}.default
-      inputs.rose-pine-hyprcursor.packages.${pkgs.stdenv.hostPlatform.system}.default
+    #inputs.hyprland-contrib.packages.${pkgs.system}.grimblast
+    inputs.dmenu-usbguard.defaultPackage.${pkgs.stdenv.hostPlatform.system}
+    inputs.hyprswitch.packages.${pkgs.stdenv.hostPlatform.system}.default
+    inputs.hyprsysteminfo.packages.${pkgs.stdenv.hostPlatform.system}.default
+    inputs.rose-pine-hyprcursor.packages.${pkgs.stdenv.hostPlatform.system}.default
+    unstable.mesa
   ];
   hypr-plugins = [
     inputs.hyprspace.packages.${pkgs.stdenv.hostPlatform.system}.default
-        #pkgs.hyprlandPlugins.hyprgrass
-        #pkgs.hyprlandPlugins.hyprspace
+    #pkgs.hyprlandPlugins.hyprgrass
+    #pkgs.hyprlandPlugins.hyprspace
   ];
 in
 {
@@ -52,7 +45,8 @@ in
       #aquamarine
       #hyprcursor
       #hyprlang
-      #hyprpicker
+      #hyprpicker/gbm
+
       #hyprpolkitagent
       #hyprutils
       #xdg-desktop-portal-hyprland
@@ -71,7 +65,6 @@ in
       emojipick
       pavucontrol
       playerctl
-      blueman
       wev
       networkmanagerapplet
       networkmanager_dmenu
@@ -88,14 +81,16 @@ in
     services.gnome-keyring.enable = true;
     #services.gnome-keyring.components = ["secrets"];
     services.network-manager-applet.enable = true;
-    services.blueman-applet.enable = true;
     services.swayosd.enable = true;
     services.playerctld.enable = true;
-#
+
     wayland.windowManager.hyprland = {
       enable  = true;
       package = hyprland-pkg;
-      systemd.enableXdgAutostart = true;
+      systemd = {
+        enable = true;
+        enableXdgAutostart = true;
+      };
       plugins  = hypr-plugins;
     };
     wayland.windowManager.hyprland.settings = {
@@ -147,9 +142,9 @@ in
         "systemctl --user restart waybar.service"
         #"hyprland-autoname-workspaces"
         #"udiskie -t"
-        "hyprswitch init --show-title --size-factor 5 --workspaces-per-row 5"
+        #"hyprswitch init --show-title --size-factor 5 --workspaces-per-row 5"
         #"tailscale-systray"
-        "tail-tray"
+        #"tail-tray"
         "[workspace 1 silent] kitty"
         "[workspace 3 silent] firefox"
         "[workspace 4 silent] discord"
@@ -420,15 +415,16 @@ in
         "workspace 4 silent, class:^(discord)$"
 
 
-        "tag +float, class:(nm-tray)"
-        "tag +float, class:^(pavucontrol)$"
-        "tag +float, class:^(.blueman.*)$"
-        "tag +fixsize, class:^(.blueman.*)$"
-        "tag +float, class:^(nm-connection-editor)$"
-        "tag +float, class:^(org.pulseaudio.pavucontrol)$"
+        "tag +settings, class:(nm-tray)"
+        "tag +settings, class:^(nm-connection-editor)$"
+        "tag +fixsize, class:^(nm-connection-editor)$"
+        "tag +settings, class:^(pavucontrol)$"
+        "tag +settings, class:^(org.pulseaudio.pavucontrol)$"
+        "tag +fixsize, class:^(org.pulseaudio.pavucontrol)$"
+        "tag +settings, class:^(.blueman.*)$"
+        #"tag +fixsize, class:^(.blueman.*)$"
         "tag +float, class:^(org.gnome.Nautilus)$"
         "tag +float, class:^(org.gnome.Calculator)$"
-        "tag +float, class:^(org.kde.dolphin)$"
         # Code
         "opacity 0.95 override 0.8 override, class:^(code)$"
         # Video
@@ -444,6 +440,7 @@ in
         "tag +firefox, class:^(firefox)$"
         "tag +firefox, class:^(librewolf)$"
         "opacity 1 override 0.8 override, tag:firefox"
+        "tag +video,initialTitle:^(Picture-in-Picture)$"
         "content video,initialTitle:^(Picture-in-Picture)$"
 
         #"float,initialTitle:^(Picture-in-Picture)$"
@@ -456,21 +453,21 @@ in
         
         ## Rofi
         "move cursor -3% -105%,class:^(rofi)$"
-        "noanim,class:^(rofi)$"
+        "prop noanim,class:^(rofi)$"
         "opacity 0.8 override 0.6 override,class:^(rofi)$"
 
         ## Steam
         "tag +steam, initialClass:^(steam)$"
         "tag +steam, initialTitle:^(Steam)$"
-        "noborder, floating:1, tag:steam"
-        "noshadow, floating:1, tag:steam"
+        "prop noborder, floating:1, tag:steam"
+        "prop noshadow, floating:1, tag:steam"
 
         ## Fusion 360
         "tag +fusion, initialClass:^(fusion360.exe)$"
         "tag +fusion, initialClass:^(steam_proton)$"
         "opacity 1 override, tag:fusion"
-        "noanim, tag:fusion"
-        "noblur, tag:fusion"
+        "prop noanim, tag:fusion"
+        "prop noblur, tag:fusion"
         "suppressevent activatefocus activate, tag:fusion"
 
         # FreeCAD
@@ -485,7 +482,7 @@ in
         "tag +float, tag:fixsize, tag:freecad"
         "tag +float, tag:freecad, title:^(Choose category and set a filename without extension)$"
         "tag +float, tag:freecad, title:^(Placement)$"
-        "focusonactivate on, tag:freecad, floating:1, title:^(Expression editor)$"
+        "prop focusonactivate on, tag:freecad, floating:1, title:^(Expression editor)$"
         "opacity 1 override, tag:freecad"
 
         # Evolution
@@ -493,10 +490,14 @@ in
         "tag +float, initialTitle:^((Appointment|Meeting|Memo|Task) — .*)$, tag:evolution"
         "tag +fixsize, initialTitle:^((Appointment|Meeting|Memo|Task|Contact Editor) — .*)$, tag:evolution"
 
+        # SigRok
+        "tag +sigrok, initialClass:^(org.sigrok.)"
+        "tag +settings, initialTitle:^(Connect to Device)$"
+
          ## KiCAD
         #"tag kicad, class:^(kicad)$"
         #"opacity 1 override, tag:kicad"
-        #"xray off, tag:kicad"
+        #"prop xray off, tag:kicad"
         #"decorate off, tag:kicad"
         #"forcergbx, tag:kicad"
         #"group invade, tag:kicad"
@@ -506,6 +507,9 @@ in
         "float, tag:onedrive"
         "center, tag:onedrive"
         "size 80%, tag:onedrive"
+
+        "tag +synology, initialClass:^(cloud-drive-ui)$"
+        "move onscreen cursor, tag:synology"
 
 
         ### 1Password
@@ -572,7 +576,9 @@ in
 
         "opacity 1 override, content:video"
         "suppressevent activatefocus, content:video"
+        "suppressevent activatefocus, tag:video"
         "float, content:video"
+        "float, tag:video"
       ];
     };
     wayland.windowManager.hyprland.extraConfig = ''

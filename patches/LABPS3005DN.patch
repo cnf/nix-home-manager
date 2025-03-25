@@ -1,0 +1,95 @@
+From ebb106f09d74a9968afaef2c01cd3c7c9798ce4d Mon Sep 17 00:00:00 2001
+From: Frank Rosquin <frank.rosquin@gmail.com>
+Date: Fri, 14 Mar 2025 20:40:45 +0100
+Subject: [PATCH] LABPS3005DN
+
+---
+ src/hardware/korad-kaxxxxp/api.c      |  2 ++
+ src/hardware/korad-kaxxxxp/protocol.c | 19 +++++++++++++------
+ 2 files changed, 15 insertions(+), 6 deletions(-)
+
+diff --git a/src/hardware/korad-kaxxxxp/api.c b/src/hardware/korad-kaxxxxp/api.c
+index 82e43797..bc99d90e 100644
+--- a/src/hardware/korad-kaxxxxp/api.c
++++ b/src/hardware/korad-kaxxxxp/api.c
+@@ -77,6 +77,8 @@ static const struct korad_kaxxxxp_model models[] = {
+ 	{"Velleman", "PS3005D V1.3", "VELLEMANPS3005DV1.3" , 1, volts_30, amps_5,
+ 		KORAD_QUIRK_ID_TRAILING | KORAD_QUIRK_SLOW_PROCESSING},
+ 	{"Velleman", "PS3005D", "", 1, volts_30, amps_5, 0},
++	{"Velleman", "LABPS3005DN", "QJE3005PV1.0", 1, volts_30, amps_5,
++        KORAD_QUIRK_ID_OPT_VERSION},
+ 	ALL_ZERO
+ };
+ 
+diff --git a/src/hardware/korad-kaxxxxp/protocol.c b/src/hardware/korad-kaxxxxp/protocol.c
+index bac8c8ef..4491a940 100644
+--- a/src/hardware/korad-kaxxxxp/protocol.c
++++ b/src/hardware/korad-kaxxxxp/protocol.c
+@@ -29,12 +29,14 @@ SR_PRIV int korad_kaxxxxp_send_cmd(struct sr_serial_dev_inst *serial,
+ {
+ 	int ret;
+ 
++	char* newcmd = g_strconcat(cmd, "\\n", NULL);
+ 	sr_dbg("Sending '%s'.", cmd);
+-	if ((ret = serial_write_blocking(serial, cmd, strlen(cmd), 0)) < 0) {
++	if ((ret = serial_write_blocking(serial, newcmd, strlen(newcmd), 0)) < 0) {
+ 		sr_err("Error sending command: %d.", ret);
++		free(newcmd);
+ 		return ret;
+ 	}
+-
++    free(newcmd);
+ 	return ret;
+ }
+ 
+@@ -108,6 +110,11 @@ SR_PRIV int korad_kaxxxxp_read_chars(struct sr_serial_dev_inst *serial,
+ 	timeout_later = serial_timeout(serial, 3);
+ 	retries_later = 1;
+ 
++	if (buf[count-1] == '\n') {
++		buf[count-1] = 0;
++	}
++
++
+ 	sr_spew("want %zu bytes, timeout/retry: init %d/%zu, later %d/%zu.",
+ 		count, timeout_first, retries_first,
+ 		timeout_later, retries_later);
+@@ -212,7 +219,7 @@ SR_PRIV int korad_kaxxxxp_set_value(struct sr_serial_dev_inst *serial,
+ 		break;
+ 	case KAXXXXP_OUTPUT:
+ 		sr_snprintf_ascii(msg, sizeof(msg),
+-			"OUT%1d", (devc->set_output_enabled) ? 1 : 0);
++			"OUTPUT%1d", (devc->set_output_enabled) ? 1 : 0);
+ 		/* Set value back to recognize changes */
+ 		devc->output_enabled = devc->set_output_enabled;
+ 		break;
+@@ -272,7 +279,7 @@ SR_PRIV int korad_kaxxxxp_get_value(struct sr_serial_dev_inst *serial,
+ 	int target, struct dev_context *devc)
+ {
+ 	int ret, count;
+-	char reply[6];
++	char reply[7];
+ 	float *value;
+ 	char status_byte;
+ 	gboolean needs_ovp_quirk;
+@@ -282,7 +289,7 @@ SR_PRIV int korad_kaxxxxp_get_value(struct sr_serial_dev_inst *serial,
+ 	give_device_time_to_process(devc);
+ 
+ 	value = NULL;
+-	count = 5;
++	count = 6;
+ 
+ 	switch (target) {
+ 	case KAXXXXP_CURRENT:
+@@ -311,7 +318,7 @@ SR_PRIV int korad_kaxxxxp_get_value(struct sr_serial_dev_inst *serial,
+ 	case KAXXXXP_OVP:
+ 		/* Read status from device. */
+ 		ret = korad_kaxxxxp_send_cmd(serial, "STATUS?");
+-		count = 1;
++		count = 4;
+ 		break;
+ 	default:
+ 		sr_err("Don't know how to query %d.", target);
+-- 
+2.47.2
+

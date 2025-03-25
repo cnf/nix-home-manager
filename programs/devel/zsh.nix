@@ -9,6 +9,16 @@
     programs.zsh = {
     enable = true;
     enableCompletion = true;
+    completionInit = ''
+      # CompInit: {{{
+      autoload -Uz compinit
+      for dump in ${config.xdg.configHome}/zsh/.zcompdump(N.mh+24); do
+        echo "comp init"
+        compinit -d ${config.xdg.configHome}/zsh/.zcompdump
+      done
+      compinit -C
+      # }}}
+    '';
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
     dotDir = ".config/zsh";
@@ -23,6 +33,7 @@
       share = false;
       size = 10000;
     };
+    zprof.enable = false;
     sessionVariables = {
       LC_CTYPE = "en_US.UTF-8";
       LC_ALL = "en_US.UTF-8";
@@ -31,8 +42,12 @@
     shellAliases = {
       ls = "ls -F --color=auto";
     };
+    initExtraFirst = ''
+      # FIRST!
+    '';
     initExtraBeforeCompInit = ''
-      setopt print_exit_value
+      #setopt print_exit_value
+      skip_global_compinit=1
     '';
     initExtra = ''
       # initExtra: {{{
@@ -41,10 +56,46 @@
       setopt PRINT_EXIT_VALUE
       setopt TRANSIENT_RPROMPT
       setopt ALWAYS_TO_END
-      setopt AUTO_MENU
-      setopt AUTO_PUSHD
-      setopt COMPLETE_IN_WORD
+      setopt AUTO_MENU # Cycle through possibilities during tab completion.
+      setopt AUTO_PUSHD # Automatically append to the stack.
+      setopt COMPLETE_IN_WORD # Completion matches text to the left of the cursor when mid-word.
       setopt NO_FLOW_CONTROL
+      setopt NO_CDABLE_VARS
+
+      #setopt print_exit_value
+      #setopt transientrprompt # only have the rprompt on the last line
+      #setopt always_to_end
+      #setopt auto_cd # Typing the name of a subdirectory of the CWD (or in cdpath) will go there.
+      #setopt auto_menu # Cycle through possibilities during tab completion.
+      #setopt auto_pushd # Automatically append to the stack.
+      #setopt complete_in_word # Completion matches text to the left of the cursor when mid-word.
+      #setopt correct # Correct spelling as needed. Update cache with 'hash -r'.
+      #setopt extended_glob
+      #setopt glob_complete
+      #setopt interactive_comments # Allow comments in the interactive shell.
+      #setopt list_packed
+      #setopt list_types
+      #setopt long_list_jobs
+      #setopt magic_equal_subst
+      #setopt noequals
+      #setopt nonomatch
+      #setopt multibyte
+      #setopt NO_c_bases
+      #setopt NO_complete_aliases
+      #setopt NO_hup
+      #setopt NO_list_rows_first
+      #setopt NO_numeric_glob_sort
+      #setopt NO_path_dirs
+      #setopt null_glob
+      #setopt pushd_ignore_dups # Ignore duplicate directories in the stack.
+      #setopt pushd_minus # Reverse the meaning of +/- after pushing the CWD.
+      #setopt pushd_to_home # With no arguments act like 'pushd $HOME'.
+      #setopt pushdsilent
+      #setopt rc_quotes
+
+      unsetopt flow_control
+      bindkey -e #emacs mode
+
 
       # notify when someone else logs in
       watch=(notme)
@@ -62,7 +113,14 @@
       #[[ "$TERM" == "xterm-kitty" ]] && alias ssh="TERM=xterm-256color ssh" 
       [[ "$TERM" == "xterm-kitty" ]] && alias ssh="kitten ssh" 
 
-      ## Prompt Stuff
+      #alias ssh="assh wrapper ssh --"
+
+      export MANPATH="$MANPATH:$HOME/.config/man"
+      #export MANSECT="1:n:l:8:3:2:3posix:3pm:3perl:5:4:9:6:7:um"
+      export MANSECT="1:n:l:8:3:0:2:5:4:9:6:7:um"
+
+
+      ## Prompt Stuff: {{{
       typeset +x PS1
 
       if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
@@ -113,8 +171,6 @@
 
 
 
-
-      setopt PROMPT_SUBST
       PROMPT='%f%b$user %B%F{blue}%2~ $(rsymbol)%f%b '
       RPROMPT='%f%b$(gitprompt)%f%b$(gitprompt_secondary)%f%b$(nixshell)%f%b$(venv) $(battery_pct_prompt)%f%b'
       SPROMPT='zsh: correct %F{red}%R%f to %F{green}%r%f [nyae]? '
@@ -153,17 +209,17 @@
       #    sha256 = "sha256-+877OI9BFFvdN6H4rmravYUinhBe2WosVSCVCzx28EE=";
       #  };
       #}
-      { 
-        name = "options";
-        file = "options.zsh";
-        src = pkgs.fetchFromGitHub {
-          owner = "cnf";
-          repo = "zshrc";
-          rev = "ebb9381";
-          #sha256 = "sha256-xpvw1OXJEROsnwHAMi/t4CS0/4aToHv62p/qjDyoMTg=";
-          sha256 = "sha256-+877OI9BFFvdN6H4rmravYUinhBe2WosVSCVCzx28EE=";
-        };
-      }
+      #{ 
+      #  name = "options";
+      #  file = "options.zsh";
+      #  src = pkgs.fetchFromGitHub {
+      #    owner = "cnf";
+      #    repo = "zshrc";
+      #    rev = "ebb9381";
+      #    #sha256 = "sha256-xpvw1OXJEROsnwHAMi/t4CS0/4aToHv62p/qjDyoMTg=";
+      #    sha256 = "sha256-+877OI9BFFvdN6H4rmravYUinhBe2WosVSCVCzx28EE=";
+      #  };
+      #}
       { 
         name = "dotenv";
         file = "plugins/dotenv/dotenv.plugin.zsh";

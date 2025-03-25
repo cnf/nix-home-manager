@@ -12,6 +12,8 @@
       unstable.gitkraken
       unstable.gk-cli
 
+      rdap
+
       git-backup-go
       github-backup
       git-stack
@@ -20,6 +22,22 @@
       diebahn
       warp
       gnome-boxes
+
+      owl
+      opendrop
+
+      tor-browser
+
+      pandoc
+
+      #unstable.synology-drive-client
+
+      #uxplay
+      #gst_all_1.gstreamer
+      #gst_all_1.gst-plugins-base
+      #gst_all_1.gst-vaapi
+      #gst_all_1.gst-plugins-good
+      #gst_all_1.gst-libav
     ];
   };
 }
