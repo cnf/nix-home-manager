@@ -2,7 +2,8 @@
 
 {
   config = lib.mkIf config.my.hyprland.enable {
-    home.packages = with pkgs;[eww];
-    # programs.eww.enable = true;
+    home.packages = with pkgs; [
+      pika-backup
+    ];
   };
 }

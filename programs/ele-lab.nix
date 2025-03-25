@@ -1,7 +1,6 @@
 { pkgs, lib, config, inputs, ... }:
 {
   options = {
-    #sdr.enable = lib.mkEnableOption "Enable SDR Packages";
     my.sigrok.enable = lib.mkEnableOption "Install SigRok";
   };
   config = lib.mkIf config.my.sigrok.enable {
@@ -13,7 +12,6 @@
       sigrok-firmware-fx2lafw
       smuview # new in 24.11
       pulseview
-
     ];
     #programs.pulseview.enable = true;
 

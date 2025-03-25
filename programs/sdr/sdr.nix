@@ -4,6 +4,7 @@
     #hardware.hackrf.enable = true;
 
     home.packages = with pkgs; [
+      aircrack-ng
       hackrf
       kalibrate-hackrf
       soapysdr-with-plugins
@@ -21,8 +22,12 @@
       gnss-sdr
 
       kismet
+      wsjtx
 
       hamlib
+      
+      nanovna-saver
+      # https://cemaxecuter.com/?page_id=67
 
       (gnuradio.override {
         extraPackages = with gnuradioPackages; [
@@ -34,29 +39,30 @@
       })
     ];
 
-#    xdg.desktopEntries.SDR = {
-#      name = "SDR";
-#      comment = "Software Defined Radio";
-#      icon = "sdr";
-#      type = "Directory";
-#    };
+    xdg.desktopEntries.SDR = {
+      name = "SDR";
+      comment = "Software Defined Radio";
+      icon = "sdr";
+      type = "Directory";
+      terminal = null;
+    };
     dconf.settings = {
-      "org/gnome/desktop/app-folders" = {
-        folder-children = ["SDR"];
-      };
-      "org/gnome/desktop/app-folders/folders/SDR" = {
-        name = "SDR";
-        apps = [
-          "dk.gqrx.gqrx.desktop"
-          "CubicSDR.desktop"
-          "urh.desktop"
-          "gnuradio.desktop"
-          "dump1090.desktop"
-        ];
-      };
-      "org/gnome/shell" = {
-        favorite-apps = [ "SDR.directory"];
-      };
+#      "org/gnome/desktop/app-folders" = {
+#        folder-children = ["SDR"];
+#      };
+#      "org/gnome/desktop/app-folders/folders/SDR" = {
+#        name = "SDR";
+#        apps = [
+#          "dk.gqrx.gqrx.desktop"
+#          "CubicSDR.desktop"
+#          "urh.desktop"
+#          "gnuradio.desktop"
+#          "dump1090.desktop"
+#        ];
+#      };
+#      "org/gnome/shell" = {
+#        favorite-apps = [ "SDR.directory"];
+#      };
     };
 
     xdg.desktopEntries.gnuradio = {
@@ -72,7 +78,7 @@
       exec = "gnuradio-companion";
       terminal = false;
       # mimeType = ["application/x-qlc-workspace"];
-      categories = ["HamRadio"];
+      categories = ["Science" "Education" "HamRadio"];
       #actions = {
       #  edit-show = {
       #    name = "Edit Show";
@@ -87,7 +93,7 @@
       icon = "inspectrum";
       exec = "inspectrum";
       terminal = false;
-      categories = ["HamRadio"];
+      categories = ["Science" "Education" "HamRadio"];
     };
     xdg.desktopEntries.urh = {
       name = "Universal Radio Hacker";
@@ -96,7 +102,7 @@
       icon = "urh";
       exec = "urh";
       terminal = false;
-      categories = ["HamRadio"];
+      categories = ["Science" "Education" "HamRadio"];
     };
   };
 }

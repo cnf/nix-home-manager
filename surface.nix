@@ -18,8 +18,8 @@
     # EDITOR = "emacs";
   };
 
-  imports = [./configs/gnome.nix];
-  my.git.enable = true;
+  imports = [];
+  my.git.enble = true;
   my.vim.enable = true;
   my.zsh.enable = true;
   my.sigrok.enable = true;

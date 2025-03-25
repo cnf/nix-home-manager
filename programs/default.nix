@@ -1,13 +1,26 @@
-{ pkgs, lib, config, inputs, ... }:
+{ pkgs, ... }:
 {
   imports = [
-    ./zsh.nix
-    ./git.nix
-    ./golang.nix
-    ./neovim.nix
-    ./ele-lab.nix
+    #./prusa-slicer.nix
     ./desktop
-    ./sdr
+    ./devel
+    ./ele-lab.nix
+    ./engineering
+    ./funshoot
     ./hyprland
+    ./sdr
+    ./tryouts.nix
+  ];
+
+  programs.btop = {
+    enable = true;
+    package = pkgs.btop.override {rocmSupport = true;};
+  };
+  home.packages = with pkgs; [
+    assh
+    ncdu
+    usbtop
+
+    dig
   ];
 }

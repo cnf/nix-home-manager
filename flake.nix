@@ -2,93 +2,115 @@
   description = "Home Manager configuration";
 
   inputs = {
+    cachix.url = "github:cachix/cachix";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
-    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     home-manager = {
       url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # hyprland.url = "github:hyprwm/Hyprland";
-    hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
-    waybar = {
-      url = "github:Alexays/Waybar";
+    nix-vscode-extensions = {
+      url = "github:nix-community/nix-vscode-extensions";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
-    hyprland-plugins = {
-      url = "github:hyprwm/hyprland-plugins";
-      inputs.hyprland.follows = "hyprland";
+    hyprland = {
+      url = "github:hyprwm/Hyprland";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
-    hyprland-contrib = {
-      url = "github:hyprwm/contrib";
-      inputs.hyprland.follows = "hyprland";
+    hyprpolkitagent = {
+      url = "github:hyprwm/hyprpolkitagent";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
-    hyprgrass = {
-      url = "github:horriblename/hyprgrass";
-      inputs.hyprland.follows = "hyprland"; # IMPORTANT
+    hyprswitch = {
+      url = "github:h3rmt/hyprswitch/release";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     hyprspace = {
       url = "github:KZDKM/Hyprspace";
-      # Hyprspace uses latest Hyprland. We declare this to keep them in sync.
       inputs.hyprland.follows = "hyprland";
     };
+    #hyprland-plugins = {
+    #  url = "github:hyprwm/hyprland-plugins";
+    #};
+    hyprland-contrib = {
+      url = "github:hyprwm/contrib";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    hyprsysteminfo = {
+      url = "github:hyprwm/hyprsysteminfo";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    hypr-binds = {
+      url = "github:gvolpe/hypr-binds";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    dmenu-usbguard.url = "github:Armoken/dmenu-usbguard";
+    nix-inspect.url = "github:bluskript/nix-inspect";
+    rose-pine-hyprcursor.url = "github:ndom91/rose-pine-hyprcursor";
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, ...} @ inputs:
+  outputs = { nixpkgs, home-manager, ...} @ inputs:
     let
-      inherit (self) outputs;
-      homeDirPrefix = if pkgs.stdenv.hostPlatform.isDarwin then "/Users" else "/home";
-      # Values you should modify
+      #inherit (self) outputs;
       system = "x86_64-linux";  # x86_64-linux, aarch64-multiplatform, etc.
-      home = {
-        username = "cnf"; # $USER
-        stateVersion = "23.11";     # See https://nixos.org/manual/nixpkgs/stable for most recent
-        homeDirectory = "/${homeDirPrefix}/${home.username}";
-      };
-      #pkgs = import nixpkgs {
-      #  inherit system;
-      #  config = {
-      #    allowUnfree = true;
-      #  };
-      #};
       pkgs = nixpkgs.legacyPackages.${system};
-      unstable = nixpkgs-unstable.legacyPackages.${system};
-
-
+      vscode-extensions = inputs.nix-vscode-extensions.extensions.${system};
     in {
+      nix.nixPath = ["nixpkgs=${inputs.nixpkgs}"]; # for nixd
+      # packages.x86_64-linux.freerouting = pkgs.callPackage ./pkgs/freerouting.nix {};
+      # call it with  inputs.self.packages.x86_64-linux.freerouting in my files
       homeConfigurations = {
-        "cnf@OptiNix" = home-manager.lib.homeManagerConfiguration {
-          extraSpecialArgs = {inherit inputs;inherit unstable;};
+        "cnf@hydra" = home-manager.lib.homeManagerConfiguration {
+          extraSpecialArgs = {inherit inputs system vscode-extensions;};
           inherit pkgs;
           modules = [
-            {home = home;}
+            ./home.nix
+            ./programs
+            ./hydra.nix 
+          ];
+        };
+        "cnf@OptiNix" = home-manager.lib.homeManagerConfiguration {
+          extraSpecialArgs = {inherit inputs system;};
+          inherit pkgs;
+          modules = [
+            ./home.nix
             ./programs
             ./optinix.nix 
           ];
         };
         "cnf@surface" = home-manager.lib.homeManagerConfiguration {
+          extraSpecialArgs = {inherit inputs system;};
           inherit pkgs;
           modules = [
-            {home = home;}
+            ./home.nix
             ./programs
             ./surface.nix 
           ];
         };
-	"cnf@ySL" = home-manager.lib.homeManagerConfiguration {
+        "cnf@dionysus" = home-manager.lib.homeManagerConfiguration {
+          extraSpecialArgs = {inherit inputs system;};
           inherit pkgs;
           modules = [
-            {home = home;}
+            ./home.nix
+            ./programs
+            ./dionysus.nix 
+          ];
+        };
+        "cnf@ySL" = home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+          modules = [
+            ./home.nix
             ./ysl.nix
           ];
         };
-	"funshoot@OptiNix" = home-manager.lib.homeManagerConfiguration {
+        "funshoot@OptiNix" = home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
-	  extraSpecialArgs = {
-	    inherit unstable;
-	  };
+	        extraSpecialArgs = {inherit inputs;};
           modules = [
             ./funshoot.nix
           ];
         };
       };
-      homeManagerModules.default = ./programs;
+      #homeManagerModules.default = ./programs;
     };
 }

@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+hyprctl binds -j | jq -r '
+    map({mod:.modmask|tostring,key:.key,code:.keycode|tostring,desc:.description,has_desc:.has_description,dp:.dispatcher,arg:.arg,sub:.submap}) |
+    map(.mod |= {"0":"        ","1":"⇧ +     ","4":"󰘴 +     ","5":"⌃ + ⇧ + ","12":"^ + ⎇ + ","64":"❖ +     ","65":"❖ + ⇧ + ","68":"❖ + 󰘴 + ","8":"⎇ +     "} [.]) |
+    map(.code |= {"59":"Comma","60":"Dot"} [.]) |
+    sort_by(.desc == "") |.[]|
+    select(.sub == "") |
+    "<b>\(.mod)\(if .key == "" then .code else .key end)</b> \t <i>\(if .desc != "" then .desc else .dp end) \(if .desc == "" then .arg else "" end)</i>" ' | rofi -dmenu -markup-rows -i -p 'Hypr binds' |
+    #"<b>\(.mod)\(if .key == "" then .code else .key end)</b> <i>\(.desc)</i> <span color=\"#0098FF\">\(.dp) \(.arg)</span>" ' | rofi -dmenu -markup-rows -i -p 'Hypr binds' |
+  # extract the command (dispatcher + arg)
+  sed -n 's/.*<span color=\"#0098FF\">\(.*\)<\/span>.*/\1/p' |
+  # add double quotes to the string so it can be piped to hyprctl dispatch
+sed -e 's/^/"/g' -e 's/$/"/g' |
+xargs -r -n1 hyprctl dispatch
+
+
+    #select(.has_desc) |
