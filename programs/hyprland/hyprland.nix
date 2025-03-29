@@ -9,7 +9,7 @@
       TERMINAL = "kitty";
       XCURSOR_SIZE = config.my.looks.cursor.size;
       QT_QPA_PLATFORM = "wayland";
-      QT_QPA_PLATFORMTHEME = "gtk2";
+      #QT_QPA_PLATFORMTHEME = "gtk2";
       SDL_VIDEODRIVER = "wayland";
       XDG_SESSION_TYPE = "wayland";
       NIXOS_OZONE_WL = 1;
