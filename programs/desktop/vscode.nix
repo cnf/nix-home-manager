@@ -1,4 +1,7 @@
-{ pkgs, unstable, lib, config, ... }:
+{ pkgs, unstable, lib, config, inputs, ... }:
+let
+  vscode-extensions = inputs.nix-vscode-extensions.extensions.${pkgs.stdenv.hostPlatform.system};
+in
 {
   options = { 
     my.vscode.enable = lib.mkEnableOption "Enable VSCode";
@@ -13,11 +16,12 @@
       enableExtensionUpdateCheck = false;
       mutableExtensionsDir = false;
       extensions = with unstable.vscode-extensions; [
-        continue.continue
+        vscode-extensions.vscode-marketplace.continue.continue
         ms-python.black-formatter
         ms-python.debugpy
         ms-python.isort
         #ms-python.python
+        vscode-extensions.vscode-marketplace.ms-python.python
         ms-python.vscode-pylance
         ms-vscode.cpptools-extension-pack
         ms-vscode.cpptools
@@ -36,19 +40,23 @@
         ms-vscode-remote.remote-containers
         ms-vscode-remote.remote-ssh
         ms-vscode-remote.remote-ssh-edit
+        vscode-extensions.vscode-marketplace.ms-vscode.remote-explorer
+        vscode-extensions.vscode-marketplace.ms-vscode.remote-repositories
+        vscode-extensions.vscode-marketplace.ms-vscode.remote-server
         #ms-vscode-remote.remote-wsl
         #ms-vscode.remote-explorer
         #ms-vscode.remote-repositories
         #ms-vscode.remote-server
 
         #1Password.op-vscode
-        eamodio.gitlens
+        vscode-extensions.vscode-marketplace.eamodio.gitlens
+        vscode-extensions.vscode-marketplace.tailscale.vscode-tailscale
         editorconfig.editorconfig
         golang.go
         gruntfuggly.todo-tree
         mkhl.direnv
         streetsidesoftware.code-spell-checker
-        tailscale.vscode-tailscale
+        #platformio.platformio-ide
         
         #ms-azuretools.vscode-docker
         #vscode-arduino.vscode-arduino-community
@@ -67,36 +75,44 @@
         #mcu-debug.memory-view
         #mcu-debug.peripheral-viewer
         #mcu-debug.rtos-views
-        #platformio.platformio-ide
-      ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
-        {
-          name = "remote-explorer";
-          publisher = "ms-vscode";
-          version = "0.4.3";
-          sha256 = "sha256-772l0EnAWXLg53TxPZf93js/W49uozwdslmzNwD1vIk=";
-        }
-        {
-          name = "remote-repositories";
-          publisher = "ms-vscode";
-          version = "0.42.0";
-          sha256 = "sha256-cYbkCcNsoTO6E5befw/ZN3yTW262APTCxyCJ/3z84dc=";
-        }
-        {
-          name = "remote-server";
-          publisher = "ms-vscode";
-          version = "1.5.2";
-          sha256 = "sha256-Gqb3/fSQS3rYheoFS8ksoidaZrOldxeYPoFSlzSgmVI=";
-        }
-        {
-          name = "python";
-          publisher = "ms-python";
-          version = "2025.1.2025021102";
-          #version = "2025.1.2025021701";
-          hash = "sha256-qXQrBEKzZthZu1fdnRJXjryyHjpcxJA4c5LrhOI3deM=";
-          #hash = "sha256-HzVN4wsuevRCbLkDKTg3SfgVhYcrmxThOQU63IiLV9I=";
-          #hash = "sha256-6fDqQ587Wvvs3kLg41TIQZRjBoD00riql55viG3ZmNE=";
-        }
-      ];
+      ];# ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
+        #{
+        #  arch = "linux-x64";
+        #  name = "continue";
+        #  publisher = "Continue";
+        #  #version = "1.0.1";
+        #  #hash = "sha256-yDcrPpyEjL02/PtktG3XiYN0ZdWhB7AZZ3Mq9UOGZII=";
+        #  version = "0.8.54";
+        #  hash = "sha256-+/0ZQkRS6AD8u5+t2hiPwQxzwhEc+n2F0GVk1s0n74U=";
+        #}
+        #{
+        #  name = "remote-explorer";
+        #  publisher = "ms-vscode";
+        #  version = "0.4.3";
+        #  sha256 = "sha256-772l0EnAWXLg53TxPZf93js/W49uozwdslmzNwD1vIk=";
+        #}
+        #{
+        #  name = "remote-repositories";
+        #  publisher = "ms-vscode";
+        #  version = "0.42.0";
+        #  sha256 = "sha256-cYbkCcNsoTO6E5befw/ZN3yTW262APTCxyCJ/3z84dc=";
+        #}
+        #{
+        #  name = "remote-server";
+        #  publisher = "ms-vscode";
+        #  version = "1.5.2";
+        #  sha256 = "sha256-Gqb3/fSQS3rYheoFS8ksoidaZrOldxeYPoFSlzSgmVI=";
+        #}
+        #{
+        #  name = "python";
+        #  publisher = "ms-python";
+        #  version = "2025.1.2025021102";
+        #  #version = "2025.1.2025021701";
+        #  hash = "sha256-qXQrBEKzZthZu1fdnRJXjryyHjpcxJA4c5LrhOI3deM=";
+        #  #hash = "sha256-HzVN4wsuevRCbLkDKTg3SfgVhYcrmxThOQU63IiLV9I=";
+        #  #hash = "sha256-6fDqQ587Wvvs3kLg41TIQZRjBoD00riql55viG3ZmNE=";
+        #}
+      #];
       userSettings = {
         "chat.commandCenter.enabled" = false;
         "window.menuBarVisibility" = "toggle";
@@ -184,6 +200,11 @@
         "dev.containers.dockerPath" = "podman";
         "dev.containers.dockerSocketPath" = "/run/user/1000/podman/podman.sock";
         "dev.containers.dockerComposePath" = "podman-compose";
+        "dev.containers.defaultExtensionsIfInstalledLocally" = [
+          "GitHub.copilot"
+          "GitHub.copilot-chat"
+          "GitHub.vscode-pull-request-github"
+        ];
         #"docker.dockerPath" = "/run/current-system/sw/bin/podman";
         #"docker.composeCommand" = "podman-compose";
         #"docker.environment" = {

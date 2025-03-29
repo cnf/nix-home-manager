@@ -9,16 +9,40 @@
       url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    hyprland.url = "github:hyprwm/Hyprland";
-    hyprswitch.url = "github:h3rmt/hyprswitch/release";
-    hyprland-plugins = {
-      url = "github:hyprwm/hyprland-plugins";
+    nix-vscode-extensions = {
+      url = "github:nix-community/nix-vscode-extensions";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
+    hyprland = {
+      url = "github:hyprwm/Hyprland";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    hyprpolkitagent = {
+      url = "github:hyprwm/hyprpolkitagent";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    hyprsunset = {
+      url = "github:hyprwm/hyprsunset";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    hyprswitch = {
+      url = "github:h3rmt/hyprswitch/release";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    hyprspace = {
+      url = "github:KZDKM/Hyprspace";
+      inputs.hyprland.follows = "hyprland";
+    };
+    #hyprland-plugins = {
+    #  url = "github:hyprwm/hyprland-plugins";
+    #};
     hyprland-contrib = {
       url = "github:hyprwm/contrib";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     hyprsysteminfo = {
       url = "github:hyprwm/hyprsysteminfo";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     hypr-binds = {
       url = "github:gvolpe/hypr-binds";
@@ -29,18 +53,20 @@
     rose-pine-hyprcursor.url = "github:ndom91/rose-pine-hyprcursor";
   };
 
-  outputs = { nixpkgs, home-manager, ...} @ inputs:
+  outputs = { nixpkgs, home-manager,...} @ inputs:
     let
       #inherit (self) outputs;
       system = "x86_64-linux";  # x86_64-linux, aarch64-multiplatform, etc.
       pkgs = nixpkgs.legacyPackages.${system};
+      #vscode-extensions = inputs.nix-vscode-extensions.extensions.${system};
     in {
       nix.nixPath = ["nixpkgs=${inputs.nixpkgs}"]; # for nixd
       # packages.x86_64-linux.freerouting = pkgs.callPackage ./pkgs/freerouting.nix {};
       # call it with  inputs.self.packages.x86_64-linux.freerouting in my files
       homeConfigurations = {
         "cnf@hydra" = home-manager.lib.homeManagerConfiguration {
-          extraSpecialArgs = {inherit inputs system;};
+          #system = "x86_64-linux";
+          extraSpecialArgs = {inherit inputs;};
           inherit pkgs;
           modules = [
             ./home.nix
@@ -49,7 +75,7 @@
           ];
         };
         "cnf@OptiNix" = home-manager.lib.homeManagerConfiguration {
-          extraSpecialArgs = {inherit inputs system;};
+          extraSpecialArgs = {inherit inputs;};
           inherit pkgs;
           modules = [
             ./home.nix
@@ -58,7 +84,7 @@
           ];
         };
         "cnf@surface" = home-manager.lib.homeManagerConfiguration {
-          extraSpecialArgs = {inherit inputs system;};
+          extraSpecialArgs = {inherit inputs;};
           inherit pkgs;
           modules = [
             ./home.nix
@@ -67,7 +93,7 @@
           ];
         };
         "cnf@dionysus" = home-manager.lib.homeManagerConfiguration {
-          extraSpecialArgs = {inherit inputs system;};
+          extraSpecialArgs = {inherit inputs;};
           inherit pkgs;
           modules = [
             ./home.nix

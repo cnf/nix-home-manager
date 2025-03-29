@@ -46,24 +46,24 @@ in
         ];
         modules-center = [
           "hyprland/workspaces"
-        ];
-        modules-right = [
-          #"custom/agenda"
-          #"group/privacywarn"
           "privacy"
           "custom/webcam"
           "custom/usbguard"
           "custom/yubikey"
+        ];
+        modules-right = [
+          #"custom/agenda"
+          #"group/privacywarn"
 
-          "idle_inhibitor"
+          "custom/leftend"
           "group/hardware"
-          #"mpris"
-          "custom/media"
+          "mpris"
+          #"custom/media"
           "pulseaudio"
           "pulseaudio/slider"
           "battery"
           #"bluetooth"
-          #"network"
+          #"network#vpn"
 
           "tray"
           "custom/hyprlock"
@@ -174,10 +174,13 @@ in
             transition-left-to-right = false;
           };
           modules = [
+            "temperature"
+            "idle_inhibitor"
+            "backlight"
             "power-profiles-daemon"
             "memory"
             "cpu"
-            "temperature"
+            "temperature#GPU"
           ];
         };
         "pulseaudio/slider" = {
@@ -265,21 +268,45 @@ in
             critical = 15;
           };
         };
+        backlight = {
+          format = "{icon}";
+          #format-icons = [" " " "]
+          format-icons = ["󱩎 " "󱩏 " "󱩐 " "󱩑 " "󱩒 " "󱩓 " "󱩔 " "󱩕 " "󱩖 " "󰛨 "];
+          tooltip-format = "Screen at {percent}%";
+          on-scroll-up = "swayosd-client --brightness +5";
+          on-scroll-down = "swayosd-client --brightness -1";
+          reverse-scrolling = true;
+          #scroll-step = 0.1;
+          states =  {
+            dim =  5;
+            blind = 100;
+          };
+
+        };
         temperature = {
           format = "{icon}";
           format-critical = "{temperatureC}°C {icon}";
           hwmon-path = [
-            "/sys/class/hwmon/hwmon5/temp1_input" # CPU
+            "/sys/class/hwmon/hwmon6/temp1_input" # CPU
+          ];
+          critical-threshold = 95;
+          format-icons = ["" "" "" "" ""];
+          tooltip-format = "CPU {temperatureC}°C";
+          tooltip = true;
+        };
+        "temperature#GPU" = {
+          format = "{icon}";
+          format-critical = "{temperatureC}°C {icon}";
+          hwmon-path = [
             "/sys/class/hwmon/hwmon0/temp1_input" # GPU
           ];
           critical-threshold = 85;
           format-icons = ["" "" "" "" ""];
-          tooltip-format = "{temperatureC}°C ";
+          tooltip-format = "GPU {temperatureC}°C";
           tooltip = true;
-          # tooltip-format = "GPU : {temperatureC}°C {icon}";
         };
         battery = {
-          #full-at = 85;
+          full-at = 85;
           format = "{icon}";
           format-icons = {
             discharging = ["󰂎" "󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹"];
@@ -303,8 +330,8 @@ in
           tooltip-format-plugged = "Plugged in {power:.1f}W";
           # on-click = "2";
         };
-        "network#wg" = {
-          interface = "wg0";
+        "network#vpn" = {
+          interface = "tailscale0";
           format = "{icon}";
           format-icons = {
             ethernet = [""];
@@ -384,20 +411,24 @@ in
         mpris = {
           dynamic-len = 20;
           dynamic-separator = "   ";
+          dynamic-order = ["artist"  "title"  "album"];
           player-icons = {
-            default = "▶";
-            spotify = "";
-	          mpv = "";
+            #default = "▶";
+            default = "";
+            spotify = " ";
+	    mpv = " ";
           };
           status-icons = {
-            playing = "";
-            paused = "";
-            stopped = "";
+            paused = "";
+            playing = "";
+            stopped = "";
           };
           ignored-players = ["firefox"];
-          format = "{player_icon}  {status_icon}";
+          format = "{status_icon}";
           format-stopped = "";
-          tooltip-format = "{player_icon}  {player}  {status_icon}\n{dynamic}";
+          tooltip-format-playing = " {player_icon}\n{dynamic}";
+          tooltip-format-paused = " {player_icon}\n{dynamic}";
+          tooltip-format-stopped = "";
         };
         "custom/agenda" = {
           format = "{}";
@@ -410,11 +441,14 @@ in
           };
         clock = {
           locale = "en_IE.UTF-8";
-          format = "{:%H:%M}  ";
-          format-alt = "{:L%A %R %Z}  ";
+          format = "{:%H:%M}"; # ";
+          format-alt = "{:L%A %R %Z}"; #  ";
           #format-alt = "{:%a %d %b %Y - %R %Z}  ";
           #tooltip-format = "<tt><small>{calendar}</small></tt>";
           tooltip-format = "{:L%A\n%d %B %Y\n%R %Z\nWeek %V}"; #\n{tz_list}";
+        };
+        "custom/leftend" = {
+          format = "";
         };
       };
     };

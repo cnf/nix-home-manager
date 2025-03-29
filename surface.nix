@@ -7,6 +7,7 @@
 
   home.packages = [
     pkgs.assh
+    pkgs.usbutils
   #  pkgs.terminator
   ];
 

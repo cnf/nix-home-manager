@@ -6,15 +6,16 @@
   };
   imports = [
     ./autoname-workspaces.nix
+    ./blueman.nix
     ./clipboard.nix
     ./backup.nix
     ./dunst.nix
     ./hypridle.nix
+    ./hyprsunset.nix
     ./hyprland.nix
     ./hyprlock.nix
     ./hyprpaper.nix
     ./kanshi.nix
-    ./kitty.nix
     ./launcher
     ./osd.nix
     ./theme.nix

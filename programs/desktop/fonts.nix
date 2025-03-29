@@ -37,7 +37,15 @@
       fontpreview
       font-manager
       gucharmap
-      nerdfonts
+      unstable.nerd-fonts.symbols-only
+      unstable.nerd-fonts.sauce-code-pro
+      unstable.nerd-fonts.arimo
+      unstable.nerd-fonts.go-mono
+      unstable.nerd-fonts.jetbrains-mono
+      unstable.nerd-fonts.dejavu-sans-mono
+      unstable.nerd-fonts.noto
+      #nerdfonts
+      nerd-font-patcher
       unstable.helvetica-neue-lt-std
    ];
  };

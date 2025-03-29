@@ -1,9 +1,39 @@
 # cSpell:words pkgs dmenu stdenv nordzy
 # cSpell:ignoreRegExp hypr\w* 
 { pkgs, lib, config, inputs, unstable, ... }:
+let
+  hyprland-pkg = pkgs.hyprland;
+  #hyprland-pkg = unstable.hyprland.override {libgbm = unstable.mesa;};
+  #hyprland-pkg = inputs.hyprland.packages.${pkgs.system}.hyprland; #.override {libgbm = unstable.mesa;};
+
+  hypr-packages = with pkgs;[
+    xdg-desktop-portal-hyprland
+    hyprpolkitagent
+    inputs.dmenu-usbguard.defaultPackage.${pkgs.stdenv.hostPlatform.system}
+    inputs.hyprswitch.packages.${pkgs.stdenv.hostPlatform.system}.default
+    inputs.rose-pine-hyprcursor.packages.${pkgs.stdenv.hostPlatform.system}.default
+    inputs.hyprsysteminfo.packages.${pkgs.stdenv.hostPlatform.system}.default
+  ];
+  hypr-plugins = with pkgs;[hyprlandPlugins.hyprspace];
+  #hypr-packages = [ 
+  #  inputs.hyprland.packages.${pkgs.system}.xdg-desktop-portal-hyprland
+  #  inputs.hyprpolkitagent.packages.${pkgs.stdenv.hostPlatform.system}.default
+  #  #inputs.hyprland-contrib.packages.${pkgs.system}.grimblast
+  #  inputs.dmenu-usbguard.defaultPackage.${pkgs.stdenv.hostPlatform.system}
+  #  inputs.hyprswitch.packages.${pkgs.stdenv.hostPlatform.system}.default
+  #  inputs.hyprsysteminfo.packages.${pkgs.stdenv.hostPlatform.system}.default
+  #  inputs.rose-pine-hyprcursor.packages.${pkgs.stdenv.hostPlatform.system}.default
+  #];
+  #hypr-plugins = [
+  #  inputs.hyprspace.packages.${pkgs.stdenv.hostPlatform.system}.default
+  #  #pkgs.hyprlandPlugins.hyprgrass
+  #  #pkgs.hyprlandPlugins.hyprspace
+  #];
+in
 {
   config = lib.mkIf config.my.hyprland.enable {
     my.desktop.enable = true;
+    my.kitty.enable = true;
     home.sessionVariables = {
       EDITOR = "nvim";
       TERMINAL = "kitty";
@@ -21,17 +51,18 @@
       HYPRSHOT_DIR = "${config.xdg.userDirs.pictures}/Screenshots/";
     };
     home.packages = with pkgs; [
-      aquamarine
-      hyprcursor
-      hyprlang
-      hyprpicker
-      hyprpolkitagent
-      hyprsunset
-      hyprutils
+      #aquamarine
+      #hyprcursor
+      #hyprlang
+      #hyprpicker/gbm
+
+      #hyprpolkitagent
+      #hyprutils
+      #xdg-desktop-portal-hyprland
+      qt5.qtwayland
+
       wlr-randr
       xdg-desktop-portal-gtk
-      # xdg-desktop-portal-gnome
-      xdg-desktop-portal-hyprland
       # screenshots
       grim
       slurp
@@ -44,41 +75,33 @@
       emojipick
       pavucontrol
       playerctl
-      blueman
       wev
       networkmanagerapplet
       networkmanager_dmenu
 
 
-      #inputs.hyprland-contrib.packages.${pkgs.system}.grimblast
-      inputs.dmenu-usbguard.defaultPackage.${pkgs.stdenv.hostPlatform.system}
-      inputs.hyprswitch.packages.${pkgs.stdenv.hostPlatform.system}.default
-      inputs.hyprsysteminfo.packages.${pkgs.stdenv.hostPlatform.system}.default
-      inputs.rose-pine-hyprcursor.packages.${pkgs.stdenv.hostPlatform.system}.default
       nordzy-cursor-theme
       #rose-pine-cursor
 
       # for gnome-keyring
       gcr
 
-    ];
+    ] ++ hypr-packages;
 
     services.gnome-keyring.enable = true;
     #services.gnome-keyring.components = ["secrets"];
     services.network-manager-applet.enable = true;
-    services.blueman-applet.enable = true;
     services.swayosd.enable = true;
     services.playerctld.enable = true;
-#
+
     wayland.windowManager.hyprland = {
       enable  = true;
-      #package = unstable.hyprland.override {libgbm = unstable.mesa;};
-      #package = inputs.hyprland.packages.${pkgs.system}.hyprland;
-      systemd.enableXdgAutostart = true;
-      plugins  = [
-        pkgs.hyprlandPlugins.hyprgrass
-        pkgs.hyprlandPlugins.hyprspace
-      ];
+      package = hyprland-pkg;
+      systemd = {
+        enable = true;
+        enableXdgAutostart = true;
+      };
+      plugins  = hypr-plugins;
     };
     wayland.windowManager.hyprland.settings = {
       "$mod" = "SUPER";
@@ -87,7 +110,7 @@
       # See https://wiki.hyprland.org/Configuring/Monitors/
       monitor = [
         "desc:BOE NE135A1M-NY1,preferred,0x0,2,vrr,1"
-        "desc:LG Electronics LG ULTRAWIDE 0x0000A6C2,preferred,auto,1"
+        "desc:LG Electronics LG ULTRAWIDE 0x0000A6C2,preferred,-1000x-1440,1"
         "desc:BNQ BenQ LCD 56G04894019,preferred,auto-up,1"
         "desc:XYK Display demoset-1,preferred,auto,1"
         ",preferred,auto,1"
@@ -108,7 +131,7 @@
         #"15, monitor:ID:1,default:true"
         #"15, monitor:1,default:true"
         #"13, monitor:DP-2, default:true"
-        "special:visor, on-created-empty:kitty btop"
+        "special:visor, on-created-empty:kitty btop -p 1"
         "special:music, on-created-empty:spotify"
         "special:popterm, on-created-empty:kitty"
       ];
@@ -129,9 +152,9 @@
         "systemctl --user restart waybar.service"
         #"hyprland-autoname-workspaces"
         #"udiskie -t"
-        "hyprswitch init --show-title --size-factor 5 --workspaces-per-row 5"
+        #"hyprswitch init --show-title --size-factor 5 --workspaces-per-row 5"
         #"tailscale-systray"
-        "tail-tray"
+        #"tail-tray"
         "[workspace 1 silent] kitty"
         "[workspace 3 silent] firefox"
         "[workspace 4 silent] discord"
@@ -152,6 +175,7 @@
       ];
 
       misc = {
+        font_family = config.my.looks.font.name;
         focus_on_activate = true; # Whether Hyprland should focus an app that requests to be focused (an activate request)
         disable_hyprland_logo=true;
         initial_workspace_tracking = 2;
@@ -174,6 +198,13 @@
         "$mod, T, Toggle floating/tiling, togglefloating # Allow a window to float"
         "alt, Tab, HyprSwitch, exec, hyprswitch gui --mod-key alt --key tab --max-switch-offset 9 --close mod-key-release" #--hide-active-window-border"
 
+        # Master
+        "$mod, A, Master Layout, exec, hyprctl keyword general:layout master"
+        "$mod, S, Master Orientation Cycle, layoutmsg, orientationcycle right center"
+        # Dwindle
+        "$shiftmod, A, Dwindle Layout, exec, hyprctl keyword general:layout dwindle"
+        "$mod, P, Dwindle Pseudo, pseudo, # Dwindle"
+        "$mod, J, Dwindle Toggle Split, togglesplit, # Dwindle"
 
         ## Screenshots
         ", Print, Screenshot entire screen, exec, hyprshot -z -m active -m output"
@@ -185,6 +216,7 @@
         ## Various Launchers
         "$mod, SPACE, App Launcher Menu, exec, rofi -show drun # Show the graphical app launcher"
         "$mod, Return, Kitty Terminal, exec, kitty"
+        "$mod, BackSpace, Nautilus File Browser, exec, nautilus"
         #"$mod, K, Kitty Terminal, exec, kitty"
         "$mod, equal, Calculator, exec, rofi -show calc -modi calc -no-show-match -no-sort -calc-command 'echo -n {result}| wl-copy'"
         "$shiftmod, J, Color Picker, exec, hyprpicker -a -n| xargs -I % notify-send hyprpicker 'Copied % to clipboard'"
@@ -213,6 +245,10 @@
         ## Weirds
         "$shiftmod, P, resizeactive, exact 700 400"
 
+        # halp!
+        "$shiftmod, code:61, exec, hypr-binds"
+        "$mod, code:61, exec, hypr-binds"
+
         ## Groups
         "$mod, G, togglegroup"
         "$mod, Tab, cyclenext,"
@@ -228,18 +264,7 @@
         "$mod, bracketright, cyclenext"
         # stuff
 
-        # "$mod, ESCAPE, hyprexpo:expo, toggle"
-        # Master,
-        "$mod, A, exec, hyprctl keyword general:layout master"
-        "$mod, S, layoutmsg, orientationcycle right center"
-        # Dwindle
-        "$shiftmod, A, exec, hyprctl keyword general:layout dwindle"
-        "$mod, P, pseudo, # Dwindle"
-        "$mod, J, togglesplit, # Dwindle"
-
-        # halp!
-        "$shiftmod, code:61, exec, hypr-binds"
-        "$mod, code:61, exec, hypr-binds"
+        
 
         ### NAVIGATION ###
         "$mod, u, focusurgentorlast # toggle between urgent or last workspaces"
@@ -315,7 +340,9 @@
       };
       master = {
         always_center_master = true;
-        #TODO: slave_count_for_center_master 
+        #slave_count_for_center_master = 0;
+        #TODO: slave_count_for_center_master 0 for later versions
+        #center_master_slaves_on_right = false;
         #new_is_master = false;
         orientation = "right";
         mfact = 0.6; # 0.55 default
@@ -346,12 +373,16 @@
         };
       };
       group = {
-        auto_group = false;
+        #auto_group = false;
         drag_into_group = 1;
         "col.border_active" = "rgba(ff6700ee)";
         "col.border_inactive" = "rgba(0098ff33)";
         groupbar = {
+          font_size = config.my.looks.font.size * 2;
           gradients = true;
+          #indicator_height = 0;
+          #gradient_rounding = 14;
+          #gradient_round_only_edges = false;
           "col.active" = "rgba(ff6700ee)";
           "col.inactive" = "rgba(0098ff33)";
         };
@@ -394,29 +425,37 @@
         "workspace 4 silent, class:^(discord)$"
 
 
-        "tag +float, class:(nm-tray)"
-        "tag +float, class:^(pavucontrol)$"
-        "tag +float, class:^(.blueman.*)$"
-        "tag +fixsize, class:^(.blueman.*)$"
-        "tag +float, class:^(nm-connection-editor)$"
-        "tag +float, class:^(org.pulseaudio.pavucontrol)$"
+        "tag +settings, class:(nm-tray)"
+        "tag +settings, class:^(nm-connection-editor)$"
+        "tag +fixsize, class:^(nm-connection-editor)$"
+        "tag +settings, class:^(pavucontrol)$"
+        "tag +settings, class:^(org.pulseaudio.pavucontrol)$"
+        "tag +fixsize, class:^(org.pulseaudio.pavucontrol)$"
+        "tag +settings, class:^(.blueman.*)$"
+        #"tag +fixsize, class:^(.blueman.*)$"
         "tag +float, class:^(org.gnome.Nautilus)$"
         "tag +float, class:^(org.gnome.Calculator)$"
-        "tag +float, class:^(org.kde.dolphin)$"
         # Code
         "opacity 0.95 override 0.8 override, class:^(code)$"
         # Video
-        "tag +video, class:^(mpv)$"
-        "tag +video, class:^(vlc)$"
-        "float, tag:video"
-        "opacity 1 override, tag:video"
+        #"tag +video, class:^(mpv)$"
+        #"content video, class:^(mpv)$"
+        #"tag +video, class:^(vlc)$"
+        #"content video, class:^(vlc)$"
+        #"float, tag:video"
+        #"opacity 1 override, tag:video"
         #"opacity 1 override, content:video"
+
         # Firefox
-        "opacity 1 override 0.8 override,class:^(firefox)$"
-        "float,initialTitle:^(Picture-in-Picture)$"
+        "tag +firefox, class:^(firefox)$"
+        "tag +firefox, class:^(librewolf)$"
+        "opacity 1 override 0.8 override, tag:firefox"
+        "tag +video,initialTitle:^(Picture-in-Picture)$"
+        #"content video,initialTitle:^(Picture-in-Picture)$"
+
+        #"float,initialTitle:^(Picture-in-Picture)$"
         "size 700 400, initialTitle:^(Picture-in-Picture)$"
-        "opacity 1 override, initialTitle:^(Picture-in-Picture)$"
-        "suppressevent activatefocus, initialTitle:^(Picture-in-Picture)$"
+
         # PrusaSlicer
         "opacity 1 override, initialClass:^(PrusaSlicer)$,floating:1"
         "tag +settings, initialClass:^(PrusaSlicer)$, title:Choose one (or more )\?files\?(.*)"
@@ -443,29 +482,44 @@
 
         # FreeCAD
         "tag +freecad, initialClass:^(org.freecad.FreeCAD)$"
-        "tag +settings, initialClass:^(org.freecad.FreeCAD)$, title:^([ a-zA-Z]* Manager)$"
-        "tag +settings, initialClass:^(org.freecad.FreeCAD)$, title:^(Location of your .*)$"
-        "tag +settings, initialClass:^(org.freecad.FreeCAD)$, title:^(.* configuration)$"
-        "tag +float, initialClass:^(org.freecad.FreeCAD)$, title:^((Add|Edit|Select|Updating) .*)$"
-        "tag +float, initialClass:^(org.freecad.FreeCAD)$, title:^(Choose category and set a filename without extension)$"
-        "tag +float, initialClass:^(org.freecad.FreeCAD)$, title:^(Placement)$"
-        "focusonactivate on, initialClass:^(org.freecad.FreeCAD)$, floating:1, title:^(Expression editor)$"
+        "tag +freecad, initialClass:^(FreeCAD)$"
+        "tag +settings, tag:freecad, title:^(Preferences)$"
+        "tag +settings, tag:freecad, title:^([ a-zA-Z]* Manager)$"
+        "tag +settings, tag:freecad, title:^(Location of your .*)$"
+        "tag +settings, tag:freecad, title:^(.* configuration)$"
+        "tag +fixsize, tag:freecad, title:^(([a-zA-Z] )?(Add|Edit|Delete) .*)$"
+        "tag +fixsize, tag:freecad, title:^((Add|Edit|Select|Updating|Export) .*)$"
+        "tag +float, tag:fixsize, tag:freecad"
+        "tag +float, tag:freecad, title:^(Choose category and set a filename without extension)$"
+        "tag +float, tag:freecad, title:^(Placement)$"
+        "focusonactivate on, tag:freecad, floating:1, title:^(Expression editor)$"
         "opacity 1 override, tag:freecad"
 
         # Evolution
         "tag +evolution, initialClass:^(org.gnome.Evolution)$"
-        "tag +float, initialTitle:^((Appointment) — .*)$, tag:evolution"
-        "tag +fixsize, initialTitle:^((Appointment) — .*)$, tag:evolution"
+        "tag +float, initialTitle:^((Appointment|Meeting|Memo|Task) — .*)$, tag:evolution"
+        "tag +fixsize, initialTitle:^((Appointment|Meeting|Memo|Task|Contact Editor) — .*)$, tag:evolution"
 
-        # ## KiCAD
-        # "tag kicad, class:^(kicad)$"
-        # "group invade, class:^(kicad)$"
+        # SigRok
+        "tag +sigrok, initialClass:^(org.sigrok.)"
+        "tag +settings, initialTitle:^(Connect to Device)$"
+
+         ## KiCAD
+        #"tag kicad, class:^(kicad)$"
+        #"opacity 1 override, tag:kicad"
+        #"xray off, tag:kicad"
+        #"decorate off, tag:kicad"
+        #"forcergbx, tag:kicad"
+        #"group invade, tag:kicad"
 
         ## OneDrive GUI ##
         "tag +onedrive, title:^(OneDriveGUI .*)$"
         "float, tag:onedrive"
         "center, tag:onedrive"
         "size 80%, tag:onedrive"
+
+        "tag +synology, initialClass:^(cloud-drive-ui)$"
+        "move onscreen cursor, tag:synology"
 
 
         ### 1Password
@@ -519,13 +573,22 @@
         "float, tag:settings"
         "center, tag:settings"
         "maxsize 1200 850, tag:settings"
-        "size 1000 800, tag:settings"
+        "minsize 800 600, tag:settings"
+        #"size 1000 800, tag:settings"
 
         ## Tag Actions, Generic
         "float, tag:float"
         "size 70%, tag:fixsize"
         "center, tag:fixsize"
+        "maxsize 1200 850, tag:fixsize"
+        "minsize 800 600, tag:fixsize"
         "stayfocused, tag:keepfocus"
+
+        #"opacity 1 override, content:video"
+        #"suppressevent activatefocus, content:video"
+        "suppressevent activatefocus, tag:video"
+        #"float, content:video"
+        "float, tag:video"
       ];
     };
     wayland.windowManager.hyprland.extraConfig = ''
@@ -560,6 +623,7 @@
             showEmptyWorkspace = true
           }
         }
+        source = ~/.config/hypr/local.conf
     '';
 
   };

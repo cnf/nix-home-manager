@@ -1,5 +1,6 @@
 { pkgs, inputs, unstable, ... }: {
   imports = [ 
+    ./tio.nix
     ./git.nix 
     ./golang.nix 
     ./neovim.nix 
@@ -13,11 +14,15 @@
     nixd
     nixfmt-rfc-style
 
+    gum
+
     bustle
     httpie
 
     gdb
     sqlite-interactive
+
+    rpi-imager
   ];
   nix.nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
 }

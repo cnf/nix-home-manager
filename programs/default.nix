@@ -4,7 +4,6 @@
     #./prusa-slicer.nix
     ./desktop
     ./devel
-    ./ele-lab.nix
     ./engineering
     ./funshoot
     ./hyprland

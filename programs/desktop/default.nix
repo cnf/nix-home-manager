@@ -4,6 +4,7 @@
     my.desktop.enable = lib.mkEnableOption "Enable a graphical env";
   };
   imports = [
+    ./altbrowsers.nix
     ./chromium.nix
     ./davinci.nix
     ./discord.nix
@@ -12,11 +13,12 @@
     ./fonts.nix
     ./gaming.nix
     ./gnome.nix
-    ./altbrowsers.nix
+    ./kitty
     ./mqtt.nix
     ./nixtools.nix
     ./obsidian.nix
     ./pdf.nix
+    ./synology.nix
     ./theme-vars.nix
     ./vscode.nix
     ./wine.nix
@@ -44,7 +46,7 @@
       ];
     };
     home.packages = with pkgs; [
-      appimage-run
+      unstable.appimage-run
       pinentry
       # audio
       pavucontrol

@@ -7,6 +7,7 @@
       tray = "auto";
       settings = {
         program_options = {
+          file_manager = "/run/current-system/sw/bin/xdg-open";
           menu = "flat";
         };
         terminal = "kitty";

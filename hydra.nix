@@ -13,6 +13,7 @@
   my.davinci.enable = false;
   my.desktop.enable = true;
   my.discord.enable = true;
+  my.synodrive.enable = true;
   my.email.enable = true;
   my.engineering.enable = true;
   my.firefox.enable = true;

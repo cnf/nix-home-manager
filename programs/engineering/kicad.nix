@@ -1,21 +1,21 @@
-{ pkgs, unstable, lib, config, inputs, outputs, ... }:
+{ pkgs, unstable, lib, config, ... }:
 let
     kicad = (
-      pkgs.kicad.overrideAttrs ( finalAttrs: prevAttrs: {
+      unstable.kicad.overrideAttrs ( finalAttrs: prevAttrs: {
         makeWrapperArgs = prevAttrs.makeWrapperArgs ++ [
           " --set JAVA_HOME ${pkgs.temurin-jre-bin}"
           " --set JAVA_OPTIONS -Dawt.useSystemAAFontSettings=on"
           ];
       })
     ).override {
-      addons = with pkgs.kicadAddons; [ kikit kikit-library ];
+      addons = with unstable.kicadAddons; [ kikit kikit-library ];
     };
 in
 {
   config = lib.mkIf config.my.engineering.enable {
     home.packages = with pkgs; [
       temurin-jre-bin
-      #kicad
+      kicad
       # unstable.my-freerouting # don't need it separate, the plugin has the jar
     ];
   };
