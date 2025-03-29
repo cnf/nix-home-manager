@@ -1,12 +1,12 @@
-{ unstable, lib, config, ... }:
+{ unstable, pkgs, lib, config, ... }:
 {
   options = { 
     my.discord.enable = lib.mkEnableOption "Install Discord";
   };
   config = lib.mkIf config.my.discord.enable {
+
     home.packages = [
-      unstable.discord
-      unstable.dissent
+      pkgs.discord
       #webcord
       #legcord
     ];

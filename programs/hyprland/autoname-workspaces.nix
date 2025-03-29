@@ -89,6 +89,7 @@
       "cloud-drive-ui" = ""
       "io.missioncenter.MissionCenter" = ""
       "com/serial-studio.*" = "󰙜"
+      "org.raspberrypi." = ""
 
 
       "org.freedesktop.Bustle" = "󰘘"

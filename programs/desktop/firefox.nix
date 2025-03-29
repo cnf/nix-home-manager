@@ -1,5 +1,4 @@
 { pkgs, lib, config, inputs, ... }:
-
 {
   options = {
     my.firefox.enable = lib.mkEnableOption "Enable and configure firefox";

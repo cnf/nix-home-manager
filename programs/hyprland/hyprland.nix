@@ -2,24 +2,33 @@
 # cSpell:ignoreRegExp hypr\w* 
 { pkgs, lib, config, inputs, unstable, ... }:
 let
-  #hyprland-pkg = pkgs.hyprland;
+  hyprland-pkg = pkgs.hyprland;
   #hyprland-pkg = unstable.hyprland.override {libgbm = unstable.mesa;};
-  hyprland-pkg = inputs.hyprland.packages.${pkgs.system}.hyprland; #.override {libgbm = unstable.mesa;};
-  hypr-packages = [ 
-    inputs.hyprland.packages.${pkgs.system}.xdg-desktop-portal-hyprland
-    inputs.hyprpolkitagent.packages.${pkgs.stdenv.hostPlatform.system}.default
-    #inputs.hyprland-contrib.packages.${pkgs.system}.grimblast
+  #hyprland-pkg = inputs.hyprland.packages.${pkgs.system}.hyprland; #.override {libgbm = unstable.mesa;};
+
+  hypr-packages = with pkgs;[
+    xdg-desktop-portal-hyprland
+    hyprpolkitagent
     inputs.dmenu-usbguard.defaultPackage.${pkgs.stdenv.hostPlatform.system}
     inputs.hyprswitch.packages.${pkgs.stdenv.hostPlatform.system}.default
-    inputs.hyprsysteminfo.packages.${pkgs.stdenv.hostPlatform.system}.default
     inputs.rose-pine-hyprcursor.packages.${pkgs.stdenv.hostPlatform.system}.default
-    unstable.mesa
+    inputs.hyprsysteminfo.packages.${pkgs.stdenv.hostPlatform.system}.default
   ];
-  hypr-plugins = [
-    inputs.hyprspace.packages.${pkgs.stdenv.hostPlatform.system}.default
-    #pkgs.hyprlandPlugins.hyprgrass
-    #pkgs.hyprlandPlugins.hyprspace
-  ];
+  hypr-plugins = with pkgs;[hyprlandPlugins.hyprspace];
+  #hypr-packages = [ 
+  #  inputs.hyprland.packages.${pkgs.system}.xdg-desktop-portal-hyprland
+  #  inputs.hyprpolkitagent.packages.${pkgs.stdenv.hostPlatform.system}.default
+  #  #inputs.hyprland-contrib.packages.${pkgs.system}.grimblast
+  #  inputs.dmenu-usbguard.defaultPackage.${pkgs.stdenv.hostPlatform.system}
+  #  inputs.hyprswitch.packages.${pkgs.stdenv.hostPlatform.system}.default
+  #  inputs.hyprsysteminfo.packages.${pkgs.stdenv.hostPlatform.system}.default
+  #  inputs.rose-pine-hyprcursor.packages.${pkgs.stdenv.hostPlatform.system}.default
+  #];
+  #hypr-plugins = [
+  #  inputs.hyprspace.packages.${pkgs.stdenv.hostPlatform.system}.default
+  #  #pkgs.hyprlandPlugins.hyprgrass
+  #  #pkgs.hyprlandPlugins.hyprspace
+  #];
 in
 {
   config = lib.mkIf config.my.hyprland.enable {
@@ -50,6 +59,7 @@ in
       #hyprpolkitagent
       #hyprutils
       #xdg-desktop-portal-hyprland
+      qt5.qtwayland
 
       wlr-randr
       xdg-desktop-portal-gtk
@@ -329,10 +339,10 @@ in
         preserve_split = "yes";
       };
       master = {
-        #always_center_master = true;
-        slave_count_for_center_master = 0;
+        always_center_master = true;
+        #slave_count_for_center_master = 0;
         #TODO: slave_count_for_center_master 0 for later versions
-        center_master_slaves_on_right = false;
+        #center_master_slaves_on_right = false;
         #new_is_master = false;
         orientation = "right";
         mfact = 0.6; # 0.55 default
@@ -370,9 +380,9 @@ in
         groupbar = {
           font_size = config.my.looks.font.size * 2;
           gradients = true;
-          indicator_height = 0;
-          gradient_rounding = 14;
-          gradient_round_only_edges = false;
+          #indicator_height = 0;
+          #gradient_rounding = 14;
+          #gradient_round_only_edges = false;
           "col.active" = "rgba(ff6700ee)";
           "col.inactive" = "rgba(0098ff33)";
         };
@@ -429,9 +439,9 @@ in
         "opacity 0.95 override 0.8 override, class:^(code)$"
         # Video
         #"tag +video, class:^(mpv)$"
-        "content video, class:^(mpv)$"
+        #"content video, class:^(mpv)$"
         #"tag +video, class:^(vlc)$"
-        "content video, class:^(vlc)$"
+        #"content video, class:^(vlc)$"
         #"float, tag:video"
         #"opacity 1 override, tag:video"
         #"opacity 1 override, content:video"
@@ -441,7 +451,7 @@ in
         "tag +firefox, class:^(librewolf)$"
         "opacity 1 override 0.8 override, tag:firefox"
         "tag +video,initialTitle:^(Picture-in-Picture)$"
-        "content video,initialTitle:^(Picture-in-Picture)$"
+        #"content video,initialTitle:^(Picture-in-Picture)$"
 
         #"float,initialTitle:^(Picture-in-Picture)$"
         "size 700 400, initialTitle:^(Picture-in-Picture)$"
@@ -453,21 +463,21 @@ in
         
         ## Rofi
         "move cursor -3% -105%,class:^(rofi)$"
-        "prop noanim,class:^(rofi)$"
+        "noanim,class:^(rofi)$"
         "opacity 0.8 override 0.6 override,class:^(rofi)$"
 
         ## Steam
         "tag +steam, initialClass:^(steam)$"
         "tag +steam, initialTitle:^(Steam)$"
-        "prop noborder, floating:1, tag:steam"
-        "prop noshadow, floating:1, tag:steam"
+        "noborder, floating:1, tag:steam"
+        "noshadow, floating:1, tag:steam"
 
         ## Fusion 360
         "tag +fusion, initialClass:^(fusion360.exe)$"
         "tag +fusion, initialClass:^(steam_proton)$"
         "opacity 1 override, tag:fusion"
-        "prop noanim, tag:fusion"
-        "prop noblur, tag:fusion"
+        "noanim, tag:fusion"
+        "noblur, tag:fusion"
         "suppressevent activatefocus activate, tag:fusion"
 
         # FreeCAD
@@ -482,7 +492,7 @@ in
         "tag +float, tag:fixsize, tag:freecad"
         "tag +float, tag:freecad, title:^(Choose category and set a filename without extension)$"
         "tag +float, tag:freecad, title:^(Placement)$"
-        "prop focusonactivate on, tag:freecad, floating:1, title:^(Expression editor)$"
+        "focusonactivate on, tag:freecad, floating:1, title:^(Expression editor)$"
         "opacity 1 override, tag:freecad"
 
         # Evolution
@@ -497,7 +507,7 @@ in
          ## KiCAD
         #"tag kicad, class:^(kicad)$"
         #"opacity 1 override, tag:kicad"
-        #"prop xray off, tag:kicad"
+        #"xray off, tag:kicad"
         #"decorate off, tag:kicad"
         #"forcergbx, tag:kicad"
         #"group invade, tag:kicad"
@@ -574,10 +584,10 @@ in
         "minsize 800 600, tag:fixsize"
         "stayfocused, tag:keepfocus"
 
-        "opacity 1 override, content:video"
-        "suppressevent activatefocus, content:video"
+        #"opacity 1 override, content:video"
+        #"suppressevent activatefocus, content:video"
         "suppressevent activatefocus, tag:video"
-        "float, content:video"
+        #"float, content:video"
         "float, tag:video"
       ];
     };

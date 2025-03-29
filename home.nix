@@ -1,8 +1,21 @@
-{inputs, outputs, pkgs, system, ...}: 
+{inputs, lib, outputs, pkgs, nixpkgs, ...}: 
 let
   homeDirPrefix = if pkgs.stdenv.hostPlatform.isDarwin then "/Users" else "/home";
   username = "cnf";
+  system = pkgs.stdenv.hostPlatform.system;
+  allowUnfree = map lib.getName [
+    "discord"
+    "spotify"
+  ];
 in {
+    nixpkgs = {
+      config = {
+        allowUnfree = true;
+        #allowUnfreePredicate = (_: true);
+        allowUnfreePredicate = pkg:
+        builtins.elem (lib.getName pkg) allowUnfree;
+      };
+    };
     _module.args.unstable = import inputs.nixpkgs-unstable {
        inherit system;
        config = {
@@ -15,6 +28,7 @@ in {
             # (self: super: {local = super.callPackage ./pkgs {};})
         ] ++ (import ./overlays);
     };
+
     home = {
       username = "${username}";
       homeDirectory = "${homeDirPrefix}/${username}";

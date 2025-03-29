@@ -1,4 +1,7 @@
-{ pkgs, unstable, lib, config, vscode-extensions, ... }:
+{ pkgs, unstable, lib, config, inputs, ... }:
+let
+  vscode-extensions = inputs.nix-vscode-extensions.extensions.${pkgs.stdenv.hostPlatform.system};
+in
 {
   options = { 
     my.vscode.enable = lib.mkEnableOption "Enable VSCode";

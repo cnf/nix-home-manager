@@ -1,8 +1,10 @@
-{ pkgs, lib, config, ... }:
+{ pkgs, inputs, lib, config, ... }:
 {
   config = lib.mkIf config.my.hyprland.enable {
-    home.packages = with pkgs; [
-      hyprsunset
+    home.packages = [
+      #hyprsunset
+      inputs.hyprsunset.packages.${pkgs.stdenv.hostPlatform.system}.default
+      #pkgs.gammastep
     ];
 
     systemd.user.services.hyprsunset = {

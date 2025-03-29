@@ -30,6 +30,8 @@
 
       pandoc
 
+      waypipe
+
       #unstable.synology-drive-client
 
       #uxplay
@@ -38,6 +40,10 @@
       #gst_all_1.gst-vaapi
       #gst_all_1.gst-plugins-good
       #gst_all_1.gst-libav
+
+      # WIFI
+      macchanger
+      kismet
     ];
   };
 }
