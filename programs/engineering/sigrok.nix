@@ -35,7 +35,7 @@
           name = "RDTech DPS5005 rfcomm";
         };
         LABPS3005DN = {
-          exec = "smuview -D -d korad-kaxxxxp:conn=/dev/ttyUSB1 %U"; 
+          exec = "smuview -D -d korad-kaxxxxp:conn=/dev/velleman-LABPS3005DN %U"; 
           name = "Velleman LABPS3005DN";
         };
       };

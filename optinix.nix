@@ -11,6 +11,7 @@
   my.altbrowsers.enable = true;
   my.desktop.enable = true;
   my.discord.enable = false;
+  my.hackrf.enable = true;
   my.firefox.enable = true;
   my.funshoot.enable = true;
   my.git.enable = true;
