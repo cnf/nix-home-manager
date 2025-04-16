@@ -30,7 +30,7 @@
           exec = "smuview -D -d rdtech-dps:/dev/serial/by-id/usb-1a86_USB_Serial-if00-port0 %U";
           name = "RDTech DPS5005 USB";
         };
-        DPS5005A = {
+        DPS5005-BT = {
           exec = "smuview -D -d rdtech-dps:/dev/rfcomm1 %U";
           name = "RDTech DPS5005 rfcomm";
         };

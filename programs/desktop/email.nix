@@ -5,10 +5,11 @@
   };
   config = lib.mkIf config.my.email.enable {
     home.packages = with pkgs; [
-      evolution
-      evolution-ews
-      evolution-data-server-gtk4
-
+      thunderbird #sucks, but everything else seems to suck more...
+      # evolution
+      # evolution-ews
+      # evolution-data-server-gtk4
+      #geary # fixed with panel sizes, auto marks as read on select, not configurable
     ];
     #services.gnome.evolution-data-server.enable = true;
     #programs.evolution = {

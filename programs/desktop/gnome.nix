@@ -2,6 +2,7 @@
 {
   config = lib.mkIf config.my.desktop.enable {
     home.packages = with pkgs; [
+      gnome-online-accounts
       blanket
       cartridges
       d-spy

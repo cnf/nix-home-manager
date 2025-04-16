@@ -1,0 +1,78 @@
+@define-color primary #ff8514;
+@define-color accent #148eff;
+@define-color textcolor white;
+/* Evolution */
+/*MessageList {
+color: red;
+}*/
+/*MessageList,* {
+  -MessageList-new-mail-fg-color: SteelBlue;
+}
+*/
+
+/* Geary */
+.geary-folder {
+  background-color: @theme_bg_color_breeze;
+}
+
+.geary-folder .view:selected {
+  font-weight: bold;
+  font-size: 120%;
+  color: @accent;
+}
+row.conversation-list {
+  color: silver;
+  background-color: @theme_selected_bg_color_breeze;
+}
+
+row.conversation-list .participants {
+  font-weight: bolder;
+  font-size: 120%;
+
+}
+row.conversation-list .preview {
+  color: gray;
+  font-size: 80%;
+}
+
+row.conversation-list .subject {
+  color: white;
+    font-weight: lighter;
+  }
+  
+  row.conversation-list.unread .subject {
+    color: white;
+  font-weight: normal;
+}
+
+row.conversation-list.unread {
+  border-left: 5px #0A84FF solid;
+  color: white;
+}
+
+/* GNOME Calendar */
+.calendar label {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.color-light {
+  color: white;
+}
+
+calendar-view event,
+agenda-view event {
+  color: white;
+  font-weight: bolder;
+}
+
+calendar-view event.dim-label,
+agenda-view event.dim-label,
+event.dim-label {
+  font-weight: lighter;
+}
+
+.color-light label {
+  color: white;
+}
+
+@import url("file:///home/cnf/.config/gtk-4.0/local.css");

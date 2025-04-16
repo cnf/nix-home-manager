@@ -51,6 +51,7 @@
     dmenu-usbguard.url = "github:Armoken/dmenu-usbguard";
     nix-inspect.url = "github:bluskript/nix-inspect";
     rose-pine-hyprcursor.url = "github:ndom91/rose-pine-hyprcursor";
+    ignis.url = "github:linkfrg/ignis";
   };
 
   outputs = { nixpkgs, home-manager,...} @ inputs:

@@ -32,6 +32,7 @@
             # "browser.startup.homepage" = "https://duckduckgo.com";
             "browser.search.defaultenginename" = "DuckDuckGo";
             "browser.search.order.1" = "DuckDuckGo";
+            "browser.search.order.2" = "Bing";
 
             "signon.rememberSignons" = false;
             "widget.use-xdg-desktop-portal.file-picker" = 1;
@@ -55,7 +56,7 @@
           search = {
             force = true;
             default = "DuckDuckGo";
-            order = [ "DuckDuckGo" "Google" ];
+            order = [ "DuckDuckGo" "Bing" ];
           };
           #bookmarks = {
           #  name = "HackRF Software Support";

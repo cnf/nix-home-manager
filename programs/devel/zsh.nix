@@ -9,14 +9,58 @@
     programs.zsh = {
     enable = true;
     enableCompletion = true;
+    initExtraFirst = ''
+      # vim: set foldmethod=marker : "
+      # FIRST: {{{
+      # }}}
+    '';
     completionInit = ''
+      
       # CompInit: {{{
-      autoload -Uz compinit
+      #autoload -Uz compinit
+      autoload -Uz compinit bashcompinit
       for dump in ${config.xdg.configHome}/zsh/.zcompdump(N.mh+24); do
         echo "comp init"
         compinit -d ${config.xdg.configHome}/zsh/.zcompdump
       done
       compinit -C
+
+      # load bashcompinit for some old bash completions
+      bashcompinit
+      _BCOMP_DIR=~/.nix-profile/share/bash-completion/completions/
+      _EXISTS=($(for command completion in ''${(kv)_comps:#-*(-|-,*)}; do; echo ''${command#_}; done|sort|uniq))
+      _BASHERS=($(ls --indicator-style=none ''${_BCOMP_DIR}|sort))
+      for bashone in $_BASHERS[@]; do
+        if (( !$_EXISTS[(Ie)''${bashone}] )); then
+          source ''${_BCOMP_DIR}''${bashone} 2>/dev/null
+        fi
+      done
+
+      #zmodload zsh/complist
+      setopt AUTO_MENU # Cycle through possibilities during tab completion.
+      setopt COMPLETE_IN_WORD # Completion matches text to the left of the cursor when mid-word.
+      #setopt LIST_PACKED # compacter menu
+
+      zstyle ':completion:*' verbose yes
+      zstyle ':completion:*' menu select
+      zstyle ':completion:*:default' list-colors ''${(s.:.)LS_COLORS}
+
+      zstyle ':completion:*:descriptions' format '%F{green}-- %d --%f'
+      zstyle ':completion:*:corrections' format '%F{yellow}!- %d (errors: %e) -!%f'
+      zstyle ':completion:*:messages' format ' %F{purple} -- %d --%f'
+      zstyle ':completion:*:warnings' format ' %F{red}-- no matches found --%f'
+
+      zstyle ':completion:*' group-name '''
+      zstyle ':completion:*' file-list all
+      zstyle ':completion:*:*:journalctl:*' file-list false
+      zstyle ':completion:*:*:cp:*' file-sort size reverse follow
+      zstyle ':completion:*' file-sort modification reverse follow
+
+      #zstyle ':completion:*' squeeze-slashes true
+
+      # ???
+      zstyle ':completion:*' complete-options true # lets you complete -options on cd etc
+
       # }}}
     '';
     autosuggestion.enable = true;
@@ -42,9 +86,6 @@
     shellAliases = {
       ls = "ls -F --color=auto";
     };
-    initExtraFirst = ''
-      # FIRST!
-    '';
     initExtraBeforeCompInit = ''
       #setopt print_exit_value
       skip_global_compinit=1
@@ -56,9 +97,7 @@
       setopt PRINT_EXIT_VALUE
       setopt TRANSIENT_RPROMPT
       setopt ALWAYS_TO_END
-      setopt AUTO_MENU # Cycle through possibilities during tab completion.
       setopt AUTO_PUSHD # Automatically append to the stack.
-      setopt COMPLETE_IN_WORD # Completion matches text to the left of the cursor when mid-word.
       setopt NO_FLOW_CONTROL
       setopt NO_CDABLE_VARS
 

@@ -54,7 +54,7 @@ in
       #aquamarine
       #hyprcursor
       #hyprlang
-      #hyprpicker/gbm
+      hyprpicker #/gbm
 
       #hyprpolkitagent
       #hyprutils
@@ -102,10 +102,15 @@ in
         enableXdgAutostart = true;
       };
       plugins  = hypr-plugins;
+      sourceFirst = true;
     };
     wayland.windowManager.hyprland.settings = {
       "$mod" = "SUPER";
       "$shiftmod" = "SUPER SHIFT";
+
+      source = [
+        "~/.config/hypr/local.conf"
+      ];
 
       # See https://wiki.hyprland.org/Configuring/Monitors/
       monitor = [
@@ -152,7 +157,7 @@ in
         "systemctl --user restart waybar.service"
         #"hyprland-autoname-workspaces"
         #"udiskie -t"
-        #"hyprswitch init --show-title --size-factor 5 --workspaces-per-row 5"
+        "hyprswitch init --show-title --size-factor 5 --workspaces-per-row 5"
         #"tailscale-systray"
         #"tail-tray"
         "[workspace 1 silent] kitty"
@@ -210,7 +215,7 @@ in
         ", Print, Screenshot entire screen, exec, hyprshot -z -m active -m output"
         "Control_L, Print, Screenshot window, exec, hyprshot -z -m window"
         "Control SHIFT, Print, Screenshot selected area, exec, hyprshot -z -m region"
-        "$mod, Print, Edit last screenshow, exec, wl-paste | swappy -f | wl-copy"
+        "$mod, Print, Edit last screenshot, exec, wl-paste | swappy -f - | wl-copy"
         # hyprshot -m region --clipboard-only --freeze && wl-paste | swappy -f
 
         ## Various Launchers
@@ -270,7 +275,8 @@ in
         "$mod, u, focusurgentorlast # toggle between urgent or last workspaces"
         "$mod, grave, togglespecialworkspace, visor"
         "$shiftmod, grave, movetoworkspace, special, visor"
-        "$mod, Escape, togglespecialworkspace, popterm"
+        "$mod, Escape, exec, ignis toggle ignis_CONTROL_CENTER"
+        "$mod Alt, Escape, togglespecialworkspace, popterm"
 
    
         # Scroll through existing workspaces with mainMod + scroll
@@ -358,8 +364,8 @@ in
           enabled = true;
           # range = 10;
           # render_power = 4;
-          #color = "rgba(ff6700ee)"; #"rgba(1a1a1aee)";
-          #color_inactive = "rgba(0098ff33)";
+          color = "rgba(ff6700ee)"; #"rgba(1a1a1aee)";
+          color_inactive = "rgba(0098ff33)";
         };
         active_opacity=0.9;
         inactive_opacity=0.7;
@@ -378,7 +384,7 @@ in
         "col.border_active" = "rgba(ff6700ee)";
         "col.border_inactive" = "rgba(0098ff33)";
         groupbar = {
-          font_size = config.my.looks.font.size * 2;
+          font_size = config.my.looks.font.size;
           gradients = true;
           #indicator_height = 0;
           #gradient_rounding = 14;
@@ -487,11 +493,12 @@ in
         "tag +settings, tag:freecad, title:^([ a-zA-Z]* Manager)$"
         "tag +settings, tag:freecad, title:^(Location of your .*)$"
         "tag +settings, tag:freecad, title:^(.* configuration)$"
-        "tag +fixsize, tag:freecad, title:^(([a-zA-Z] )?(Add|Edit|Delete) .*)$"
-        "tag +fixsize, tag:freecad, title:^((Add|Edit|Select|Updating|Export) .*)$"
-        "tag +float, tag:fixsize, tag:freecad"
-        "tag +float, tag:freecad, title:^(Choose category and set a filename without extension)$"
-        "tag +float, tag:freecad, title:^(Placement)$"
+        "tag +settings, tag:freecad, title:^(KiCad.* tools)$"
+        "tag +ospdialog, tag:freecad, title:^(([a-zA-Z] )?(Add|Edit|Delete) .*)$"
+        "tag +ospdialog, tag:freecad, title:^((Add|Edit|Select|Updating|Export) .*)$"
+        #"tag +float, tag:fixsize, tag:freecad"
+        "tag +ospdialog, tag:freecad, title:^(Choose category and set a filename without extension)$"
+        "tag +ospdialog, tag:freecad, title:^(Placement)$"
         "focusonactivate on, tag:freecad, floating:1, title:^(Expression editor)$"
         "opacity 1 override, tag:freecad"
 
@@ -505,7 +512,7 @@ in
         "tag +settings, initialTitle:^(Connect to Device)$"
 
          ## KiCAD
-        #"tag kicad, class:^(kicad)$"
+        #"tag +kicad, class:^(kicad)$"
         #"opacity 1 override, tag:kicad"
         #"xray off, tag:kicad"
         #"decorate off, tag:kicad"
@@ -514,40 +521,45 @@ in
 
         ## OneDrive GUI ##
         "tag +onedrive, title:^(OneDriveGUI .*)$"
-        "float, tag:onedrive"
-        "center, tag:onedrive"
-        "size 80%, tag:onedrive"
+        "tag +fixsize, tag:onedrive"
 
         "tag +synology, initialClass:^(cloud-drive-ui)$"
         "move onscreen cursor, tag:synology"
+
+        ## Signal
+        "tag +float, initialClass:^(signal)$"
+        "tag +fixsize, initialClass:^(signal)$"
+        "size 70% 70%, initialClass:^(signal)$"
 
 
         ### 1Password
         #"float, class:^(1Password)$"
         "tag +security, class:^(1Password)$, title:(Lock Screen — 1Password)"
         "stayfocused, class:^(1Password)$, title:(Quick Access)"
-        "center, class:^(1Password)$, title:(Quick Access)"
+        "center 1, class:^(1Password)$, title:(Quick Access)"
         #"tag +1password, class:^(1Password)$, title:^((?!Quick Access).)*$"
         "tag +1password, class:^(1Password)$"
         #"tag -1password, title:^(Quick Access.*)$"
         #"tag -1password, title:^((?!Quick Access).)*$"
         "float, tag:1password"
         "size 70% 70%, tag:1password"
-        "center, tag:1password"
+        "center 1, tag:1password"
         #"animation popin, tag:1password"
 
 
         ### Open/Save Dialogs ###
-        #"tag +opensave, class:xdg-desktop-portal-gtk, title:(Enter name of ([a-zA-Z]*) to (open|save to))"
-        #"tag +opensave, class:xdg-desktop-portal-gtk, title:(Overwrite (.*)\?)"
-        "tag +opensave, class:xdg-desktop-portal-gtk"
-        "tag +opensave, title:^((Open|Save|File) ([a-zA-Z]*)( [a-zA-Z]*)\?)$"
+        #"tag +ospdialog, class:xdg-desktop-portal-gtk, title:(Enter name of ([a-zA-Z]*) to (open|save to))"
+        #"tag +ospdialog, class:xdg-desktop-portal-gtk, title:(Overwrite (.*)\?)"
+        "tag +ospdialog, class:xdg-desktop-portal-gtk"
+        "tag +ospdialog, title:^((Open|Save|File) ([a-zA-Z]*)( [a-zA-Z]*)\?)$"
+        "tag +ospdialog, title:^((Print) ([a-zA-Z]*)( [a-zA-Z]*)\?)$"
+        "tag +ospdialog, title:^(Print)$"
 
-        "float, tag:opensave"
-        "size 70% 70%, tag:opensave"
-        "center, tag:opensave"
-        "bordercolor rgba(FF6700EE) rgba(0098FF66) 60deg, tag:opensave"
-        #"stayfocused,tag:opensave"
+        "float, tag:ospdialog"
+        "size 70% 70%, tag:ospdialog"
+        "center 1, tag:ospdialog"
+        "bordercolor rgba(FF6700EE) rgba(0098FF66) 60deg, tag:ospdialog"
+        #"stayfocused,tag:ospdialog"
 
         ### Quick View #
         "tag +quickview, class:org.gnome.NautilusPreviewer"
@@ -571,17 +583,19 @@ in
         #"tag +settings, initialTitle:^(Tail Tray)$"
         "maxsize 1200 850, initialTitle:^(Tail Tray)$"
         "float, tag:settings"
-        "center, tag:settings"
+        "center 1, tag:settings"
+        "size >70% >70%, tag:settings"
         "maxsize 1200 850, tag:settings"
         "minsize 800 600, tag:settings"
         #"size 1000 800, tag:settings"
 
         ## Tag Actions, Generic
         "float, tag:float"
-        "size 70%, tag:fixsize"
-        "center, tag:fixsize"
-        "maxsize 1200 850, tag:fixsize"
-        "minsize 800 600, tag:fixsize"
+        "size 80% 80%, tag:fixsize, floating"
+        #"size 1000 700, tag:fixsize"
+        "center 1, tag:fixsize, floating"
+        #"maxsize 1200 850, tag:fixsize"
+        #"minsize 800 600, tag:fixsize"
         "stayfocused, tag:keepfocus"
 
         #"opacity 1 override, content:video"
@@ -623,7 +637,7 @@ in
             showEmptyWorkspace = true
           }
         }
-        source = ~/.config/hypr/local.conf
+        #source = ~/.config/hypr/local.conf
     '';
 
   };

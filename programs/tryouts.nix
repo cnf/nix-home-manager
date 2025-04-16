@@ -12,7 +12,9 @@
       unstable.gitkraken
       unstable.gk-cli
 
-      rdap
+      rdap # new whois
+
+      imapsync
 
       git-backup-go
       github-backup

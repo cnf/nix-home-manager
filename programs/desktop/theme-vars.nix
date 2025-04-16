@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, unstable, lib, ... }:
 with lib;
 let
   tokyo-night-gtk-orange = pkgs.tokyo-night-gtk.override {
@@ -14,7 +14,7 @@ in
         emoji = mkOption {default = ["Noto Color Emoji"];};
         serif = mkOption {default = ["DejaVu Serif"];};
         sansSerif = mkOption {default = ["Inter" "JetBrainsMono Nerd Font"];};
-        monospace = mkOption {default = ["SauceCodePro Nerd Font" "Source Code Pro"];};
+        monospace = mkOption {default = ["SauceCodePro Nerd Font" "Source Code Pro" "FRB Cistercian"];};
       };
       cursor = {
         name = mkOption {default = "Nordzy-cursors";};
@@ -25,6 +25,7 @@ in
         gtk = {
           name = mkOption {default = "Tokyonight-Orange-Dark";};
           package = mkOption {default = tokyo-night-gtk-orange; };
+          extraCss = mkOption{default = builtins.readFile ./gtk.css;};
         };
         qt = {
         };

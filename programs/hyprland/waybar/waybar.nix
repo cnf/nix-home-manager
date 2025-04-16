@@ -62,6 +62,7 @@ in
           "pulseaudio"
           "pulseaudio/slider"
           "battery"
+          "network"
           #"bluetooth"
           #"network#vpn"
 
@@ -293,6 +294,7 @@ in
           format-icons = ["" "" "" "" ""];
           tooltip-format = "CPU {temperatureC}°C";
           tooltip = true;
+          on-click = "hyprctl dispatch togglespecialworkspace visor";
         };
         "temperature#GPU" = {
           format = "{icon}";
@@ -359,7 +361,8 @@ in
           tooltip-format-disconnected = "Disconnected";
           tooltip-format = "{ipaddr}\n{ifname} via {gwaddr}";
           max-length = 50;
-          on-click = "networkmanager_dmenu";
+          on-click = "ignis toggle ignis_CONTROL_CENTER";
+          #on-click = "networkmanager_dmenu";
           on-click-middle = "nm-connection-editor";
         };
         power-profiles-daemon = {

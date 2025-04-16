@@ -25,8 +25,8 @@
       dedup_inactive_fullscreen = false
       delim = " "
       workspace = "{clients}"
-      workspace_empty = "{name}"
-      client = "<span>{icon}</span>" 
+      workspace_empty = "<span font_weight='heavy'>{name}</span>"
+      client = "{icon}" 
       client_active = "<span color='#FF8514'>{icon}</span>"
       # These wrap either client or client_active
       client_dup = "<span>{icon}{counter_sup}</span>"
@@ -123,6 +123,7 @@
       # chat
       discord = " "
       Signal = ""
+      #Signal = "󰻞"
       telegramdesktop = ""
       slack = ""
       whatsapp-desktop = ""
@@ -156,6 +157,17 @@
       [workspaces_name]
       # 𝐈 𝐕 𝐗 
       # 🯰 🯱 🯲 🯳 🯴 🯵 🯶 🯷 🯸 🯹
+      #1 = "􀀂􀀃"
+      #2 = "􀀂􀀄"
+      #3 = "􀀂􀀅"
+      #4 = "􀀂􀀆"
+      #5 = "􀀂􀀇"
+      #6 = "􀀂􀀈"
+      #7 = "􀀂􀀉"
+      #8 = "􀀂􀀊"
+      #9 = "􀀂􀀋"
+      #10 = "􀀂􀀌"
+      #11 = "􀀂􀀌􀀃"
       1 = "𝐈  "
       2 = "𝐈𝐈 "
       3 = "𝐈𝐈𝐈"

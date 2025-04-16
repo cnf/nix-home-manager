@@ -1,8 +1,5 @@
-{ lib, config, pkgs, ... }: {
-  #options = {
-  #  my.ollama.enable = lib.mkEnableOption "Enable and configure ollama";
-  #};
-  home.packages = [pkgs.tio];
+{ unstable, ... }: {
+  home.packages = [unstable.tio-new];
   xdg.configFile."tio/config" = {
     text = ''
       [default]
@@ -14,11 +11,19 @@
       log-directory = ~/.cache/tio/
 
       [FSGW]
-      device = /dev/serial/by-id/usb-1a86_USB_Single_Serial_5713049119-if00
+      #device = /dev/serial/by-id/usb-1a86_USB_Single_Serial_5713049119-if00
+      device = /dev/tty-M5-5713049119
       local-echo = true
       map = INLCRNL,ODELBS
       #line-pulse-duration = DTR=200,RTS=150
       color = 202
+
+      [M5-Basic]
+      device = /dev/tty-M5-5713049119
+      local-echo = true
+      map = INLCRNL,ODELBS
+      #line-pulse-duration = DTR=200,RTS=150
+      color = 203
 
       #[svf2]
       #device = /dev/ttyUSB0
@@ -36,6 +41,13 @@
       #pattern = ^usb([0-9]*)
       #device = /dev/ttyUSB%m1
       #color = 14
+
+      [usb-ports]
+      pattern = ^tty-(left|right)-(lower|upper)
+      device = /dev/tty-port-%m1-%m2
+      local-echo = true
+      map = INLCRNL,ODELBS
+      color = 165
     '';
     };
 }

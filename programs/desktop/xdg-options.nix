@@ -15,7 +15,12 @@
       #};
     #};
     xdg.userDirs = {
+      enable = true;
       desktop = "${config.home.homeDirectory}/.local/share/Desktop";
+      templates = "${config.home.homeDirectory}/.local/share/Templates";
+      music = "${config.xdg.userDirs.documents}/Music";
+      pictures = "${config.xdg.userDirs.documents}/Pictures";
+      videos = "${config.xdg.userDirs.pictures}/Videos";
     };
   };
 }

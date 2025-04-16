@@ -22,14 +22,58 @@
         name = config.my.looks.icons.name;
         package = config.my.looks.icons.package;
       };
-      gtk3.extraConfig = {gtk-application-prefer-dark-theme = 1;};
+      gtk3.extraConfig = {
+        gtk-application-prefer-dark-theme = 1;
+      };
+      gtk3.extraCss = config.my.looks.theme.gtk.extraCss;
+      gtk4.extraCss = config.my.looks.theme.gtk.extraCss;
+      # gtk4.extraCss = ''
+      #   /* Evolution Mail */
+      #   /*MessageList {
+      #   color: red;
+      #   }*/
+      #   MessageList,* {
+      #           -MessageList-new-mail-fg-color: SteelBlue;
+      #   }
+
+      #   /* geary */
+      #   row.conversation-list {
+      #     color: silver;
+      #   }
+
+      #   row.conversation-list .participants {
+      #     font-weight: bold;
+      #     font-size: 120%;
+
+      #   }
+      #   row.conversation-list .preview {
+      #     color: gray;
+      #     font-size: 80%
+      #   }
+      #   row.conversation-list .subject {
+      #     font-weight: normal;
+      #   }
+
+      #   row.conversation-list.unread {
+      #     border-left: 5px #0A84FF solid;
+      #     color: white;
+      #   }
+
+      #   row.conversation-list.unread {
+      #     color: white;
+      #   }
+
+      # '';
     };
     dconf.settings = {
       "org/gnome/desktop/wm/preferences" = {
         button-layout = "icon:";
       };
       "org/gnome/nautilus/window-state" = {
-        initial-size = lib.hm.gvariant.mkTuple [1000 700];
+        initial-size = lib.hm.gvariant.mkTuple [
+          1000
+          700
+        ];
       };
       "org/gnome/desktop/interface" = {
         color-scheme = "prefer-dark";

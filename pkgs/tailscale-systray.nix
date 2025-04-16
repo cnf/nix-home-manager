@@ -24,6 +24,10 @@ buildGoModule rec {
     echo "creating .VERSION"
     echo ${version} > .VERSION
   '';
+  postInstall = ''
+    mv $out/bin/tailscale-systray $out/bin/${pname}
+  '';
+
 
   meta = with lib; {
     description = "Tailscale Systray";

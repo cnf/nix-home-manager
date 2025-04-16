@@ -19,7 +19,7 @@
     all: initial;
     border: none;
     border-radius: 0;
-    font-family: "JetBrainsMono Nerd Font, FontAwesome, sans-serif";
+    font-family: "JetBrainsMono Nerd Font, FRBCistercian, FRB Cistercian FontAwesome, sans-serif";
     font-weight: normal;
     font-size: 14px;
     min-height: 0;
@@ -119,6 +119,12 @@ menuitem:hover menu > label {
     border: none;
     border-radius: 3px;
     margin-right: 5px;
+}
+
+#workspaces button.cistercian {
+    font-weight: bold;
+    font-size: 1.5em;
+    color: red;
 }
 
 #workspaces button.active label {

@@ -44,6 +44,7 @@
       unstable.nerd-fonts.jetbrains-mono
       unstable.nerd-fonts.dejavu-sans-mono
       unstable.nerd-fonts.noto
+      unstable.my-cistercian
       #nerdfonts
       nerd-font-patcher
       unstable.helvetica-neue-lt-std

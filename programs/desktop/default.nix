@@ -14,7 +14,9 @@
     ./gaming.nix
     ./gnome.nix
     ./kitty
+    ./messaging.nix
     ./mqtt.nix
+    ./music.nix
     ./nixtools.nix
     ./obsidian.nix
     ./pdf.nix
@@ -77,16 +79,15 @@
       material-icons
       material-design-icons
 
-      unstable.spotify
-      unstable.plexamp
-      onedrive
-      onedrivegui
+
       #unstable._1password-cli
       #unstable._1password-gui
-      #tailscale-systray
-      ktailctl
+      # tailscale-systray # not very useful
+      # ktailctl no added value
+      trayscale # maybe?
       unstable.my-tailscale-systray
       unstable.tail-tray
+
       podman-desktop
       varia
 

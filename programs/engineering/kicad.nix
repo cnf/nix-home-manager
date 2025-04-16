@@ -19,4 +19,5 @@ in
       # unstable.my-freerouting # don't need it separate, the plugin has the jar
     ];
   };
+  # add https://raw.githubusercontent.com/kevontheweb/tokyo-night-kicad-theme/refs/heads/main/colors/tokyonight.json
 }

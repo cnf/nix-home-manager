@@ -200,11 +200,6 @@ in
         "dev.containers.dockerPath" = "podman";
         "dev.containers.dockerSocketPath" = "/run/user/1000/podman/podman.sock";
         "dev.containers.dockerComposePath" = "podman-compose";
-        "dev.containers.defaultExtensionsIfInstalledLocally" = [
-          "GitHub.copilot"
-          "GitHub.copilot-chat"
-          "GitHub.vscode-pull-request-github"
-        ];
         #"docker.dockerPath" = "/run/current-system/sw/bin/podman";
         #"docker.composeCommand" = "podman-compose";
         #"docker.environment" = {
@@ -261,7 +256,7 @@ in
         "gitlens.graph.minimap.enabled" = false;
         "gitlens.graph.pullRequests.enabled" = true;
         "gitlens.graph.scrollMarkers.enabled" = true;
-        "gitlens.graph.showDetailsView" = true;
+        "gitlens.graph.showDetailsView" = "open";
         "gitlens.graph.showGhostRefsOnRowHover" = true;
         "gitlens.graph.showUpstreamStatus" = true;
         "gitlens.graph.statusBar.enabled" = true;
@@ -275,7 +270,7 @@ in
         "gitlens.views.worktrees.pullRequests.showForBranches" = true;
         "gitlens.views.worktrees.pullRequests.showForCommits" = true;
         "gitlens.views.worktrees.reveal" = true;
-        "gitlens.views.worktrees.showBranchComparison" = true;
+        "gitlens.views.worktrees.showBranchComparison" = "branch";
         "gitlens.worktrees.promptForLocation" = true;
       };
     };
