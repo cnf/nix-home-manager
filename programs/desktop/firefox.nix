@@ -63,6 +63,10 @@
           #  url = "https://hackrf.readthedocs.io/en/latest/software_support.html";
           #};
         };
+        devenv = {
+          id = 55;
+          name = "devenv";
+        };
       };
     };
   };

@@ -1,8 +1,8 @@
-{ pkgs, unstable, lib, config, inputs, outputs, ... }:
+{ pkgs, unstable, lib, config, ... }:
 {
   config = lib.mkIf config.my.engineering.enable {
-    home.packages = with pkgs; [
-      unstable.prusa-slicer
+    home.packages = [
+      #unstable.prusa-slicer
       #orca-slicer
     ];
      xdg.mimeApps.defaultApplications = {

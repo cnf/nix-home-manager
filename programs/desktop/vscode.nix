@@ -20,7 +20,7 @@ in
         ms-python.black-formatter
         ms-python.debugpy
         ms-python.isort
-        #ms-python.python
+        vscode-extensions.vscode-marketplace.ms-python.autopep8
         vscode-extensions.vscode-marketplace.ms-python.python
         ms-python.vscode-pylance
         ms-vscode.cpptools-extension-pack
@@ -51,6 +51,7 @@ in
         #1Password.op-vscode
         vscode-extensions.vscode-marketplace.eamodio.gitlens
         vscode-extensions.vscode-marketplace.tailscale.vscode-tailscale
+        vscode-extensions.vscode-marketplace.textualize.textual-syntax-highlighter
         editorconfig.editorconfig
         golang.go
         gruntfuggly.todo-tree
@@ -113,12 +114,14 @@ in
         #  #hash = "sha256-6fDqQ587Wvvs3kLg41TIQZRjBoD00riql55viG3ZmNE=";
         #}
       #];
+      ## the [section] parts are for overriding global defaults with language specifics
       userSettings = {
         "chat.commandCenter.enabled" = false;
         "window.menuBarVisibility" = "toggle";
         "editor.minimap.enabled" = false;
         "editor.formatOnPaste" = true;
         "editor.formatOnSave" = true;
+        "editor.tabSize" = 2;
         "editor.suggest.showStatusBar" = true;
         "editor.formatOnSaveMode" = "modificationsIfAvailable";
         "editor.wordWrap"= "wordWrapColumn";
@@ -148,13 +151,14 @@ in
         #"go.gopath" = "${config.home.homeDirectory}/${config.programs.go.goPath}";
         #"go.toolsGopath" = "${config.xdg.dataHome}/vscode-tools/go";
         # Python
-        "python.terminal.shellIntegration.enabled" = true;
-        "python.testing.pytestEnabled" = true;
-        "python.testing.unittestEnabled" = true;
         "[python]" = {
           "editor.defaultFormatter" = "ms-python.black-formatter";
           "editor.formatOnType" = true;
         };
+        "python.analysis.inlayHints.functionReturnTypes"= true;
+        "python.terminal.shellIntegration.enabled" = true;
+        "python.testing.pytestEnabled" = true;
+        "python.testing.unittestEnabled" = true;
         # CSS
         "css.customData" = [
           "${config.home.homeDirectory}/.vscode/custom/gtk.css-data.json"
@@ -176,27 +180,38 @@ in
         "direnv.restart.automatic" = true;
         "remote.autoForwardPortsSource"= "hybrid";
         ## cSpell
-        "cSpell.allowCompoundWords" = true;
         #"cSpell.userWords" = [
         #  "nixpkgs"
         #  "nixd"
         #  "nixfmt"
         #  "rosquin"
         #];
+        "cSpell.allowCompoundWords" = true;
         "cSpell.customDictionaries" = {
           words = {
-            name = "Additional Words";
+            name = "additional-words";
+            description = "Additional Words from home-manager";
             path = "~/.config/cspell/words.txt";
             scope = "user";
             addWords = false;
           };
           local = {
-            name = "Local Word List";
+            name = "local-list";
+            description = "Local Word List";
             path = "~/.config/cspell/local.txt";
             scope = "user";
             addWords = true;
           };
         };
+        #"cSpell.dictionaries" = [
+        #  "additional-words"
+        #  "local-list"
+        #];
+        "dev.containers.defaultExtensions" = [
+          "streetsidesoftware.code-spell-checker"
+          "eamodio.gitlens"
+		  "gruntfuggly.todo-tree"
+        ];
         "dev.containers.dockerPath" = "podman";
         "dev.containers.dockerSocketPath" = "/run/user/1000/podman/podman.sock";
         "dev.containers.dockerComposePath" = "podman-compose";
@@ -207,9 +222,7 @@ in
         #};
 
         ## Nix and NixOS
-        "[nix]" = {
-          "editor.defaultFormatter" = "jnoortheen.nix-ide";
-        };
+        "[nix]" = {"editor.defaultFormatter" = "jnoortheen.nix-ide";};
         "nix.enableLanguageServer" = true;
         "nix.formatterPath" = "nixfmt";
         "nix.serverPath" = "nixd";
@@ -250,7 +263,6 @@ in
         ## Git Lens
         "gitlens.graph.allowMultiple" = true;
         "gitlens.graph.avatars" = true;
-        "gitlens.graph.experimental.location" = "tab";
         "gitlens.graph.highlightRowsOnRefHover" = true;
         "gitlens.graph.layout" = "editor";
         "gitlens.graph.minimap.enabled" = false;
@@ -275,13 +287,17 @@ in
       };
     };
     xdg.configFile."cspell/words.txt".text = ''
-      # https://cspell.org/docs/dictionaries-custom/ for syntax
+      # https://cspell.org/docs/dictionaries/custom-dictionaries for syntax
+      # Created by home-manager, do not edit manually.
+      # use local.txt to manually add words.
       nixos
       nixpkgs
       nixd
       nixfmt
       rosquin
       inmanta
+      # Python
+      py*
     '';
     #home.packages = with pkgs; [
       # nixd # in devel/default.nix

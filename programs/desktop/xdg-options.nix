@@ -14,6 +14,7 @@
       #  "inode/directory" = [ "org.gnome.Nautilus.desktop" ];
       #};
     #};
+    xdg.portal.enable = true;
     xdg.userDirs = {
       enable = true;
       desktop = "${config.home.homeDirectory}/.local/share/Desktop";
@@ -22,5 +23,10 @@
       pictures = "${config.xdg.userDirs.documents}/Pictures";
       videos = "${config.xdg.userDirs.pictures}/Videos";
     };
+    xdg.systemDirs.data = [
+      "/usr/share"
+      "/var/lib/flatpak/exports/share"
+      "$HOME/.local/share/flatpak/exports/share"
+    ];
   };
 }

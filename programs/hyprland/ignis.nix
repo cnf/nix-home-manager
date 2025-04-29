@@ -15,7 +15,28 @@ in
   config = lib.mkIf config.my.hyprland.enable {
     home.packages = [
       ignis
-      #inputs.ignis.packages.${pkgs.stdenv.hostPlatform.system}.ignis
     ];
+    #systemd.user.services.ignis = {
+    #  Unit = {
+    #    Description = "Ignis widgets";
+    #    ConditionEnvironment = ["WAYLAND_DISPLAY" "DBUS_SESSION_BUS_ADDRESS" ];
+    #    #Requires = "hyprland-session.target";
+    #    After = "graphical-session-pre.target";
+    #    PartOf = "graphical-session.target";
+    #  };
+    #  Service = {
+    #    ExecStart = "${lib.getExe ignis} init";
+    #    Restart = "on-failure";
+    #    Type = "simple";
+    #    #Environment = [
+    #    #  "XDG_RUNTIME_DIR=/run/user/%U"
+    #    #  "DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/%U/bus"
+    #    #];
+    #  };
+    #  Install = {
+    #    WantedBy = [ "hyprland-session.target" ];
+    #  };
+    #};
+
   };
 }

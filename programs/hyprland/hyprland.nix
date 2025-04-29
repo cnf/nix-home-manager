@@ -94,6 +94,19 @@ in
     services.swayosd.enable = true;
     services.playerctld.enable = true;
 
+    xdg.portal.extraPortals = with pkgs; [
+      xdg-desktop-portal-hyprland
+      xdg-desktop-portal-gtk
+    ];
+
+    xdg.portal.configPackages = with pkgs; [
+      xdg-desktop-portal-hyprland
+      xdg-desktop-portal-gtk
+    ];
+
+    #xdg.dataFile."dbus-1/services/org.freedesktop.impl.portal.desktop.hyprland.service".source =
+    #    "${pkgs.xdg-desktop-portal-hyprland}/share/dbus-1/services/org.freedesktop.impl.portal.desktop.hyprland.service";
+
     wayland.windowManager.hyprland = {
       enable  = true;
       package = hyprland-pkg;
@@ -359,7 +372,7 @@ in
         #workspace_swipe_use_r = true;
       };
       decoration = {
-        rounding=6;
+        rounding=9;
         shadow = {
           enabled = true;
           # range = 10;
@@ -501,6 +514,8 @@ in
         "tag +ospdialog, tag:freecad, title:^(Placement)$"
         "focusonactivate on, tag:freecad, floating:1, title:^(Expression editor)$"
         "opacity 1 override, tag:freecad"
+        "tag +nograb, tag:freecad, floating:1"
+        #"suppressevent activatefocus, tag:freecad"
 
         # Evolution
         "tag +evolution, initialClass:^(org.gnome.Evolution)$"
@@ -551,15 +566,11 @@ in
         #"tag +ospdialog, class:xdg-desktop-portal-gtk, title:(Enter name of ([a-zA-Z]*) to (open|save to))"
         #"tag +ospdialog, class:xdg-desktop-portal-gtk, title:(Overwrite (.*)\?)"
         "tag +ospdialog, class:xdg-desktop-portal-gtk"
-        "tag +ospdialog, title:^((Open|Save|File) ([a-zA-Z]*)( [a-zA-Z]*)\?)$"
+        "tag +ospdialog, title:^((Open|Save|File|Select|Import) ([a-zA-Z]*)( [a-zA-Z]*)\?)$"
         "tag +ospdialog, title:^((Print) ([a-zA-Z]*)( [a-zA-Z]*)\?)$"
         "tag +ospdialog, title:^(Print)$"
 
-        "float, tag:ospdialog"
-        "size 70% 70%, tag:ospdialog"
-        "center 1, tag:ospdialog"
-        "bordercolor rgba(FF6700EE) rgba(0098FF66) 60deg, tag:ospdialog"
-        #"stayfocused,tag:ospdialog"
+        
 
         ### Quick View #
         "tag +quickview, class:org.gnome.NautilusPreviewer"
@@ -598,11 +609,19 @@ in
         #"minsize 800 600, tag:fixsize"
         "stayfocused, tag:keepfocus"
 
+        "float, tag:ospdialog"
+        "size 70% 70%, tag:ospdialog"
+        "center 1, tag:ospdialog"
+        "bordercolor rgba(FF6700EE) rgba(0098FF66) 60deg, tag:ospdialog"
+        #"stayfocused,tag:ospdialog"
+
         #"opacity 1 override, content:video"
         #"suppressevent activatefocus, content:video"
         "suppressevent activatefocus, tag:video"
         #"float, content:video"
         "float, tag:video"
+
+        "suppressevent activatefocus, tag:nograb"
       ];
     };
     wayland.windowManager.hyprland.extraConfig = ''

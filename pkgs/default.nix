@@ -6,4 +6,5 @@ self: super: {
   my-nautilus_archiver_tools = super.callPackage ./nautilus_archiver_tools.nix {};
   my-tailscale-systray = super.callPackage ./tailscale-systray.nix {};
   my-cistercian = super.callPackage ./cistercian.nix {};
+  my-hyprswitch = super.callPackage ./hyprswitch.nix {};
 }

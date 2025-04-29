@@ -83,6 +83,7 @@ in
         "hyprland/workspaces" = {
           active-only = false;
           all-outputs = false;
+          justify = "center";
           format = "{name}"; # we use {name} together with hyprland-autorename-workspaces
           #format = "{icon}";
           format-icons = {

@@ -4,8 +4,17 @@ final: prev: let
     hash = "sha256-zgpGg1jtdnCBaWjR6oUcHo5sGuZx5oEzpux3dpRdMAM=";
   };
 in {
-  prusa-slicer-overlay = prev.prusa-slicer.overrideAttrs (prevAttrs: {
-    patches = (prevAttrs.patches or []) ++ [patch];
+  prusa-slicer-overlay = prev.prusa-slicer.overrideAttrs (finalAttrs: prevAttrs: {
+    #patches = (prevAttrs.patches or []) ++ [patch];
+    patches = [];
+    version = "2.9.2";
+
+    src = prev.fetchFromGitHub {
+      owner = "prusa3d";
+      repo = "PrusaSlicer";
+      hash = "sha256-j/fdEgcFq0nWBLpyapwZIbBIXCnqEWV6Tk+6sTHk/Bc=";
+      rev = "version_${finalAttrs.version}";
+    };
   });
 }
 # https://github.com/NixOS/nixpkgs/issues/246261 [2025-01-19]
