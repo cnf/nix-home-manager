@@ -7,4 +7,5 @@ self: super: {
   my-tailscale-systray = super.callPackage ./tailscale-systray.nix {};
   my-cistercian = super.callPackage ./cistercian.nix {};
   my-hyprswitch = super.callPackage ./hyprswitch.nix {};
+  my-appimage-menu-updater = super.callPackage ./appimage-menu-updater.nix {};
 }
