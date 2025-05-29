@@ -30,9 +30,9 @@
             "media.rdd-ffvpx.enabled" = false;
             "media.navigator.mediadatadecoder_vpx_enabled" = true;
             # "browser.startup.homepage" = "https://duckduckgo.com";
-            "browser.search.defaultenginename" = "DuckDuckGo";
-            "browser.search.order.1" = "DuckDuckGo";
-            "browser.search.order.2" = "Bing";
+            "browser.search.defaultenginename" = "ddg";
+            "browser.search.order.1" = "ddg";
+            "browser.search.order.2" = "bing";
 
             "signon.rememberSignons" = false;
             "widget.use-xdg-desktop-portal.file-picker" = 1;
@@ -55,8 +55,8 @@
           };
           search = {
             force = true;
-            default = "DuckDuckGo";
-            order = [ "DuckDuckGo" "Bing" ];
+            default = "ddg";
+            order = [ "ddg" "bing" ];
           };
           #bookmarks = {
           #  name = "HackRF Software Support";

@@ -21,11 +21,16 @@
         #"$font" = "Arimo Nerd Font";
         "$font" = config.my.looks.font.name;
         general = {
-          enable_fingerprint = true;
-          fingerprint_ready_message = "󰈷 ";
-          fingerprint_present_message = "󰈷 Removing fingerprints, please stay still 󰈷 ";
           disable_loading_bar = false; #true
           hide_cursor = true;
+        };
+        auth = {
+          fingerprint = {
+            enabled = true;
+            ready_message = "󰈷 ";
+            present_message = "󰈷 Removing fingerprints, please stay still 󰈷 ";
+            retry_delay = 250;# in milliseconds
+          };
         };
         background = {
           monitor = "";
@@ -58,7 +63,7 @@
         }
         {
           monitor = "";
-          text = ''$FPRINTMESSAGE'';
+          text = ''$FPRINTPROMPT'';
           text_align = "center";
           font_size = 20;
           font_family = "$font";
@@ -66,6 +71,20 @@
           halign = "center";
           valign = "bottom";
           position = "0, 30";
+          shadow_passes = 2;
+          shadow_size = 7;
+          shadow_boost = 2;
+        }
+        {
+          monitor = "";
+          text = ''$FPRINTFAIL'';
+          text_align = "center";
+          font_size = 20;
+          font_family = "$font";
+          color = "$accent";
+          halign = "center";
+          valign = "bottom";
+          position = "0, 70";
           shadow_passes = 2;
           shadow_size = 7;
           shadow_boost = 2;
@@ -88,6 +107,7 @@
           check_color = "$accent";
           fail_color = "rgb(FF0000)";
           fail_text = "<i>$FAIL <b>($ATTEMPTS)</b></i>";
+          #fail_text = $PAMFAIL;
           capslock_color = "rgb(ff0000)";
           position = "0, -185";
           halign = "center";

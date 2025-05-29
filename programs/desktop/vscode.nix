@@ -12,11 +12,11 @@ in
       package = unstable.vscode;
       #package = unstable.vscode.fhs;
       #package = unstable.vscode.fhsWithPackages (ps: with ps; [ direnv python3 clang zlib openssl.dev pkg-config ]);
-      enableUpdateCheck = false;
-      enableExtensionUpdateCheck = false;
+      profiles.default.enableUpdateCheck = false;
+      profiles.default.enableExtensionUpdateCheck = false;
       mutableExtensionsDir = false;
-      extensions = with unstable.vscode-extensions; [
-        vscode-extensions.vscode-marketplace.continue.continue
+      profiles.default.extensions = with unstable.vscode-extensions; [
+        #vscode-extensions.vscode-marketplace.continue.continue
         ms-python.black-formatter
         ms-python.debugpy
         ms-python.isort
@@ -48,7 +48,11 @@ in
         #ms-vscode.remote-repositories
         #ms-vscode.remote-server
 
+        github.copilot-chat
+        github.copilot
+
         #1Password.op-vscode
+        #vscode-extensions.vscode-marketplace.cschlosser.doxdocgen
         vscode-extensions.vscode-marketplace.eamodio.gitlens
         vscode-extensions.vscode-marketplace.tailscale.vscode-tailscale
         vscode-extensions.vscode-marketplace.textualize.textual-syntax-highlighter
@@ -64,7 +68,6 @@ in
 
         arrterian.nix-env-selector
         jnoortheen.nix-ide
-        #bbenoist.Nix
 
         timonwong.shellcheck
         #alexnesnes.teleplot
@@ -115,8 +118,8 @@ in
         #}
       #];
       ## the [section] parts are for overriding global defaults with language specifics
-      userSettings = {
-        "chat.commandCenter.enabled" = false;
+      profiles.default.userSettings = {
+        "chat.commandCenter.enabled" = true;
         "window.menuBarVisibility" = "toggle";
         "editor.minimap.enabled" = false;
         "editor.formatOnPaste" = true;
@@ -137,6 +140,7 @@ in
         "debug.toolBarLocation" = "docked";
         "problems.showCurrentInStatus" = false;
         "liveshare.launcherClient" = "visualStudioCode";
+        "workbench.secondarySideBar.showLabels" = false;
 
         # Languages
         # C++
@@ -156,6 +160,7 @@ in
           "editor.formatOnType" = true;
         };
         "python.analysis.inlayHints.functionReturnTypes"= true;
+        "python.analysis.typeCheckingMode" = "standard";
         "python.terminal.shellIntegration.enabled" = true;
         "python.testing.pytestEnabled" = true;
         "python.testing.unittestEnabled" = true;
@@ -210,7 +215,11 @@ in
         "dev.containers.defaultExtensions" = [
           "streetsidesoftware.code-spell-checker"
           "eamodio.gitlens"
-		  "gruntfuggly.todo-tree"
+          "GitHub.vscode-pull-request-github"
+	  "gruntfuggly.todo-tree"
+          "ms-vsliveshare.vsliveshare"
+          "EditorConfig.EditorConfig"
+          "timonwong.shellcheck"
         ];
         "dev.containers.dockerPath" = "podman";
         "dev.containers.dockerSocketPath" = "/run/user/1000/podman/podman.sock";
@@ -257,8 +266,8 @@ in
         ## doxyGen
         #"doxdocgen.generic.authorName" = "";
         #"doxdocgen.generic.authorEmail" = "";
-        #"doxdocgen.generic.useGitUserEmail" = true;
-        #"doxdocgen.generic.useGitUserName" = true;
+        "doxdocgen.generic.useGitUserEmail" = true;
+        "doxdocgen.generic.useGitUserName" = true;
 
         ## Git Lens
         "gitlens.graph.allowMultiple" = true;
@@ -298,6 +307,8 @@ in
       inmanta
       # Python
       py*
+      # platformio etc
+      espressif
     '';
     #home.packages = with pkgs; [
       # nixd # in devel/default.nix

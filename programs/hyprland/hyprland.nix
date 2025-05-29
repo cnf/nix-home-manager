@@ -14,7 +14,10 @@ let
     inputs.rose-pine-hyprcursor.packages.${pkgs.stdenv.hostPlatform.system}.default
     inputs.hyprsysteminfo.packages.${pkgs.stdenv.hostPlatform.system}.default
   ];
-  hypr-plugins = with pkgs;[hyprlandPlugins.hyprspace];
+  hypr-plugins = with pkgs;[
+    hyprlandPlugins.hyprspace
+    hyprlandPlugins.hyprgrass
+  ];
   #hypr-packages = [ 
   #  inputs.hyprland.packages.${pkgs.system}.xdg-desktop-portal-hyprland
   #  inputs.hyprpolkitagent.packages.${pkgs.stdenv.hostPlatform.system}.default
@@ -51,14 +54,7 @@ in
       HYPRSHOT_DIR = "${config.xdg.userDirs.pictures}/Screenshots/";
     };
     home.packages = with pkgs; [
-      #aquamarine
-      #hyprcursor
-      #hyprlang
       hyprpicker #/gbm
-
-      #hyprpolkitagent
-      #hyprutils
-      #xdg-desktop-portal-hyprland
       qt5.qtwayland
 
       wlr-randr
@@ -288,7 +284,7 @@ in
         "$mod, u, focusurgentorlast # toggle between urgent or last workspaces"
         "$mod, grave, togglespecialworkspace, visor"
         "$shiftmod, grave, movetoworkspace, special, visor"
-        "$mod, Escape, exec, ignis toggle ignis_CONTROL_CENTER"
+        "$mod, Escape, exec, ignis toggle-window ignis_CONTROL_CENTER"
         "$mod Alt, Escape, togglespecialworkspace, popterm"
 
    
@@ -358,11 +354,8 @@ in
         preserve_split = "yes";
       };
       master = {
-        always_center_master = true;
-        #slave_count_for_center_master = 0;
-        #TODO: slave_count_for_center_master 0 for later versions
-        #center_master_slaves_on_right = false;
-        #new_is_master = false;
+        slave_count_for_center_master = 0; # old always_center_master
+        center_master_fallback = "right";
         orientation = "right";
         mfact = 0.6; # 0.55 default
       };
@@ -399,9 +392,9 @@ in
         groupbar = {
           font_size = config.my.looks.font.size;
           gradients = true;
-          #indicator_height = 0;
-          #gradient_rounding = 14;
-          #gradient_round_only_edges = false;
+          indicator_height = 0;
+          gradient_rounding = 14;
+          gradient_round_only_edges = false;
           "col.active" = "rgba(ff6700ee)";
           "col.inactive" = "rgba(0098ff33)";
         };
@@ -413,7 +406,6 @@ in
         # https://easings.net/
         # https://www.cssportal.com/css-cubic-bezier-generator/
         bezier = [
-          # "myBezier, 0.10, 0.9, 0.1, 1.05"
           "overshot, 0.05, 0.9, 0.1, 1.1"
           "easeOutQuart, 0.25, 1, 0.5, 1"
           "easeOutExpo, 0.16, 1, 0.3, 1"
@@ -458,9 +450,9 @@ in
         "opacity 0.95 override 0.8 override, class:^(code)$"
         # Video
         #"tag +video, class:^(mpv)$"
-        #"content video, class:^(mpv)$"
+        "content video, class:^(mpv)$"
         #"tag +video, class:^(vlc)$"
-        #"content video, class:^(vlc)$"
+        "content video, class:^(vlc)$"
         #"float, tag:video"
         #"opacity 1 override, tag:video"
         #"opacity 1 override, content:video"
@@ -470,7 +462,7 @@ in
         "tag +firefox, class:^(librewolf)$"
         "opacity 1 override 0.8 override, tag:firefox"
         "tag +video,initialTitle:^(Picture-in-Picture)$"
-        #"content video,initialTitle:^(Picture-in-Picture)$"
+        "content video,initialTitle:^(Picture-in-Picture)$"
 
         #"float,initialTitle:^(Picture-in-Picture)$"
         "size 700 400, initialTitle:^(Picture-in-Picture)$"
@@ -615,10 +607,10 @@ in
         "bordercolor rgba(FF6700EE) rgba(0098FF66) 60deg, tag:ospdialog"
         #"stayfocused,tag:ospdialog"
 
-        #"opacity 1 override, content:video"
-        #"suppressevent activatefocus, content:video"
+        "opacity 1 override, content:video"
+        "suppressevent activatefocus, content:video"
         "suppressevent activatefocus, tag:video"
-        #"float, content:video"
+        "float, content:video"
         "float, tag:video"
 
         "suppressevent activatefocus, tag:nograb"
@@ -649,11 +641,20 @@ in
         submap=reset
 
         # keybinds further down will be global again...
+
         plugin {
           overview {
             affectStrut = false
             autoDrag = true
+            autoScroll = true
+            centerAligned = true
+            panelBorderWidth = 5
+            panelHeight = 200
+            dragAlpha = 0.5
             showEmptyWorkspace = true
+            showNewWorkspace = true
+            workspaceActiveBorder = rgba(FF6700EE) 
+            workspaceInactiveBorder = rgba(0098FFAA) 
           }
         }
         #source = ~/.config/hypr/local.conf

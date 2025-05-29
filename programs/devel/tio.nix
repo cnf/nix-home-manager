@@ -16,7 +16,8 @@
       [FSGW]
       device = /dev/tty-M5-5713049119
       local-echo = true
-      map = INLCRNL,ODELBS
+      map = INLCRNL,OCRNL 
+      #,ODELBS
       script = write('\\n\\n\\n'); write('HELP\\n')
       #line-pulse-duration = DTR=200,RTS=150
       color = 202

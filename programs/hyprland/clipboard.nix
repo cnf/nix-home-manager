@@ -7,7 +7,7 @@
     ];
     services.cliphist = {
       enable = true;
-      systemdTarget = "hyprland-session.target";
+      systemdTargets = ["hyprland-session.target"];
       extraOptions = [
         "-max-items"
         "50"

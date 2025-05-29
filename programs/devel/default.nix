@@ -18,6 +18,8 @@
 
     bustle
     httpie
+    remarshal
+    dysk
 
     gdb
     sqlite-interactive

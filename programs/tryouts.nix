@@ -8,13 +8,15 @@
       builtins.elem (lib.getName pkg) ["gitkraken"];
 
     home.packages = with pkgs; [
-      graphia
+      #graphia # FIXME: redo
       unstable.gitkraken
       unstable.gk-cli
 
       rdap # new whois
 
       imapsync
+
+      onlyoffice-bin
 
       git-backup-go
       github-backup

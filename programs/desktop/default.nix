@@ -69,7 +69,7 @@
       #kdePackages.breeze-icons
       dracula-icon-theme
       kora-icon-theme
-      
+
       
 
       # notification tools
@@ -97,6 +97,19 @@
 
       mission-center
     ];
+    systemd.user.services.appimage-menu-updater = {
+      Unit = {
+        Description = "AppImage Menu Updater";
+        Type = "simple";
+        PartOf = "graphical-session.target";
+      };
+      Service = {
+        ExecStart = "/bin/sh -c 'HOME=%h ${lib.getBin unstable.my-appimage-menu-updater}'";
+      };
+      Install = {
+        WantedBy = [ "graphical-session.target" ];
+      };
+    };
     # services.trayscale.enable = true;
     
   };

@@ -19,7 +19,7 @@
       rtl-sdr
       inspectrum
       gpredict
-      gnss-sdr
+      #gnss-sdr # FIXME: undo
 
       kismet
       wsjtx

@@ -27,8 +27,8 @@
         isDefault = true;
         search = {
           force = true;
-          default = "DuckDuckGo";
-          order = [ "DuckDuckGo" "Bing" ];
+          default = "ddg";
+          order = [ "ddg" "bing" ];
         };
       };
     };
