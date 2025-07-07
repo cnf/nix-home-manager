@@ -35,6 +35,7 @@
       pandoc
 
       waypipe
+      cheese
 
       #unstable.synology-drive-client
 

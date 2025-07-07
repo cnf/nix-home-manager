@@ -17,6 +17,7 @@
   my.git.enable = true;
   my.golang.enable = true;
   my.hyprland.enable = true;
+  my.music.enable = true;
   my.nixtools.enable = true;
   my.obsidian.enable = false;
   my.sdr.enable = true;
