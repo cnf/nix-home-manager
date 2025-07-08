@@ -14,6 +14,7 @@
     ./gaming.nix
     ./gnome.nix
     ./kitty
+    ./manpages.nix
     ./messaging.nix
     ./mqtt.nix
     ./music.nix

@@ -6,7 +6,7 @@
   };
   config = lib.mkIf config.my.altbrowsers.enable {
     home.packages = [
-      unstable.opera
+      #unstable.opera
       unstable.chromium
     ];
     home.sessionVariables = {

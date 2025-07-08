@@ -1,13 +1,13 @@
-From cf8934c8e59d352bc1f10171b901967376c2d679 Mon Sep 17 00:00:00 2001
+From c79a9738f8643fe84998d95d0578ec1035235471 Mon Sep 17 00:00:00 2001
 From: MartinJM <2205042+MartinJM@users.noreply.github.com>
-Date: Sun, 25 May 2025 18:56:57 +0200
+Date: Mon, 26 May 2025 20:20:24 +0200
 Subject: [PATCH] Add support for Korad KA3005PS
 
 ---
- src/hardware/korad-kaxxxxp/api.c      |  9 ++++++--
- src/hardware/korad-kaxxxxp/protocol.c | 31 ++++++++++++++++++---------
- src/hardware/korad-kaxxxxp/protocol.h |  8 ++++---
- 3 files changed, 33 insertions(+), 15 deletions(-)
+ src/hardware/korad-kaxxxxp/api.c      |  9 ++++--
+ src/hardware/korad-kaxxxxp/protocol.c | 46 ++++++++++++++++++++-------
+ src/hardware/korad-kaxxxxp/protocol.h |  8 +++--
+ 3 files changed, 46 insertions(+), 17 deletions(-)
 
 diff --git a/src/hardware/korad-kaxxxxp/api.c b/src/hardware/korad-kaxxxxp/api.c
 index 82e437974..c6b9b1f67 100644
@@ -40,10 +40,10 @@ index 82e437974..c6b9b1f67 100644
  		return NULL;
  	sr_dbg("Received: %d, %s", ret, reply);
 diff --git a/src/hardware/korad-kaxxxxp/protocol.c b/src/hardware/korad-kaxxxxp/protocol.c
-index bac8c8ef7..849adfdf5 100644
+index bac8c8ef7..0ce7206e7 100644
 --- a/src/hardware/korad-kaxxxxp/protocol.c
 +++ b/src/hardware/korad-kaxxxxp/protocol.c
-@@ -25,7 +25,7 @@
+@@ -25,12 +25,26 @@
  #define EXTRA_PROCESSING_TIME_MS  450
  
  SR_PRIV int korad_kaxxxxp_send_cmd(struct sr_serial_dev_inst *serial,
@@ -52,16 +52,27 @@ index bac8c8ef7..849adfdf5 100644
  {
  	int ret;
  
-@@ -34,6 +34,8 @@ SR_PRIV int korad_kaxxxxp_send_cmd(struct sr_serial_dev_inst *serial,
++	char* addition = "";
++	if (add_newline)
++		addition = "\n";
++
++	// 21 was chosen here because 20 is chosen in korad_kaxxxxp_set_value
++	char newcmd[21];
++	ret = sr_snprintf_ascii(newcmd, 21, "%s%s", cmd, addition);
++	if (ret < 0 || ret >= 21) {
++		sr_err("Error creating command: %d.", ret);
++		if (ret > 0)
++			ret = -ret; // make errors always return negative numbers
++		return ret;
++	}
++
+ 	sr_dbg("Sending '%s'.", cmd);
+-	if ((ret = serial_write_blocking(serial, cmd, strlen(cmd), 0)) < 0) {
++	if ((ret = serial_write_blocking(serial, newcmd, strlen(newcmd), 0)) < 0) {
  		sr_err("Error sending command: %d.", ret);
  		return ret;
  	}
-+	if (add_newline)
-+		serial_write_blocking(serial, "\n", 1, 0);
- 
- 	return ret;
- }
-@@ -71,7 +73,7 @@ SR_PRIV int korad_kaxxxxp_send_cmd(struct sr_serial_dev_inst *serial,
+@@ -71,7 +85,7 @@ SR_PRIV int korad_kaxxxxp_send_cmd(struct sr_serial_dev_inst *serial,
   * larger initial timeout period before receive data is seen.
   */
  SR_PRIV int korad_kaxxxxp_read_chars(struct sr_serial_dev_inst *serial,
@@ -70,19 +81,18 @@ index bac8c8ef7..849adfdf5 100644
  {
  	int timeout_first, timeout_later, timeout;
  	size_t retries_first, retries_later, retries;
-@@ -146,6 +148,11 @@ SR_PRIV int korad_kaxxxxp_read_chars(struct sr_serial_dev_inst *serial,
+@@ -146,6 +160,10 @@ SR_PRIV int korad_kaxxxxp_read_chars(struct sr_serial_dev_inst *serial,
  		timeout = timeout_later;
  		retries = retries_later;
  	}
 +
-+	if (strip_newline && buf[received-1] == 0x0a) {
++	if (strip_newline && buf[received-1] == 0x0a)
 +		buf[--received] = 0x00;
-+	}
 +
  	/* TODO Escape non-printables? Seen those with status queries. */
  	sr_dbg("got %zu bytes, received: '%s'.", received, buf);
  
-@@ -259,7 +266,7 @@ SR_PRIV int korad_kaxxxxp_set_value(struct sr_serial_dev_inst *serial,
+@@ -259,7 +277,7 @@ SR_PRIV int korad_kaxxxxp_set_value(struct sr_serial_dev_inst *serial,
  	}
  
  	if (ret == SR_OK && msg[0]) {
@@ -91,7 +101,16 @@ index bac8c8ef7..849adfdf5 100644
  		devc->next_req_time = next_req_time(devc, TRUE, target);
  	}
  
-@@ -282,27 +289,29 @@ SR_PRIV int korad_kaxxxxp_get_value(struct sr_serial_dev_inst *serial,
+@@ -272,7 +290,7 @@ SR_PRIV int korad_kaxxxxp_get_value(struct sr_serial_dev_inst *serial,
+ 	int target, struct dev_context *devc)
+ {
+ 	int ret, count;
+-	char reply[6];
++	char reply[7];
+ 	float *value;
+ 	char status_byte;
+ 	gboolean needs_ovp_quirk;
+@@ -282,27 +300,29 @@ SR_PRIV int korad_kaxxxxp_get_value(struct sr_serial_dev_inst *serial,
  	give_device_time_to_process(devc);
  
  	value = NULL;
@@ -126,7 +145,7 @@ index bac8c8ef7..849adfdf5 100644
  		value = &(devc->voltage_target);
  		break;
  	case KAXXXXP_STATUS:
-@@ -310,8 +319,10 @@ SR_PRIV int korad_kaxxxxp_get_value(struct sr_serial_dev_inst *serial,
+@@ -310,8 +330,10 @@ SR_PRIV int korad_kaxxxxp_get_value(struct sr_serial_dev_inst *serial,
  	case KAXXXXP_OCP:
  	case KAXXXXP_OVP:
  		/* Read status from device. */
@@ -138,7 +157,7 @@ index bac8c8ef7..849adfdf5 100644
  		break;
  	default:
  		sr_err("Don't know how to query %d.", target);
-@@ -324,7 +335,7 @@ SR_PRIV int korad_kaxxxxp_get_value(struct sr_serial_dev_inst *serial,
+@@ -324,7 +346,7 @@ SR_PRIV int korad_kaxxxxp_get_value(struct sr_serial_dev_inst *serial,
  
  	devc->next_req_time = next_req_time(devc, FALSE, target);
  

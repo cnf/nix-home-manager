@@ -1,6 +1,14 @@
 { pkgs, unstable, lib, config, inputs, ... }:
 let
   vscode-extensions = inputs.nix-vscode-extensions.extensions.${pkgs.stdenv.hostPlatform.system};
+  FHSPackagesList = (ps: with ps; [ 
+    direnv
+    python3
+    zlib
+    openssl.dev
+    pkg-config
+    cmake
+  ]);
 in
 {
   options = { 
@@ -11,7 +19,7 @@ in
       enable = true;
       package = unstable.vscode;
       #package = unstable.vscode.fhs;
-      #package = unstable.vscode.fhsWithPackages (ps: with ps; [ direnv python3 clang zlib openssl.dev pkg-config ]);
+      #package = unstable.vscode.fhsWithPackages FHSPackagesList;
       profiles.default.enableUpdateCheck = false;
       profiles.default.enableExtensionUpdateCheck = false;
       mutableExtensionsDir = false;
@@ -136,6 +144,8 @@ in
         "diffEditor.experimental.useTrueInlineView" = true;
         "diffEditor.hideUnchangedRegions.enabled" = false;
         "diffEditor.renderSideBySide" = false;
+        "diffEditor.ignoreTrimWhitespace"= false;
+        "terminal.integrated.scrollback" = 50000;
 
         "debug.toolBarLocation" = "docked";
         "problems.showCurrentInStatus" = false;
@@ -145,6 +155,7 @@ in
         # Languages
         # C++
         "C_Cpp.clang_format_fallbackStyle" = "{ BasedOnStyle: LLVM, ColumnLimit: 120 }";
+        "C_Cpp.doxygen.generatedStyle" = "///";
         "[cpp]" = {
           "editor.defaultFormatter" = "ms-vscode.cpptools";
         };
@@ -212,6 +223,8 @@ in
         #  "additional-words"
         #  "local-list"
         #];
+        "idf.saveScope" = 2;
+        "idf.hasWalkthroughBeenShown" = true;
         "dev.containers.defaultExtensions" = [
           "streetsidesoftware.code-spell-checker"
           "eamodio.gitlens"
@@ -268,6 +281,10 @@ in
         #"doxdocgen.generic.authorEmail" = "";
         "doxdocgen.generic.useGitUserEmail" = true;
         "doxdocgen.generic.useGitUserName" = true;
+        "doxdocgen.c.commentPrefix" = "///";
+	"doxdocgen.c.firstLine" = "///";
+	"doxdocgen.c.lastLine" = "";
+	"doxdocgen.c.triggerSequence" = "///";
 
         ## Git Lens
         "gitlens.graph.allowMultiple" = true;
@@ -307,7 +324,7 @@ in
       inmanta
       # Python
       py*
-      # platformio etc
+      # platformio, esp-idf, etc
       espressif
     '';
     #home.packages = with pkgs; [

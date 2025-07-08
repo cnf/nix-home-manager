@@ -22,6 +22,7 @@
   my.git.enable = true;
   my.golang.enable = true;
   my.hyprland.enable = true;
+  my.man.enable = true;
   my.messaging.enable = true;
   my.mqtt.enable = true;
   my.music.enable = true;

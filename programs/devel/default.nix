@@ -10,6 +10,7 @@
 
   programs.direnv.enable = true;
   home.packages = with unstable; [ 
+    gnumake
     nil
     nixd
     nixfmt-rfc-style
@@ -25,6 +26,9 @@
     sqlite-interactive
 
     rpi-imager
+
+    linuxPackages.usbip
+    usbip-ssh
   ];
   nix.nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
 }

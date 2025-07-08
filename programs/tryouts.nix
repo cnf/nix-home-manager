@@ -37,6 +37,9 @@
       waypipe
       cheese
 
+      dnsperf
+      miraclecast
+
       #unstable.synology-drive-client
 
       #uxplay

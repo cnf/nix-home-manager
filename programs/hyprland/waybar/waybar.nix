@@ -131,7 +131,35 @@ in
         };
         privacy = {
           icon-size = 14;
-        };
+          transition-duration = 250;
+          modules= [
+          {
+            type= "screenshare";
+            tooltip= true;
+            tooltip-icon-size= 24;
+          }
+          #{
+          #  type= "audio-out";
+          #  tooltip= true;
+          #  tooltip-icon-size= 24;
+          #}
+          {
+            type= "audio-in";
+            tooltip= true;
+            tooltip-icon-size= 24;
+          }
+          ];
+          ignore = [
+          {
+            type = "audio-out";
+            name = "spotify";
+          }
+          {
+            type = "audio-in";
+            name = "PulseAudio Volume Control";
+          }
+         ];
+       };
         "custom/webcam" = {
           return-type = "json";
           interval = 2;
@@ -264,7 +292,7 @@ in
           format = "{icon}";
           format-icons = ["󰪞" "󰪟" "󰪠" "󰪡" "󰪢" "󰪣" "󰪤" "󰪥"];
           max-length= 10;
-          tooltip-format = "{}% {used:0.1f}G/{total:0.1f}G  ";
+          tooltip-format = "{}% {used:0.1f}G/{total:0.1f}G   [swap: {swapPercentage}%]";
           states = {
             warning = 30;
             critical = 15;

@@ -1,25 +1,27 @@
-{ pkgs, lib, config, inputs, ... }:
+{ pkgs, lib, config, unstable, ... }:
 {
   config = lib.mkIf config.my.sdr.enable {
     #hardware.hackrf.enable = true;
 
     home.packages = with pkgs; [
-      aircrack-ng
-      hackrf
-      kalibrate-hackrf
-      soapysdr-with-plugins
-      soapyhackrf
+      #gnss-sdr # FIXME: undo
       #soapyremote
+      aircrack-ng
       cubicsdr
+      gpredict
+      gqrx
+      hackrf
+      inspectrum
+      kalibrate-hackrf
+      librtlsdr
+      qradiolink
+      rtl-sdr
       sdrangel
       sdrpp
-      gqrx
+      soapyhackrf
+      soapysdr-with-plugins
+      unstable.satdump
       urh
-      librtlsdr
-      rtl-sdr
-      inspectrum
-      gpredict
-      #gnss-sdr # FIXME: undo
 
       kismet
       wsjtx
@@ -32,6 +34,8 @@
       (gnuradio.override {
         extraPackages = with gnuradioPackages; [
           osmosdr
+          fosphor
+          lora_sdr
         ];
         extraPythonPackages = with gnuradio.python.pkgs; [
           numpy

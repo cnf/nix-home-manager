@@ -17,23 +17,23 @@ in
     home.packages = [
       my-ignis
     ];
-    systemd.user.services.ignis = {
-      Unit = {
-        Description = "Ignis widgets";
-        #Requires = "hyprland-session.target";
-        After = "graphical-session-pre.target";
-        PartOf = "graphical-session.target";
-      };
-      Service = {
-        ExecStart = "${lib.getExe my-ignis} init";
-        Restart = "on-failure";
-        Type = "simple";
-        ConditionEnvironment = ["XDG_RUNTIME_DIR" "WAYLAND_DISPLAY" "DBUS_SESSION_BUS_ADDRESS" ];
-      };
-      Install = {
-        WantedBy = [ "hyprland-session.target" ];
-      };
-    };
-
+#    systemd.user.services.ignis = {
+#      Unit = {
+#        Description = "Ignis widgets";
+#        #Requires = "hyprland-session.target";
+#        After = "graphical-session-pre.target";
+#        PartOf = "graphical-session.target";
+#      };
+#      Service = {
+#        ExecStart = "${lib.getExe my-ignis} init";
+#        Restart = "on-failure";
+#        Type = "simple";
+#        #ConditionEnvironment = ["XDG_RUNTIME_DIR" "WAYLAND_DISPLAY" "DBUS_SESSION_BUS_ADDRESS" ];
+#      };
+#      Install = {
+#        WantedBy = [ "hyprland-session.target" ];
+#      };
+#    };
+#
   };
 }

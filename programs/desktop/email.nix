@@ -10,6 +10,7 @@
       # evolution-ews
       # evolution-data-server-gtk4
       #geary # fixed with panel sizes, auto marks as read on select, not configurable
+      bluemail
     ];
     #services.gnome.evolution-data-server.enable = true;
     #programs.evolution = {

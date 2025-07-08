@@ -15,6 +15,7 @@
     ./hyprland.nix
     ./hyprlock.nix
     ./hyprpaper.nix
+    ./hyprshell.nix
     ./ignis.nix
     ./kanshi.nix
     ./launcher

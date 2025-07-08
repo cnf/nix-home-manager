@@ -111,6 +111,7 @@
       "org.gnome.SystemMonitor" = ""
       "org.gnome.TextEditor" = ""
       "org.gnome.World.PikaBackup" = "󰁯"
+      "pika-backup" = "󰁯"
       "org.gnome.baobab" = ""
       "org.gnome.dspy" = "󰘘"
       "org.gnome.font-viewer" = ""

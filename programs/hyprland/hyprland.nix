@@ -10,7 +10,6 @@ let
     xdg-desktop-portal-hyprland
     hyprpolkitagent
     inputs.dmenu-usbguard.defaultPackage.${pkgs.stdenv.hostPlatform.system}
-    inputs.hyprswitch.packages.${pkgs.stdenv.hostPlatform.system}.default
     inputs.rose-pine-hyprcursor.packages.${pkgs.stdenv.hostPlatform.system}.default
     inputs.hyprsysteminfo.packages.${pkgs.stdenv.hostPlatform.system}.default
   ];
@@ -164,9 +163,9 @@ in
         "systemctl --user restart yubikey-agent.service"
         "systemctl --user restart hyprpolkitagent.service"
         "systemctl --user restart waybar.service"
+        "ignis init"
         #"hyprland-autoname-workspaces"
         #"udiskie -t"
-        "hyprswitch init --show-title --size-factor 5 --workspaces-per-row 5"
         #"tailscale-systray"
         #"tail-tray"
         "[workspace 1 silent] kitty"
@@ -197,6 +196,7 @@ in
         swallow_regex = [
           "kitty"
         ];
+        swallow_exception_regex = "^(glxgears|vkcube|xev|wev|zenity|yad)$";
         vrr = 1;
         vfr = true;
       };
@@ -210,7 +210,6 @@ in
         "$mod, F, Toggle fullscreen, fullscreen, 0 # Toggle active window to fullscreen"
         "$mod, M, Toggle maximize, fullscreen, 1 # Maximize Window"
         "$mod, T, Toggle floating/tiling, togglefloating # Allow a window to float"
-        "alt, Tab, HyprSwitch, exec, hyprswitch gui --mod-key alt --key tab --max-switch-offset 9 --close mod-key-release" #--hide-active-window-border"
 
         # Master
         "$mod, A, Master Layout, exec, hyprctl keyword general:layout master"

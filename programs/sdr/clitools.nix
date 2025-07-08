@@ -6,6 +6,8 @@
       dump1090
       multimon-ng
       csdr
+
+      iw
     ];
 
     xdg.desktopEntries.dump1090 = {

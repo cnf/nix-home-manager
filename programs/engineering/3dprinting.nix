@@ -3,7 +3,7 @@
   config = lib.mkIf config.my.engineering.enable {
     home.packages = [
       #unstable.prusa-slicer
-      #orca-slicer
+      unstable.orca-slicer
     ];
      xdg.mimeApps.defaultApplications = {
         "x-scheme-handler/prusaslicer" = ["PrusaSlicer.desktop"];

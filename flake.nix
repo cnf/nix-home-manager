@@ -25,8 +25,8 @@
       url = "github:hyprwm/hyprsunset";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    hyprswitch = {
-      url = "github:h3rmt/hyprswitch/release";
+    hyprshell = {
+      url = "github:H3rmt/hyprshell?ref=hyprshell-release";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     hyprspace = {
