@@ -80,6 +80,9 @@ in
         timonwong.shellcheck
         #alexnesnes.teleplot
 
+        vscode-extensions.vscode-marketplace.tidalcycles.vscode-tidalcycles
+        vscode-extensions.vscode-marketplace.roipoussiere.tidal-strudel
+
         #github.remotehub
         github.vscode-pull-request-github
         #randomfractalsinc.geo-data-viewer
@@ -134,7 +137,8 @@ in
         "editor.formatOnSave" = true;
         "editor.tabSize" = 2;
         "editor.suggest.showStatusBar" = true;
-        "editor.formatOnSaveMode" = "modificationsIfAvailable";
+        #"editor.formatOnSaveMode" = "modificationsIfAvailable";
+        "editor.formatOnSaveMode" = "file";
         "editor.wordWrap"= "wordWrapColumn";
         "editor.wordWrapColumn" = 120;
         "editor.fontFamily" = "'SauceCodePro Nerd Font', 'Source Code Pro', 'FontAwesome', Consolas, 'Courier New', monospace";

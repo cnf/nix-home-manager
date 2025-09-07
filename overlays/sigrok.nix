@@ -3,8 +3,7 @@ final: prev:
   libsigrok = prev.libsigrok.overrideAttrs (prevAttrs: {
     buildInputs = (prevAttrs.buildInputs or []) ++ [prev.nettle];
     patches = (prevAttrs.patches or []) ++ [
-      ../patches/269.patch
-      ../patches/VELLEMAN.patch
+      ../patches/LABPS3005DN.patch
     ];
   });
 }

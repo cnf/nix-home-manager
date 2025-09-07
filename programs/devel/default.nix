@@ -1,5 +1,6 @@
 { pkgs, inputs, unstable, ... }: {
   imports = [ 
+    ./ballisticpinball.nix
     ./tio.nix
     ./git.nix 
     ./golang.nix 
@@ -26,6 +27,7 @@
     sqlite-interactive
 
     rpi-imager
+    espflash
 
     linuxPackages.usbip
     usbip-ssh

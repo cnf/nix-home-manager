@@ -11,6 +11,7 @@
   #imports = [
   #];
   my.altbrowsers.enable = true;
+  my.ballisticpinball.enable = true;
   my.davinci.enable = false;
   my.desktop.enable = true;
   my.discord.enable = true;
@@ -32,6 +33,7 @@
   my.sigrok.enable = true;
   my.synodrive.enable = true;
   my.tryouts.enable = true;
+  my.tidalcycles.enable = true;
   my.vim.enable = true;
   my.vscode.enable = true;
   my.wine.enable = true;

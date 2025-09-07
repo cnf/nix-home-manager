@@ -11,8 +11,8 @@
       libsigrokdecode
       libserialport
       sigrok-firmware-fx2lafw
-      #smuview
-      #pulseview
+      smuview
+      pulseview
     ];
 
     xdg.desktopEntries."org.sigrok.SmuView" = {

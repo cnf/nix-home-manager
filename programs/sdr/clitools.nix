@@ -1,11 +1,24 @@
-{ pkgs, lib, config, inputs, ... }:
+{ pkgs, lib, config, unstable, ... }:
 {
   config = lib.mkIf config.my.sdr.enable {
     home.packages = with pkgs; [
       rtl_433
+      rtl-ais
+      rtl-sdr
+      #rtl-sdr-osmocom
+      #rtl_fm_streamer
+      #rtl-sdr-librtlsdr
+      rtlamr
+
+      libosmocore
+
+      kalibrate-rtl
+      kalibrate-hackrf
+
       dump1090
       multimon-ng
       csdr
+      unstable.gnss-sdr # FIXME: undo
 
       iw
     ];

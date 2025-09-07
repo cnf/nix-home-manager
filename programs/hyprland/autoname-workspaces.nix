@@ -90,6 +90,7 @@
       "io.missioncenter.MissionCenter" = ""
       "com/serial-studio.*" = "󰙜"
       "org.raspberrypi." = ""
+      "eezstudio" = "󰔃"
 
 
       "org.freedesktop.Bustle" = "󰘘"

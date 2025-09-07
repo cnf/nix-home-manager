@@ -8,4 +8,5 @@ self: super: {
   my-cistercian = super.callPackage ./cistercian.nix {};
   my-hyprswitch = super.callPackage ./hyprswitch.nix {};
   my-appimage-menu-updater = super.callPackage ./appimage-menu-updater.nix {};
+  my-gr-ieee802-11 = super.callPackage ./gr-ieee802-11.nix {};
 }

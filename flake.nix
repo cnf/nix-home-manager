@@ -55,6 +55,9 @@
       url = "github:linkfrg/ignis";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    tidalcycles = {
+      url = "github:mitchmindtree/tidalcycles.nix";
+    };
   };
 
   outputs = { nixpkgs, home-manager,...} @ inputs:

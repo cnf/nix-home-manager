@@ -4,20 +4,19 @@
     #hardware.hackrf.enable = true;
 
     home.packages = with pkgs; [
-      #gnss-sdr # FIXME: undo
-      #soapyremote
       aircrack-ng
       cubicsdr
       gpredict
       gqrx
       hackrf
       inspectrum
-      kalibrate-hackrf
+      
       librtlsdr
       qradiolink
-      rtl-sdr
-      sdrangel
+      
+      unstable.sdrangel
       sdrpp
+      #soapyremote
       soapyhackrf
       soapysdr-with-plugins
       unstable.satdump
@@ -26,11 +25,17 @@
       kismet
       wsjtx
 
+      pothos
+      quisk
+
+
       hamlib
       
       nanovna-saver
+      nanovna-qt
       # https://cemaxecuter.com/?page_id=67
 
+      #gr-framework
       (gnuradio.override {
         extraPackages = with gnuradioPackages; [
           osmosdr

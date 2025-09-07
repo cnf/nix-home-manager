@@ -15,7 +15,7 @@ in
 {
   config = lib.mkIf config.my.hyprland.enable {
     home.packages = [
-      my-ignis
+      #my-ignis
     ];
 #    systemd.user.services.ignis = {
 #      Unit = {

@@ -23,6 +23,7 @@
     ./pdf.nix
     ./synology.nix
     ./theme-vars.nix
+    ./tidalcycles.nix
     ./vscode.nix
     ./wine.nix
     ./wireshark.nix
