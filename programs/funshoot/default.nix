@@ -4,7 +4,7 @@
     my.funshoot.enable = lib.mkEnableOption "Install FunShoot related packages";
   };
   imports = [
-    ./qlc.nix
+    ./software.nix
     ./settings.nix
   ];
 }

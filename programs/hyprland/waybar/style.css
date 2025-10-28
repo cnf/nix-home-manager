@@ -3,6 +3,7 @@
 @define-color primary #ff8514; 
 @define-color accent #148eff;
 @define-color textcolor white;
+
 @define-color isok #32d74b;
 @define-color notice #ffd60a;
 @define-color warning #ffa914;
@@ -171,6 +172,8 @@ menuitem:hover menu > label {
 #custom-usbguard,
 #custom-webcam,
 #custom-yubikey,
+#custom-tailscale,
+#custom-agenda,
 #disk,
 #idle_inhibitor,
 #memory,
@@ -223,6 +226,10 @@ menuitem:hover menu > label {
     margin-left: 10px;
     margin-top: 0px;
     margin-bottom: 0px;*/
+    font-weight: bold;
+}
+
+#custom-agenda {
     font-weight: bold;
 }
 
@@ -366,6 +373,10 @@ menuitem:hover menu > label {
     background-color: white;
 }
 
+#mpris {
+    color: @accent;
+}
+
 
 #battery {
     /* color: #4fe78a; */
@@ -411,4 +422,34 @@ menuitem:hover menu > label {
 
 #power-profiles-daemon.performance {
     color: @notice;
+}
+
+.connecting {
+  animation: pulse 0.8s ease-in-out infinite;
+  color: @accent;
+}
+
+#custom-tailscale.connected {
+    color: @isok;
+}
+
+#custom-tailscale.disconnected {
+    color: @notice;
+}
+
+#custom-tailscale.disabled {
+    color: @warning;
+}
+
+
+@keyframes pulse {
+  0% {
+    color: @accent;
+  }
+  50% {
+    color: @textcolor;
+  }
+  100% {
+    color: @accent;
+  }
 }

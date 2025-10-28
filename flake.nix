@@ -68,6 +68,10 @@
       #vscode-extensions = inputs.nix-vscode-extensions.extensions.${system};
     in {
       nix.nixPath = ["nixpkgs=${inputs.nixpkgs}"]; # for nixd
+      devShells.x86_64-linux.default = pkgs.mkShell {};
+      #devShell = pkgs.mkShell {
+      #    buildInputs = with pkgs; [ nixfmt nodePackages.prettier ];
+      #};
       # packages.x86_64-linux.freerouting = pkgs.callPackage ./pkgs/freerouting.nix {};
       # call it with  inputs.self.packages.x86_64-linux.freerouting in my files
       homeConfigurations = {

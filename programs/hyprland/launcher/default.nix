@@ -10,7 +10,7 @@
       #rofi-screenshot
       #unstable.rofi-power-menu
       #unstable.rofi-systemd
-      (unstable.rofi-systemd.override {rofi = unstable.rofi-wayland;}) # TODO: remove when fixed upstream [2025-01-19] 
+      (unstable.rofi-systemd.override {rofi = unstable.rofi;}) # TODO: remove when fixed upstream [2025-01-19] 
       libqalculate # for rofi-calc
       unstable.pinentry-rofi
       unstable.rofi-bluetooth
@@ -20,9 +20,9 @@
     programs.rofi = {
       enable = true;
       plugins = with pkgs; [
-        (rofi-calc.override { rofi-unwrapped = unstable.rofi-wayland-unwrapped; }) # TODO: remove when fixed upstream [2024-12-11]
-        (rofi-games.override {rofi = unstable.rofi-wayland; }) # TODO: remove when fixed upstream [2024-12-11]
-        unstable.rofi-emoji-wayland
+        (rofi-calc.override { rofi-unwrapped = unstable.rofi-unwrapped; }) # TODO: remove when fixed upstream [2024-12-11]
+        (rofi-games.override {rofi = unstable.rofi; }) # TODO: remove when fixed upstream [2024-12-11]
+        unstable.rofi-emoji
         #pinentry-rofi
         #unstable.rofi-menugen
         #unstable.rofi-power-menu
@@ -33,7 +33,7 @@
       pass = {
         enable = true;
       };
-      package = unstable.rofi-wayland;
+      package = unstable.rofi;
       terminal = "${pkgs.kitty}/bin/kitty";
       theme = "rofi.rasi";
       #font = "JetBrainsMono Nerd Font";

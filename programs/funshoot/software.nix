@@ -4,6 +4,11 @@
 
     home.packages = with pkgs; [
       qlcplus
+      touchosc
+      #open-stage-control
+      midimonster
+
+      lpd8editor
     ];
 
   };

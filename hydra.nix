@@ -1,5 +1,7 @@
 { pkgs, lib, config, inputs, ... }:
 {
+  nixpkgs.config.allowUnfree = true;
+
   home.packages = with pkgs; [
     nvtopPackages.amd
   #  # (pkgs.nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
@@ -14,6 +16,7 @@
   my.ballisticpinball.enable = true;
   my.davinci.enable = false;
   my.desktop.enable = true;
+  my.debuggers.enable = true;
   my.discord.enable = true;
   my.email.enable = true;
   my.engineering.enable = true;
@@ -22,6 +25,7 @@
   my.gaming.enable = true;
   my.git.enable = true;
   my.golang.enable = true;
+  my.helpers.enable = true;
   my.hyprland.enable = true;
   my.man.enable = true;
   my.messaging.enable = true;

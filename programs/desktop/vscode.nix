@@ -18,11 +18,12 @@ in
     programs.vscode = {
       enable = true;
       package = unstable.vscode;
+      #package = pkgs.vscode;
       #package = unstable.vscode.fhs;
       #package = unstable.vscode.fhsWithPackages FHSPackagesList;
+      mutableExtensionsDir = true;
       profiles.default.enableUpdateCheck = false;
       profiles.default.enableExtensionUpdateCheck = false;
-      mutableExtensionsDir = false;
       profiles.default.extensions = with unstable.vscode-extensions; [
         #vscode-extensions.vscode-marketplace.continue.continue
         ms-python.black-formatter
@@ -43,7 +44,6 @@ in
         ms-toolsai.vscode-jupyter-slideshow
         ms-vsliveshare.vsliveshare
 
-
         ms-vscode-remote.vscode-remote-extensionpack
         ms-vscode-remote.remote-containers
         ms-vscode-remote.remote-ssh
@@ -56,8 +56,8 @@ in
         #ms-vscode.remote-repositories
         #ms-vscode.remote-server
 
-        github.copilot-chat
-        github.copilot
+        #github.copilot-chat
+        #github.copilot
 
         #1Password.op-vscode
         #vscode-extensions.vscode-marketplace.cschlosser.doxdocgen
@@ -159,7 +159,23 @@ in
         # Languages
         # C++
         "C_Cpp.clang_format_fallbackStyle" = "{ BasedOnStyle: LLVM, ColumnLimit: 120 }";
+        "C_Cpp.simplifyStructuredComments" = true;
         "C_Cpp.doxygen.generatedStyle" = "///";
+        "C_Cpp.doxygen.sectionTags" = [
+          "attention"
+          "tparam"
+          "param"
+          "result"
+          "returns"
+          "retval"
+          "exception"
+          "deprecated"
+          "warning"
+          "note"
+          "details"
+          "see"
+          "ref"
+        ];
         "[cpp]" = {
           "editor.defaultFormatter" = "ms-vscode.cpptools";
         };
@@ -188,7 +204,6 @@ in
         ## ToDo Tree
         #"todo-tree.general.statusBar" = "current file";
         "todo-tree.general.showActivityBarBadge" = true;
-        "todo-tree.highlights.useColourScheme" = true;
         "todo-tree.general.schemes" = [
           "file"
           "ssh"
@@ -196,6 +211,41 @@ in
           "vscode-notebook-cell"
           "output"
         ];
+        "todo-tree.general.tags" = [
+          "BUG"
+          "HACK"
+          "FIXME"
+          "TODO"
+          "[ ]"
+          "[x]"
+          "@todo"
+          "@bug"
+        ];
+        "todo-tree.general.tagGroups" = {
+          "BUG" = [
+            "BUG"
+            "@bug"
+          ];
+          "TODO" = [
+            "TODO"
+            "@todo"
+          ];
+        };
+        "todo-tree.highlights.useColourScheme" = true;
+        "todo-tree.highlights.backgroundColourScheme" = [
+          "red"
+          "orange"
+          "yellow"
+          "green"
+          "indigo"
+          "violet"
+          "blue"
+        ];
+        "todo-tree.highlights.customHighlight" = {
+          "BUG" = {
+            "gutterIcon" = true;
+          };
+        };
         "direnv.path.executable" = "${config.home.homeDirectory}/.nix-profile/bin/direnv";
         "direnv.restart.automatic" = true;
         "remote.autoForwardPortsSource"= "hybrid";
@@ -223,6 +273,7 @@ in
             addWords = true;
           };
         };
+        "cSpell.diagnosticLevel" = "Hint";
         #"cSpell.dictionaries" = [
         #  "additional-words"
         #  "local-list"

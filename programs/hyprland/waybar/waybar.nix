@@ -6,6 +6,7 @@ let
       (writeShellScriptBin "waybar-usbguard" (builtins.readFile ./bin/waybar-usbguard))
       (writeShellScriptBin "waybar-webcam" (builtins.readFile ./bin/waybar-webcam))
       (writeShellScriptBin "waybar-yubikey" (builtins.readFile ./bin/waybar-yubikey))
+      (writeShellScriptBin "waybar-tailscale" (builtins.readFile ./bin/waybar-tailscale))
       coreutils
       gnugrep
       systemd
@@ -52,7 +53,7 @@ in
           "custom/yubikey"
         ];
         modules-right = [
-          #"custom/agenda"
+          "custom/agenda"
           #"group/privacywarn"
 
           "custom/leftend"
@@ -62,6 +63,7 @@ in
           "pulseaudio"
           "pulseaudio/slider"
           "battery"
+          "custom/tailscale"
           "network"
           #"bluetooth"
           #"network#vpn"
@@ -213,6 +215,12 @@ in
             "temperature#GPU"
           ];
         };
+        jack = {
+          format = "DSP {}%";
+          format-xrun = "{xruns} xruns";
+          format-disconnected = "DSP off";
+          realtime = true;
+        };
         "pulseaudio/slider" = {
           min = 0;
           max = 100;
@@ -337,7 +345,7 @@ in
           tooltip = true;
         };
         battery = {
-          full-at = 85;
+          #full-at = 85;
           format = "{icon}";
           format-icons = {
             discharging = ["󰂎" "󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹"];
@@ -350,8 +358,8 @@ in
           interval = 30;
           states = {
             notice = 25;
-            warning = 15;
-            critical = 7;
+            warning = 18;
+            critical = 10;
           };
           tooltip = true;
           tooltip-format = "{capacity}%\t\t{power:.1f}W\n{timeTo}";
@@ -451,22 +459,23 @@ in
 	    mpv = " ";
           };
           status-icons = {
-            paused = "";
-            playing = "";
-            stopped = "";
+            playing = "";
+            paused = "";
+            stopped = "";
           };
           ignored-players = ["firefox"];
           format = "{status_icon}";
           format-stopped = "";
           tooltip-format-playing = " {player_icon}\n{dynamic}";
           tooltip-format-paused = " {player_icon}\n{dynamic}";
-          tooltip-format-stopped = "";
+          tooltip-format-stopped = " {player_icon}";
         };
         "custom/agenda" = {
           format = "{}";
-          exec = "env GCALCLI_DEFAULT_CALENDAR=Wassup nextmeeting --max-title-length 30 --waybar";
+          #exec = "env GCALCLI_DEFAULT_CALENDAR=Wassup nextmeeting --max-title-length 30 --waybar";
+          exec = "nextmeeting --max-title-length 30 --waybar --waybar-show-all-day-meeting --format='{when} ' --tooltip-format='{when} - {title}' --today-only";
           on-click = "env GCALCLI_DEFAULT_CALENDAR=Wassup nextmeeting --open-meet-url";
-          on-click-right = "kitty -- /bin/bash -c \"batz;echo;cal -3;echo;nextmeeting;read;\";";
+          #on-click-right = "kitty -- /bin/bash -c \"batz;echo;cal -3;echo;nextmeeting;read;\";";
           interval = 59;
           return-type = "json";
           tooltip = true;
@@ -479,6 +488,33 @@ in
           #tooltip-format = "<tt><small>{calendar}</small></tt>";
           tooltip-format = "{:L%A\n%d %B %Y\n%R %Z\nWeek %V}"; #\n{tz_list}";
         };
+        "custom/tailscale" = {
+          exec = "${app}/bin/waybar-tailscale --status";
+          on-click-middle = "exec ${app}/bin/waybar-tailscale --toggle";
+          on-click-right = "ktailctl";
+          #on-click = "exec ${app}/bin/waybar-tailscale --hostname";
+          exec-on-event = true;
+          format = "{icon}";
+          #format = "{icon} {text}";
+          format-icons = {
+            connected = "󰴼";
+            disconnected = "󱔕";
+            disabled = "󰌸";
+            connecting = "󰴽";
+            disconnecting = "󱔕";
+          };
+          tooltip = true;
+          return-type = "json";
+          interval = 5;
+          menu = "on-click";
+          menu-file = "$HOME/.config/waybar/tailscale_menu.xml";
+          menu-actions = {
+            toggle = "exec ${app}/bin/waybar-tailscale --toggle";
+            settings = "ktailctl &";
+            hostname = "exec ${app}/bin/waybar-tailscale --hostname";
+          };
+
+        };
         "custom/leftend" = {
           format = "";
         };
@@ -486,5 +522,6 @@ in
     };
     programs.waybar.style = ./style.css;
     xdg.configFile."waybar/power_menu.xml".source = ./power_menu.xml;
+    xdg.configFile."waybar/tailscale_menu.xml".source = ./tailscale_menu.xml;
   };
 }

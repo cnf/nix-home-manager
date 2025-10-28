@@ -1,12 +1,13 @@
 { pkgs, inputs, unstable, ... }: {
   imports = [ 
     ./ballisticpinball.nix
-    ./tio.nix
+    ./debuggers.nix
     ./git.nix 
     ./golang.nix 
     ./neovim.nix 
-    ./zsh.nix
     ./ollama.nix
+    ./tio.nix
+    ./zsh.nix
   ];
 
   programs.direnv.enable = true;
@@ -18,16 +19,13 @@
 
     gum
 
-    bustle
     httpie
     remarshal
     dysk
 
-    gdb
     sqlite-interactive
 
     rpi-imager
-    espflash
 
     linuxPackages.usbip
     usbip-ssh

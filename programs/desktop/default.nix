@@ -85,7 +85,7 @@
       #unstable._1password-cli
       #unstable._1password-gui
       # tailscale-systray # not very useful
-      # ktailctl no added value
+      ktailctl #no added value
       trayscale # maybe?
       unstable.my-tailscale-systray
       unstable.tail-tray

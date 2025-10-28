@@ -4,14 +4,12 @@
     #hardware.hackrf.enable = true;
 
     home.packages = with pkgs; [
-      aircrack-ng
       cubicsdr
       gpredict
       gqrx
-      hackrf
       inspectrum
       
-      librtlsdr
+      
       qradiolink
       
       unstable.sdrangel
@@ -22,14 +20,11 @@
       unstable.satdump
       urh
 
-      kismet
       wsjtx
 
       pothos
       quisk
 
-
-      hamlib
       
       nanovna-saver
       nanovna-qt
@@ -82,18 +77,10 @@
         # Keywords = "qlc;light;controller;dmx;analog;midi;artnet;e131;osc;";
       };
       comment = "GNU Radio";
-      #icon = "${pkgs.gnuradio}/share/doc/gnuradio-3.10.7.0/html/gnuradio_logo_icon.png";
       icon = "${pkgs.gnuradio}/share/gnuradio/examples/qt-gui/gnuradio_logo.png";
       exec = "gnuradio-companion";
       terminal = false;
-      # mimeType = ["application/x-qlc-workspace"];
       categories = ["Science" "Education" "HamRadio"];
-      #actions = {
-      #  edit-show = {
-      #    name = "Edit Show";
-      #    exec = "qlcplus --open Easter\\ 2024.qxw";
-      #  };
-      #};
     };
     xdg.desktopEntries.inspectrum = {
       name = "Inspectrum";
@@ -110,6 +97,24 @@
       comment="Investigate wireless protocols like a boss";
       icon = "urh";
       exec = "urh";
+      terminal = false;
+      categories = ["Science" "Education" "HamRadio"];
+    };
+    xdg.desktopEntries.quisk = {
+      name = "Quisk";
+      type = "Application";
+      comment="Quisk rhymes with 'brisk', and is QSK plus a few letters to make it easier to pronounce.";
+      icon = "quisk";
+      exec = "quisk";
+      terminal = false;
+      categories = ["Science" "Education" "HamRadio"];
+    };
+    xdg.desktopEntries.NanoVNASaver = {
+      name = "NanoVNA Saver";
+      type = "Application";
+      comment="NanoVNASaver GUI";
+      icon = "NanoVNASaver";
+      exec = "NanoVNASaver";
       terminal = false;
       categories = ["Science" "Education" "HamRadio"];
     };
