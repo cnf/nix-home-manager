@@ -161,6 +161,7 @@ menuitem:hover menu > label {
 
 #backlight,
 #battery,
+#upower,
 #bluetooth,
 #clock,
 #cpu,
@@ -407,6 +408,15 @@ menuitem:hover menu > label {
     animation-direction: alternate;
 }
 
+#upower.charging  {
+	color: @isok;
+}
+
+#upower.discharging {
+    color: @notice;
+}
+
+
 #temperature.critical {
     color: @critical;
     animation-name: blink;
@@ -430,7 +440,7 @@ menuitem:hover menu > label {
 }
 
 #custom-tailscale.connected {
-    color: @isok;
+    color: @accent;
 }
 
 #custom-tailscale.disconnected {

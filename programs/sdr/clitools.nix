@@ -12,7 +12,7 @@
       rtlamr
 
       libosmocore
-      librtlsdr
+      #librtlsdr
 
       kismet
       hamlib
@@ -22,7 +22,7 @@
       kalibrate-rtl
       kalibrate-hackrf
 
-      dump1090
+      dump1090-fa
       multimon-ng
       csdr
       unstable.gnss-sdr # FIXME: undo

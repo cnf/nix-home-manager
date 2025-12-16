@@ -3,10 +3,10 @@
 
   inputs = {
     cachix.url = "github:cachix/cachix";
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.05";
+      url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-vscode-extensions = {
@@ -51,29 +51,40 @@
     dmenu-usbguard.url = "github:Armoken/dmenu-usbguard";
     nix-inspect.url = "github:bluskript/nix-inspect";
     rose-pine-hyprcursor.url = "github:ndom91/rose-pine-hyprcursor";
-    ignis = {
-      url = "github:linkfrg/ignis";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    #ignis = {
+    #  url = "github:linkfrg/ignis";
+    #  inputs.nixpkgs.follows = "nixpkgs";
+    #};
     tidalcycles = {
       url = "github:mitchmindtree/tidalcycles.nix";
     };
   };
 
-  outputs = { nixpkgs, home-manager,...} @ inputs:
+  outputs = { nixpkgs, home-manager, ...} @ inputs:
     let
+      inherit (nixpkgs) lib;
       #inherit (self) outputs;
       system = "x86_64-linux";  # x86_64-linux, aarch64-multiplatform, etc.
-      pkgs = nixpkgs.legacyPackages.${system};
+      #pkgs = nixpkgs.legacyPackages.${system};
       #vscode-extensions = inputs.nix-vscode-extensions.extensions.${system};
+      pkgs = import nixpkgs {
+        inherit system;
+        config = {
+          allowUnfree = true;
+          allowUnfreePredicate = pkg:
+          builtins.elem (lib.getName pkg) [ "discord" "spotify" ]
+          || lib.hasPrefix "vscode-extension-" (lib.getName pkg);
+          permittedInsecurePackages = [
+                "python3.13-ecdsa-0.19.1"
+              ];
+        };
+        overlays = [
+          inputs.nix-vscode-extensions.overlays.default
+        ];
+      };
     in {
       nix.nixPath = ["nixpkgs=${inputs.nixpkgs}"]; # for nixd
       devShells.x86_64-linux.default = pkgs.mkShell {};
-      #devShell = pkgs.mkShell {
-      #    buildInputs = with pkgs; [ nixfmt nodePackages.prettier ];
-      #};
-      # packages.x86_64-linux.freerouting = pkgs.callPackage ./pkgs/freerouting.nix {};
-      # call it with  inputs.self.packages.x86_64-linux.freerouting in my files
       homeConfigurations = {
         "cnf@hydra" = home-manager.lib.homeManagerConfiguration {
           #system = "x86_64-linux";

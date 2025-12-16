@@ -6,7 +6,7 @@
   config = lib.mkIf config.my.golang.enable {
     programs.go = {
       enable = true;
-      goPath = ".local/share/go";
+      env.GOPATH = ".local/share/go";
       packages = {};
     };
   };

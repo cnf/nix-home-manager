@@ -9,6 +9,8 @@ let
   hypr-packages = with pkgs;[
     xdg-desktop-portal-hyprland
     hyprpolkitagent
+    hyprpwcenter
+    hyprlauncher
     inputs.dmenu-usbguard.defaultPackage.${pkgs.stdenv.hostPlatform.system}
     inputs.rose-pine-hyprcursor.packages.${pkgs.stdenv.hostPlatform.system}.default
     inputs.hyprsysteminfo.packages.${pkgs.stdenv.hostPlatform.system}.default
@@ -360,11 +362,19 @@ in
         orientation = "right";
         mfact = 0.6; # 0.55 default
       };
-      gestures = {
-        workspace_swipe = true;
-        workspace_swipe_create_new = true;
-        #workspace_swipe_use_r = true;
-      };
+      gesture = [
+        "3, horizontal, workspace"
+        #"3, down, dispatcher, overview:open"
+        #"3, up, dispatcher, overview:close"
+        #"3, down, mod: ALT, close"
+        #"3, up, mod: SUPER, scale: 1.5, fullscreen"
+        #"3, left, scale: 1.5, float"
+      ];
+      #gestures = {
+      #  workspace_swipe = true;
+      #  workspace_swipe_create_new = true;
+      #  #workspace_swipe_use_r = true;
+      #};
       decoration = {
         rounding=9;
         shadow = {
@@ -547,6 +557,7 @@ in
         "center 1, class:^(1Password)$, title:(Quick Access)"
         #"tag +1password, class:^(1Password)$, title:^((?!Quick Access).)*$"
         "tag +1password, class:^(1Password)$"
+        "tag +1password, class:^(1password)$"
         #"tag -1password, title:^(Quick Access.*)$"
         #"tag -1password, title:^((?!Quick Access).)*$"
         "float, tag:1password"
@@ -595,9 +606,9 @@ in
 
         ## Tag Actions, Generic
         "float, tag:float"
-        "size 80% 80%, tag:fixsize, floating"
+        "size 80% 80%, tag:fixsize, match:float"
         #"size 1000 700, tag:fixsize"
-        "center 1, tag:fixsize, floating"
+        "center 1, tag:fixsize, match:float"
         #"maxsize 1200 850, tag:fixsize"
         #"minsize 800 600, tag:fixsize"
         "stayfocused, tag:keepfocus"

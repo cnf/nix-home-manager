@@ -22,8 +22,13 @@
 
       wsjtx
 
+      direwolf
+
       pothos
       quisk
+
+
+      chirp
 
       
       nanovna-saver

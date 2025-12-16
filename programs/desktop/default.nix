@@ -8,6 +8,7 @@
     ./chromium.nix
     ./davinci.nix
     ./discord.nix
+    ./docs.nix
     ./email.nix
     ./firefox.nix
     ./fonts.nix
@@ -51,7 +52,7 @@
     };
     home.packages = with pkgs; [
       unstable.appimage-run
-      pinentry
+      pinentry-rofi
       # audio
       pavucontrol
       pulseaudio

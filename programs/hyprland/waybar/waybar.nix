@@ -62,9 +62,10 @@ in
           #"custom/media"
           "pulseaudio"
           "pulseaudio/slider"
+          #"upower"
           "battery"
           "custom/tailscale"
-          "network"
+          #"network"
           #"bluetooth"
           #"network#vpn"
 
@@ -161,7 +162,7 @@ in
             name = "PulseAudio Volume Control";
           }
          ];
-       };
+        };
         "custom/webcam" = {
           return-type = "json";
           interval = 2;
@@ -344,6 +345,12 @@ in
           tooltip-format = "GPU {temperatureC}°C";
           tooltip = true;
         };
+        upower = {
+          icon-size = 14;
+          hide-if-empty = true;
+          tooltip = true;
+          tooltip-spacing = 20;
+        };
         battery = {
           #full-at = 85;
           format = "{icon}";
@@ -369,16 +376,6 @@ in
           tooltip-format-plugged = "Plugged in {power:.1f}W";
           # on-click = "2";
         };
-        "network#vpn" = {
-          interface = "tailscale0";
-          format = "{icon}";
-          format-icons = {
-            ethernet = [""];
-            linked = [""];
-            inactive = [""];
-            disconnected = [""];
-          };
-        };
         "network" = {
           # interface = "wlp1s0";
           # format = "{ifname}";
@@ -398,7 +395,6 @@ in
           tooltip-format-disconnected = "Disconnected";
           tooltip-format = "{ipaddr}\n{ifname} via {gwaddr}";
           max-length = 50;
-          on-click = "ignis toggle ignis_CONTROL_CENTER";
           #on-click = "networkmanager_dmenu";
           on-click-middle = "nm-connection-editor";
         };
@@ -497,8 +493,8 @@ in
           format = "{icon}";
           #format = "{icon} {text}";
           format-icons = {
-            connected = "󰴼";
             disconnected = "󱔕";
+            connected = "󰴼";
             disabled = "󰌸";
             connecting = "󰴽";
             disconnecting = "󱔕";

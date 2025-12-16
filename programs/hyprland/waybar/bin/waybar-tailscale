@@ -43,6 +43,7 @@ get_tooltip() {
     local connection_state=$(echo "$status_json" | jq -r '.Self.Online')
     if [[ "$connection_state" != "true" ]]; then
         echo "<b><span foreground='#AA0000'>NOT CONNECTED</span></b>"
+        return
     fi
     
     # Get current hostname
@@ -73,23 +74,23 @@ get_tooltip() {
 
 show_status() {
     local status=$(get_tailscale_status)
-    local text=""
+    local text=$(get_tailscale_status)
     local alt=""
     local tooltip=""
     
     case $status in
         "connected")
-            text=""
+            #text=""
             alt="connected"
             tooltip=$(get_tooltip)
             ;;
         "disconnected")
-            text=""
+            #text=""
             alt="disconnected"
             tooltip=$(get_tooltip)
             ;;
         "disabled")
-            text=""
+            #text=""
             alt="disabled"
             tooltip="Tailscale is turned off"
             ;;

@@ -23,8 +23,8 @@ in {
 
         -- Extra Lua Config
         -- NIXD
-        local nvim_lsp = require("lspconfig")
-        nvim_lsp.nixd.setup({
+        vim.lsp.enable('nixd')
+        vim.lsp.config('nixd', {
           cmd = { "nixd" },
           settings = {
               nixd = {

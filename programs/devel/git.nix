@@ -16,25 +16,23 @@
       unstable.gitleaks
       #earlybird
     ];
-    programs.git = {
+
+    programs.difftastic = {
       enable = true;
-      userName = "Frank Rosquin";
-      userEmail = "frank.rosquin@gmail.com";
-      difftastic = {
-        enable = true;
+      options = {
         background = "dark";
         display = "inline";
-        enableAsDifftool = true;
       };
-      # hooks = {
-      #   pre-commit = "${config.xdg.configHome}/git/hooks/local-pre-commit";
-      # };
-      # needs FIDO2 / yubikey5
-      # signing = {
-      #   format = "ssh";
-      #   key = "";
-      # };
-      extraConfig = {
+      git = {
+        enable = true;
+        diffToolMode = true;
+      };
+    };
+    programs.git = {
+      enable = true;
+      settings = {
+        user.name = "Frank Rosquin";
+        user.email = "frank.rosquin@gmail.com";
         init = {
           defaultBranch = "main";
           #templateDir = "${hooks}/share";
@@ -47,6 +45,14 @@
         };
         credential.helper = "${pkgs.git.override { withLibsecret = true; }}/bin/git-credential-libsecret";
       };
+      # hooks = {
+      #   pre-commit = "${config.xdg.configHome}/git/hooks/local-pre-commit";
+      # };
+      # needs FIDO2 / yubikey5
+      # signing = {
+      #   format = "ssh";
+      #   key = "";
+      # };
       ignores = [
         "### Local testing trash"
         "*-OLD"

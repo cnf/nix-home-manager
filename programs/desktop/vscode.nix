@@ -1,6 +1,6 @@
 { pkgs, unstable, lib, config, inputs, ... }:
 let
-  vscode-extensions = inputs.nix-vscode-extensions.extensions.${pkgs.stdenv.hostPlatform.system};
+  #vscode-extensions = inputs.nix-vscode-extensions.extensions.${pkgs.stdenv.hostPlatform.system};
   FHSPackagesList = (ps: with ps; [ 
     direnv
     python3
@@ -8,6 +8,7 @@ let
     openssl.dev
     pkg-config
     cmake
+    vstask
   ]);
 in
 {
@@ -17,40 +18,39 @@ in
   config = lib.mkIf config.my.vscode.enable {
     programs.vscode = {
       enable = true;
-      package = unstable.vscode;
-      #package = pkgs.vscode;
+      #package = unstable.vscode;
+      package = pkgs.vscode.fhs;
       #package = unstable.vscode.fhs;
       #package = unstable.vscode.fhsWithPackages FHSPackagesList;
       mutableExtensionsDir = true;
       profiles.default.enableUpdateCheck = false;
       profiles.default.enableExtensionUpdateCheck = false;
-      profiles.default.extensions = with unstable.vscode-extensions; [
+      profiles.default.extensions = with pkgs.vscode-extensions; [
         #vscode-extensions.vscode-marketplace.continue.continue
-        ms-python.black-formatter
-        ms-python.debugpy
+        #ms-python.black-formatter
+        #ms-python.debugpy
         ms-python.isort
-        vscode-extensions.vscode-marketplace.ms-python.autopep8
-        vscode-extensions.vscode-marketplace.ms-python.python
-        ms-python.vscode-pylance
-        ms-vscode.cpptools-extension-pack
-        ms-vscode.cpptools
-        ms-vscode.cmake-tools
+        #vscode-extensions.vscode-marketplace.ms-python.autopep8
+        #vscode-extensions.vscode-marketplace.ms-python.python
+        #ms-python.vscode-pylance
+        #ms-vscode.cpptools-extension-pack
+        #ms-vscode.cpptools
+        #ms-vscode.cmake-tools
         ms-vscode.hexeditor
-        #ms-vscode.vscode-serial-monitor
-        ms-toolsai.datawrangler
-        ms-toolsai.jupyter
-        ms-toolsai.vscode-jupyter-cell-tags
-        ms-toolsai.jupyter-renderers
-        ms-toolsai.vscode-jupyter-slideshow
+        #ms-toolsai.datawrangler
+        #ms-toolsai.jupyter
+        #ms-toolsai.vscode-jupyter-cell-tags
+        #ms-toolsai.jupyter-renderers
+        #ms-toolsai.vscode-jupyter-slideshow
         ms-vsliveshare.vsliveshare
 
         ms-vscode-remote.vscode-remote-extensionpack
         ms-vscode-remote.remote-containers
         ms-vscode-remote.remote-ssh
         ms-vscode-remote.remote-ssh-edit
-        vscode-extensions.vscode-marketplace.ms-vscode.remote-explorer
-        vscode-extensions.vscode-marketplace.ms-vscode.remote-repositories
-        vscode-extensions.vscode-marketplace.ms-vscode.remote-server
+        pkgs.vscode-marketplace.ms-vscode.remote-explorer
+        pkgs.vscode-marketplace.ms-vscode.remote-repositories
+        pkgs.vscode-marketplace.ms-vscode.remote-server
         #ms-vscode-remote.remote-wsl
         #ms-vscode.remote-explorer
         #ms-vscode.remote-repositories
@@ -61,11 +61,10 @@ in
 
         #1Password.op-vscode
         #vscode-extensions.vscode-marketplace.cschlosser.doxdocgen
-        vscode-extensions.vscode-marketplace.eamodio.gitlens
-        vscode-extensions.vscode-marketplace.tailscale.vscode-tailscale
-        vscode-extensions.vscode-marketplace.textualize.textual-syntax-highlighter
+        pkgs.vscode-marketplace.eamodio.gitlens
+        #vscode-extensions.vscode-marketplace.tailscale.vscode-tailscale
         editorconfig.editorconfig
-        golang.go
+        #golang.go
         gruntfuggly.todo-tree
         mkhl.direnv
         streetsidesoftware.code-spell-checker
@@ -74,14 +73,14 @@ in
         #ms-azuretools.vscode-docker
         #vscode-arduino.vscode-arduino-community
 
-        arrterian.nix-env-selector
-        jnoortheen.nix-ide
+        #arrterian.nix-env-selector
+        #jnoortheen.nix-ide
 
-        timonwong.shellcheck
+        #timonwong.shellcheck
         #alexnesnes.teleplot
 
-        vscode-extensions.vscode-marketplace.tidalcycles.vscode-tidalcycles
-        vscode-extensions.vscode-marketplace.roipoussiere.tidal-strudel
+        #vscode-extensions.vscode-marketplace.tidalcycles.vscode-tidalcycles
+        #vscode-extensions.vscode-marketplace.roipoussiere.tidal-strudel
 
         #github.remotehub
         github.vscode-pull-request-github
@@ -151,6 +150,12 @@ in
         "diffEditor.ignoreTrimWhitespace"= false;
         "terminal.integrated.scrollback" = 50000;
 
+        "github.copilot.chat.scopeSelection" = true;
+        "github.copilot.chat.agent.thinkingTool" = true;
+        "github.copilot.nextEditSuggestions.allowWhitespaceOnlyChanges" = false;
+        "github.copilot.chat.virtualTools.threshold" = 64;
+        "chat.checkpoints.showFileChanges" = true;
+
         "debug.toolBarLocation" = "docked";
         "problems.showCurrentInStatus" = false;
         "liveshare.launcherClient" = "visualStudioCode";
@@ -158,7 +163,11 @@ in
 
         # Languages
         # C++
-        "C_Cpp.clang_format_fallbackStyle" = "{ BasedOnStyle: LLVM, ColumnLimit: 120 }";
+        #"C_Cpp.maxConcurrentThreads" = 4;
+        #"C_Cpp.maxCachedProcesses" = 8;
+        #"C_Cpp.maxMemory" = 10240; # in MB
+        "C_Cpp.clang_format_fallbackStyle" = "{ BasedOnStyle: Google, ColumnLimit: 120, }";
+        "C_Cpp.default.cppStandard"= "c++23";
         "C_Cpp.simplifyStructuredComments" = true;
         "C_Cpp.doxygen.generatedStyle" = "///";
         "C_Cpp.doxygen.sectionTags" = [
@@ -174,14 +183,19 @@ in
           "note"
           "details"
           "see"
-          "ref"
         ];
-        "[cpp]" = {
-          "editor.defaultFormatter" = "ms-vscode.cpptools";
-        };
-        "[c]" = {
-          "editor.defaultFormatter" = "ms-vscode.cpptools";
-        };
+        "C_Cpp.diagnostic.excludePath" = [
+          "/nix/store/**"
+        ];
+        #"C_Cpp.testDiscoverPatterns.exclude" = [
+        #  "**/managed_components/**"
+        #];
+        #"[cpp]" = {
+        #  "editor.defaultFormatter" = "ms-vscode.cpptools";
+        #};
+        #"[c]" = {
+        #  "editor.defaultFormatter" = "ms-vscode.cpptools";
+        #};
         # Go
         #"go.gopath" = "${config.home.homeDirectory}/${config.programs.go.goPath}";
         #"go.toolsGopath" = "${config.xdg.dataHome}/vscode-tools/go";
@@ -248,7 +262,10 @@ in
         };
         "direnv.path.executable" = "${config.home.homeDirectory}/.nix-profile/bin/direnv";
         "direnv.restart.automatic" = true;
-        "remote.autoForwardPortsSource"= "hybrid";
+        "remote.autoForwardPortsSource" = "workspace";
+        "remote.autoForwardPorts" = false;
+        "remote.SSH.showLoginTerminal" = false;
+        "remote.containers.enableParallelism" = false;
         ## cSpell
         #"cSpell.userWords" = [
         #  "nixpkgs"
@@ -289,9 +306,12 @@ in
           "EditorConfig.EditorConfig"
           "timonwong.shellcheck"
         ];
-        "dev.containers.dockerPath" = "podman";
-        "dev.containers.dockerSocketPath" = "/run/user/1000/podman/podman.sock";
-        "dev.containers.dockerComposePath" = "podman-compose";
+        "dev.containers.dockerPath" = "docker";
+        "dev.containers.dockerSocketPath" = "/run/docker.sock";
+        "dev.containers.dockerComposePath" = "docker-compose";
+        #"dev.containers.dockerPath" = "podman";
+        #"dev.containers.dockerSocketPath" = "/run/user/1000/podman/podman.sock";
+        #"dev.containers.dockerComposePath" = "podman-compose";
         #"docker.dockerPath" = "/run/current-system/sw/bin/podman";
         #"docker.composeCommand" = "podman-compose";
         #"docker.environment" = {

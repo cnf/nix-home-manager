@@ -60,7 +60,7 @@
     '';
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
-    dotDir = ".config/zsh";
+    dotDir = "${config.xdg.configHome}/zsh";
     history = {
       append = false;
       expireDuplicatesFirst = false;
@@ -68,7 +68,7 @@
       ignoreAllDups = false;
       ignoreDups = true;
       ignoreSpace = true;
-      path = "$HOME/.local/zsh/history";
+      path = "${config.xdg.dataHome}/zsh/history";
       share = false;
       size = 10000;
     };

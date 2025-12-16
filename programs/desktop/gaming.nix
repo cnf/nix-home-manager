@@ -9,7 +9,7 @@
       unstable.steam
       #heroic
       #mangohud
-      protonup
+      protonup-ng
       #lutris
       cartridges
     ];
