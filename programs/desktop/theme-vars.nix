@@ -1,7 +1,7 @@
 { pkgs, unstable, lib, ... }:
 with lib;
 let
-  tokyo-night-gtk-orange = pkgs.tokyo-night-gtk.override {
+  tokyo-night-gtk-orange = pkgs.tokyonight-gtk-theme.override {
             themeVariants = ["orange" "default"];
           };
 in

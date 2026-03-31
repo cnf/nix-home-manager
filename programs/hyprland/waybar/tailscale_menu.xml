@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <object class="GtkMenu" id="menu">
+    <child>
+      <object class="GtkMenuItem" id="toggle">
+        <property name="label">⏼  Toggle Connection</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="settings">
+        <property name="label">   Settings</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkSeparatorMenuItem" id="delimiter1"/>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="hostname">
+        <property name="label">   Copy Hostname</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="ipv4">
+        <property name="label">󰬽  Copy IPv4</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="ipv6">
+        <property name="label">󰬿  Copy IPv6</property>
+      </object>
+    </child>
+  </object>
+</interface>

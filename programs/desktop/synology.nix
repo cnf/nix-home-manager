@@ -1,10 +1,10 @@
 { pkgs, lib, config, unstable, ... }:
 let
-  synology-drive-pkg = unstable.synology-drive-client;
-  #synology-drive-pkg = unstable.synology-drive-client.overrideAttrs (finalAttrs: prevAttrs: {
-  #  buildInputs = prevAttrs.buildInputs ++ [unstable.libsForQt5.qt5.qtwayland];
-  #  nativeBuildInputs = prevAttrs.nativeBuildInputs ++ [unstable.libsForQt5.qt5.qtwayland];
-  #});
+  #synology-drive-pkg = unstable.synology-drive-client;
+  synology-drive-pkg = unstable.synology-drive-client.overrideAttrs (finalAttrs: prevAttrs: {
+    buildInputs = prevAttrs.buildInputs ++ [unstable.libsForQt5.qt5.qtwayland];
+    nativeBuildInputs = prevAttrs.nativeBuildInputs ++ [unstable.libsForQt5.qt5.qtwayland];
+  });
 
 in
 {

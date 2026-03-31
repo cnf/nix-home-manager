@@ -6,6 +6,7 @@ let
       (writeShellScriptBin "waybar-usbguard" (builtins.readFile ./bin/waybar-usbguard))
       (writeShellScriptBin "waybar-webcam" (builtins.readFile ./bin/waybar-webcam))
       (writeShellScriptBin "waybar-yubikey" (builtins.readFile ./bin/waybar-yubikey))
+      (writeShellScriptBin "waybar-tailscale" (builtins.readFile ./bin/waybar-tailscale))
       coreutils
       gnugrep
       systemd
@@ -52,7 +53,7 @@ in
           "custom/yubikey"
         ];
         modules-right = [
-          #"custom/agenda"
+          "custom/agenda"
           #"group/privacywarn"
 
           "custom/leftend"
@@ -61,8 +62,10 @@ in
           #"custom/media"
           "pulseaudio"
           "pulseaudio/slider"
+          #"upower"
           "battery"
-          "network"
+          "custom/tailscale"
+          #"network"
           #"bluetooth"
           #"network#vpn"
 
@@ -159,7 +162,7 @@ in
             name = "PulseAudio Volume Control";
           }
          ];
-       };
+        };
         "custom/webcam" = {
           return-type = "json";
           interval = 2;
@@ -212,6 +215,12 @@ in
             "cpu"
             "temperature#GPU"
           ];
+        };
+        jack = {
+          format = "DSP {}%";
+          format-xrun = "{xruns} xruns";
+          format-disconnected = "DSP off";
+          realtime = true;
         };
         "pulseaudio/slider" = {
           min = 0;
@@ -336,8 +345,14 @@ in
           tooltip-format = "GPU {temperatureC}°C";
           tooltip = true;
         };
+        upower = {
+          icon-size = 14;
+          hide-if-empty = true;
+          tooltip = true;
+          tooltip-spacing = 20;
+        };
         battery = {
-          full-at = 85;
+          #full-at = 85;
           format = "{icon}";
           format-icons = {
             discharging = ["󰂎" "󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹"];
@@ -350,8 +365,8 @@ in
           interval = 30;
           states = {
             notice = 25;
-            warning = 15;
-            critical = 7;
+            warning = 18;
+            critical = 10;
           };
           tooltip = true;
           tooltip-format = "{capacity}%\t\t{power:.1f}W\n{timeTo}";
@@ -360,16 +375,6 @@ in
           tooltip-format-full = "Full {power:.1f}W";
           tooltip-format-plugged = "Plugged in {power:.1f}W";
           # on-click = "2";
-        };
-        "network#vpn" = {
-          interface = "tailscale0";
-          format = "{icon}";
-          format-icons = {
-            ethernet = [""];
-            linked = [""];
-            inactive = [""];
-            disconnected = [""];
-          };
         };
         "network" = {
           # interface = "wlp1s0";
@@ -390,7 +395,6 @@ in
           tooltip-format-disconnected = "Disconnected";
           tooltip-format = "{ipaddr}\n{ifname} via {gwaddr}";
           max-length = 50;
-          on-click = "ignis toggle ignis_CONTROL_CENTER";
           #on-click = "networkmanager_dmenu";
           on-click-middle = "nm-connection-editor";
         };
@@ -451,22 +455,23 @@ in
 	    mpv = " ";
           };
           status-icons = {
-            paused = "";
-            playing = "";
-            stopped = "";
+            playing = "";
+            paused = "";
+            stopped = "";
           };
           ignored-players = ["firefox"];
           format = "{status_icon}";
           format-stopped = "";
           tooltip-format-playing = " {player_icon}\n{dynamic}";
           tooltip-format-paused = " {player_icon}\n{dynamic}";
-          tooltip-format-stopped = "";
+          tooltip-format-stopped = " {player_icon}";
         };
         "custom/agenda" = {
           format = "{}";
-          exec = "env GCALCLI_DEFAULT_CALENDAR=Wassup nextmeeting --max-title-length 30 --waybar";
+          #exec = "env GCALCLI_DEFAULT_CALENDAR=Wassup nextmeeting --max-title-length 30 --waybar";
+          exec = "nextmeeting --max-title-length 30 --waybar --waybar-show-all-day-meeting --format='{when} ' --tooltip-format='{when} - {title}' --today-only";
           on-click = "env GCALCLI_DEFAULT_CALENDAR=Wassup nextmeeting --open-meet-url";
-          on-click-right = "kitty -- /bin/bash -c \"batz;echo;cal -3;echo;nextmeeting;read;\";";
+          #on-click-right = "kitty -- /bin/bash -c \"batz;echo;cal -3;echo;nextmeeting;read;\";";
           interval = 59;
           return-type = "json";
           tooltip = true;
@@ -479,6 +484,33 @@ in
           #tooltip-format = "<tt><small>{calendar}</small></tt>";
           tooltip-format = "{:L%A\n%d %B %Y\n%R %Z\nWeek %V}"; #\n{tz_list}";
         };
+        "custom/tailscale" = {
+          exec = "${app}/bin/waybar-tailscale --status";
+          on-click-middle = "exec ${app}/bin/waybar-tailscale --toggle";
+          on-click-right = "ktailctl";
+          #on-click = "exec ${app}/bin/waybar-tailscale --hostname";
+          exec-on-event = true;
+          format = "{icon}";
+          #format = "{icon} {text}";
+          format-icons = {
+            disconnected = "󱔕";
+            connected = "󰴼";
+            disabled = "󰌸";
+            connecting = "󰴽";
+            disconnecting = "󱔕";
+          };
+          tooltip = true;
+          return-type = "json";
+          interval = 5;
+          menu = "on-click";
+          menu-file = "$HOME/.config/waybar/tailscale_menu.xml";
+          menu-actions = {
+            toggle = "exec ${app}/bin/waybar-tailscale --toggle";
+            settings = "ktailctl &";
+            hostname = "exec ${app}/bin/waybar-tailscale --hostname";
+          };
+
+        };
         "custom/leftend" = {
           format = "";
         };
@@ -486,5 +518,6 @@ in
     };
     programs.waybar.style = ./style.css;
     xdg.configFile."waybar/power_menu.xml".source = ./power_menu.xml;
+    xdg.configFile."waybar/tailscale_menu.xml".source = ./tailscale_menu.xml;
   };
 }

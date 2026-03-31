@@ -9,8 +9,8 @@
       inputs.tidalcycles.packages.${pkgs.stdenv.hostPlatform.system}.default
       unstable.ihaskell
       unstable.haskellPackages.tidal
-      #unstable.supercollider-with-plugins
-      unstable.supercollider-with-sc3-plugins
+      unstable.supercollider-with-plugins
+      #unstable.supercollider-with-sc3-plugins
     ];
   };
 }

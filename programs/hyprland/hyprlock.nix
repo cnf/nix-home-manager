@@ -21,7 +21,7 @@
         #"$font" = "Arimo Nerd Font";
         "$font" = config.my.looks.font.name;
         general = {
-          disable_loading_bar = false; #true
+          #disable_loading_bar = false; #true
           hide_cursor = true;
         };
         auth = {
@@ -29,7 +29,7 @@
             enabled = true;
             ready_message = "󰈷 ";
             present_message = "󰈷 Removing fingerprints, please stay still 󰈷 ";
-            retry_delay = 250;# in milliseconds
+            retry_delay = 500;# in milliseconds
           };
         };
         background = {

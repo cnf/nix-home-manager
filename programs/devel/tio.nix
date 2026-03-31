@@ -7,14 +7,30 @@
       databits = 8
       parity = none
       stopbits = 1
-      map = INLCRNL,ODELBS
       color = 45
       log-directory = ~/.cache/tio/
 
       [include local]
+      
+      [VELLEMAN]
+      baudrate = 9600
+      databits = 8
+      parity = none
+      stopbits = 1
+      device = /dev/tty-CP2102
+      local-echo = true
+      map = ONLCRNL
+      script = write('\\n\\n*IDN?\\\\n\\n\\n')
+
+      [hydrabus]
+      device = /dev/hydrabus-port1
+      map = 
+      color = 21
+      script = expect('>', 1000); write("help\\n")
+      script-run = once
 
       [FSGW]
-      device = /dev/tty-M5-5713049119
+      device = /dev/M5-5713049119
       local-echo = true
       map = INLCRNL,OCRNL 
       #,ODELBS
@@ -22,8 +38,8 @@
       #line-pulse-duration = DTR=200,RTS=150
       color = 202
 
-      [M5-Basic]
-      device = /dev/tty-M5-5713049119
+      [m5-basic]
+      device = /dev/M5-5713049119
       local-echo = true
       map = INLCRNL,ODELBS
       #line-pulse-duration = DTR=200,RTS=150

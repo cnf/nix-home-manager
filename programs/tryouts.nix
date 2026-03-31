@@ -16,7 +16,7 @@
 
       imapsync
 
-      onlyoffice-bin
+      #onlyoffice-bin
 
       git-backup-go
       github-backup
@@ -32,7 +32,6 @@
 
       tor-browser
 
-      pandoc
 
       waypipe
       cheese

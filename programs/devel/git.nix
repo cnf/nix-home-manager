@@ -1,51 +1,38 @@
-{ pkgs, lib, config, ... }:
-#let
-#  hooks = pkgs.symlinkJoin {
-#    name = "git-scripts";
-#    paths = with pkgs; [
-#      (writeTextFile {
-#        name = "earlybird-hook";
-#        destination = "/share/hooks/earlybird-hook";
-#        executable = true;
-#        text = '' 
-#        #!/usr/bin/env bash
-#
-#        echo "Running EarlyBird pre-commit hook"
-#        ${lib.getExe pkgs.earlybird} --fail-severity=high
-#
-#        # $? stores exit value of the last command
-#        if [ $? -ne 0 ]; then
-#          echo "Secrets detection tests must pass before commit!"
-#          exit 1
-#        fi
-#      '';})
-#      earlybird
-#    ];
-#    buildInputs = [ pkgs.makeWrapper ];
-#    postBuild = ''
-#      wrapProgram $out/share/hooks/earlybird-hook --prefix PATH : $out/bin
-#    '';
-#  };
-#in
+{
+  pkgs,
+  lib,
+  config,
+  unstable,
+  ...
+}:
 {
   options = {
     my.git.enable = lib.mkEnableOption "Enable and configure git";
   };
   config = lib.mkIf config.my.git.enable {
-    home.packages = with pkgs;[
+    home.packages = with pkgs; [
       git-graph
-      gitleaks
-      earlybird
+      pre-commit
+      unstable.gitleaks
+      #earlybird
     ];
-    programs.git = {
+
+    programs.difftastic = {
       enable = true;
-      userName = "Frank Rosquin";
-      userEmail = "frank.rosquin@gmail.com";
-      difftastic = {
-        enable = true;
+      options = {
+        background = "dark";
         display = "inline";
       };
-      extraConfig = {
+      git = {
+        enable = true;
+        diffToolMode = true;
+      };
+    };
+    programs.git = {
+      enable = true;
+      settings = {
+        user.name = "Frank Rosquin";
+        user.email = "frank.rosquin@gmail.com";
         init = {
           defaultBranch = "main";
           #templateDir = "${hooks}/share";
@@ -53,10 +40,19 @@
         core = {
           hooksPath = "${config.xdg.configHome}/git/hooks";
         };
-        credential.helper = "${
-            pkgs.git.override { withLibsecret = true; }
-        }/bin/git-credential-libsecret";
+        push = {
+          autoSetupRemote = true;
+        };
+        credential.helper = "${pkgs.git.override { withLibsecret = true; }}/bin/git-credential-libsecret";
       };
+      # hooks = {
+      #   pre-commit = "${config.xdg.configHome}/git/hooks/local-pre-commit";
+      # };
+      # needs FIDO2 / yubikey5
+      # signing = {
+      #   format = "ssh";
+      #   key = "";
+      # };
       ignores = [
         "### Local testing trash"
         "*-OLD"
@@ -86,7 +82,7 @@
         "### Vim"
         "*.swp"
         "### Direnv"
-        ".envrc" 
+        ".envrc"
         "### Python"
         "__pycache__/"
       ];
@@ -96,14 +92,28 @@
       executable = true;
       text = ''
         #!/usr/bin/env bash
+        # TODO: https://warman.io/blog/2024/01/global-pre-commit/
+        # https://pre-commit.com/#advanced
+        set -euo pipefail
+
         # gitleaks
+        # if ! ${lib.getExe pkgs.gitleaks} protect --staged --no-banner -v --redact
         echo "Running gitleaks pre-commit"
-        if ! ${lib.getExe pkgs.gitleaks} protect --staged --no-banner -v --redact
+        if ! ${lib.getExe unstable.gitleaks} git --pre-commit --redact --staged --verbose
         then
           echo "gitleaks found secrets, not committing"
           exit 1
         fi
-        
+
+        if [ -e ./.pre-commit-config.yaml ]; then
+          if command -v ${lib.getExe pkgs.pre-commit} > /dev/null; then
+            exec ${lib.getExe pkgs.pre-commit}
+          else
+            echo '`pre-commit` not found.'
+            exit 1
+          fi
+        fi
+
         # To prevent debug code from being accidentally committed, simply add a comment near your
         # debug code containing the keyword ! + nocommit and this script will abort the commit.
         NOCM="!"
@@ -114,13 +124,6 @@
           echo "Remove the $NOCM string and try again."
           exit 1
         fi
-        
-        #if ${lib.getExe pkgs.earlybird} --fail-severity=high
-        #then
-        #  echo "Running EarlyBird pre-commit hook"
-        #  echo "Secrets detection tests must pass before commit!"
-        #  exit 1
-        #fi
 
         # Run local pre-commit hook if exists
         if [ -e ./.git/hooks/pre-commit ]; then

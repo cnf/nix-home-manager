@@ -5,7 +5,6 @@
     my.mqtt.enable = lib.mkDefault true;
     home.packages = with pkgs; [
       #qlcplus
-      touchosc
     ];
 
   };

@@ -16,6 +16,7 @@
       seahorse
       snapshot
       tuba
+      evince
     ];
   };
 }

@@ -12,9 +12,9 @@
     home.sessionVariables = {
     };
     ## LibreWolf
-    programs.librewolf.enable = true;
     programs.librewolf = {
-      package = pkgs.librewolf-wayland;
+      enable = true;
+      package = pkgs.librewolf;
       nativeMessagingHosts = [
         #pkgs._1password-gui
         pkgs.web-eid-app

@@ -9,6 +9,7 @@
     ./hyprland
     ./sdr
     ./tryouts.nix
+    ./helpers.nix
   ];
 
   programs.btop = {

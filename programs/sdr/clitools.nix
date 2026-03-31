@@ -2,6 +2,7 @@
 {
   config = lib.mkIf config.my.sdr.enable {
     home.packages = with pkgs; [
+      hackrf
       rtl_433
       rtl-ais
       rtl-sdr
@@ -11,11 +12,17 @@
       rtlamr
 
       libosmocore
+      #librtlsdr
+
+      kismet
+      hamlib
+
+      aircrack-ng
 
       kalibrate-rtl
       kalibrate-hackrf
 
-      dump1090
+      dump1090-fa
       multimon-ng
       csdr
       unstable.gnss-sdr # FIXME: undo

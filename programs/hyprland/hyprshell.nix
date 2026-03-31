@@ -14,14 +14,14 @@
         switch = {
           enable = true;
           modifier = "alt";
-          show_workspaces = true;
+          #show_workspaces = true;
         };
         overview = {
           key = "tab";
           modifier = "super";
           launcher = {
             default_terminal = "kitty";
-            enable = true;
+            #enable = true;
             # key = "super+space";
             launch_modifier = "ctrl";
             plugins.calc.enable = true;
