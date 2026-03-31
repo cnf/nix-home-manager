@@ -26,18 +26,29 @@
       startupNotify = true;
 
       actions = {
-        DPS5005 = {
-          exec = "smuview -D -d rdtech-dps:/dev/serial/by-id/usb-1a86_USB_Serial-if00-port0 %U";
-          name = "RDTech DPS5005 USB";
+        CAVE = {
+          exec = "smuview -D -d scpi-dmm:conn=/dev/tty-OWON-dmm:serialcomm=115200/8n1 -d korad-kaxxxxp:conn=/dev/tty-CP2102 -d rdtech-tc:conn=/dev/TCC66 -d rdtech-um:conn=bt/rfcomm/00-BA-80-00-3C-CD %U"; 
+          name = "Cave";
         };
-        DPS5005-BT = {
-          exec = "smuview -D -d rdtech-dps:/dev/rfcomm1 %U";
-          name = "RDTech DPS5005 rfcomm";
+        OWONXDM1041 = {
+          exec = "smuview -D -d scpi-dmm:conn=/dev/tty-OWON-dmm:serialcomm=115200/8n1 %U"; 
+          name = "OWON XDM1041";
         };
         LABPS3005DN = {
-          exec = "smuview -D -d korad-kaxxxxp:conn=/dev/velleman-LABPS3005DN %U"; 
+          exec = "smuview -D -d korad-kaxxxxp:conn=/dev/tty-CP2102 %U"; 
           name = "Velleman LABPS3005DN";
         };
+        TC66 = {
+          exec = "smuview -D -d rdtech-tc:conn=/dev/ttyACM0 %U";
+        };
+        #DPS5005 = {
+        #  exec = "smuview -D -d rdtech-dps:/dev/serial/by-id/usb-1a86_USB_Serial-if00-port0 %U";
+        #  name = "RDTech DPS5005 USB";
+        #};
+        #DPS5005-BT = {
+        #  exec = "smuview -D -d rdtech-dps:/dev/rfcomm1 %U";
+        #  name = "RDTech DPS5005 rfcomm";
+        #};
       };
     };
   };

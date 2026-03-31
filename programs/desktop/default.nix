@@ -19,6 +19,7 @@
     ./mqtt.nix
     ./music.nix
     ./nixtools.nix
+    ./obs.nix
     ./obsidian.nix
     ./pdf.nix
     ./synology.nix

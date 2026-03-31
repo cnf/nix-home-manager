@@ -1,6 +1,7 @@
 { pkgs, lib, config, inputs, ... }:
 {
   home.packages = [
+    pkgs.fcast-receiver
   ];
 
   home.sessionVariables = {
@@ -19,6 +20,7 @@
   my.hyprland.enable = true;
   my.music.enable = true;
   my.nixtools.enable = true;
+  my.obs.enable = true;
   my.obsidian.enable = false;
   my.sdr.enable = true;
   my.sigrok.enable = true;
