@@ -10,11 +10,11 @@
       enable = true;
       settings = {
         general = {
-          #lock_cmd = "pidof hyprlock || hyprlock";      # avoid starting multiple hyprlock instances.
-          #unlock_cmd = "pkill -USR1 hyprlock";          # same as above, but unlock
+          #lock_cmd = "pidof hyprlock || hyprctl dispatch exec hyprlock";      # avoid starting multiple hyprlock instances.
+          unlock_cmd = "pkill -USR1 hyprlock";          # same as above, but unlock
           before_sleep_cmd = "loginctl lock-session";     # command ran before sleep
           after_sleep_cmd = "hyprctl dispatch dpms on";  # command ran after sleep 
-          ignore_dbus_inhibit = true;             # whether to ignore dbus-sent idle-inhibit requests (used by e.g. firefox or steam)
+          ignore_dbus_inhibit = false;             # whether to ignore dbus-sent idle-inhibit requests (used by e.g. firefox or steam)
           ignore_systemd_inhibit = false;          # whether to ignore systemd-inhibit --what=idle inhibitors
         };
         listener = [
@@ -25,7 +25,7 @@
           }
           {
             timeout = 1700;                            # in seconds
-            #on-timeout = "loginctl lock-session";
+            on-timeout = "loginctl lock-session";
           }
           {
             timeout = 1800;                                # 2.5min.

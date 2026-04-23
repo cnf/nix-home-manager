@@ -6,8 +6,10 @@ let
 in
 {
   config = lib.mkIf config.my.hyprland.enable {
-    home.packages = [
-      blueman-patched
+    home.packages = with pkgs;[
+      blueman
+      overskride
+      #blueberry
     ];
     systemd.user.services.blueman-applet = {
       Unit = {

@@ -11,9 +11,11 @@ let
     hyprpolkitagent
     hyprpwcenter
     hyprlauncher
+    hyprsysteminfo
+    inputs.hyprshutdown.packages.${pkgs.stdenv.hostPlatform.system}.default
     inputs.dmenu-usbguard.defaultPackage.${pkgs.stdenv.hostPlatform.system}
     inputs.rose-pine-hyprcursor.packages.${pkgs.stdenv.hostPlatform.system}.default
-    inputs.hyprsysteminfo.packages.${pkgs.stdenv.hostPlatform.system}.default
+    #inputs.hyprsysteminfo.packages.${pkgs.stdenv.hostPlatform.system}.default
   ];
   hypr-plugins = with pkgs;[
     hyprlandPlugins.hyprspace
@@ -57,6 +59,7 @@ in
     home.packages = with pkgs; [
       hyprpicker #/gbm
       qt5.qtwayland
+      xorg.xrdb
 
       wlr-randr
       xdg-desktop-portal-gtk
@@ -124,7 +127,7 @@ in
 
       # See https://wiki.hyprland.org/Configuring/Monitors/
       monitor = [
-        "desc:BOE NE135A1M-NY1,preferred,0x0,2,vrr,1"
+        "desc:BOE NE135A1M-NY1,preferred,0x0,1.5,vrr,1"
         "desc:LG Electronics LG ULTRAWIDE 0x0000A6C2,preferred,-1000x-1440,1"
         "desc:BNQ BenQ LCD 56G04894019,preferred,auto-up,1"
         "desc:XYK Display demoset-1,preferred,auto,1"
@@ -175,6 +178,7 @@ in
         "[workspace 1 silent] kitty"
         "[workspace 3 silent] firefox"
         "[workspace 4 silent] discord"
+        "xrdb ~/.Xresources"
 
       ];
 
@@ -184,6 +188,7 @@ in
         "XCURSOR_THEME,${config.my.looks.cursor.name}"
         "XCURSOR_SIZE,${toString config.my.looks.cursor.size}"
         "GTK_THEME,${config.my.looks.theme.gtk.name}"
+        "GDK_SCALE,2"
         "NIXOS_OZONE_WL,1"
         "NIXOS_XDG_OPEN_USE_PORTAL,1"
         "ELECTRON_OZONE_PLATFORM_HINT,wayland"
@@ -203,6 +208,9 @@ in
         swallow_exception_regex = "^(glxgears|vkcube|xev|wev|zenity|yad)$";
         vrr = 1;
         vfr = true;
+      };
+      xwayland = {
+        force_zero_scaling = true;
       };
 
       bindd = [
@@ -323,9 +331,10 @@ in
         scroll_factor = 1.5;
         touchpad = {
           natural_scroll = "yes";
-          disable_while_typing = true;
+          disable_while_typing = false;
           clickfinger_behavior = true;
           tap-to-click = false;
+          drag_lock = 3;
         };
         kb_options = "ctrl:nocaps";
       };
@@ -451,6 +460,7 @@ in
         "tag +settings, class:^(nm-connection-editor)$"
         "tag +fixsize, class:^(nm-connection-editor)$"
         "tag +settings, class:^(pavucontrol)$"
+        "tag +settings, class:^(hyprpwcenter)$"
         "tag +settings, class:^(org.pulseaudio.pavucontrol)$"
         "tag +fixsize, class:^(org.pulseaudio.pavucontrol)$"
         "tag +settings, class:^(.blueman.*)$"
@@ -519,6 +529,7 @@ in
         "opacity 1 override, tag:freecad"
         "tag +nograb, tag:freecad, floating:1"
         #"suppressevent activatefocus, tag:freecad"
+        "noinitialfocus, tag:freecad" # allowd dragging window elements
 
         # Evolution
         "tag +evolution, initialClass:^(org.gnome.Evolution)$"
@@ -528,10 +539,16 @@ in
         # SigRok
         "tag +sigrok, initialClass:^(org.sigrok.)"
         "tag +settings, initialTitle:^(Connect to Device)$"
+        "noinitialfocus, tag:sigrok"
 
-         ## KiCAD
-        #"tag +kicad, class:^(kicad)$"
-        #"opacity 1 override, tag:kicad"
+
+        # KiCAD
+        "tag +kicad, class:^(kicad)$"
+        "group set, tag:kicad"
+        "noinitialfocus, tag:kicad"
+        "opacity 1 override, tag:kicad"
+        "size >70% >70%, initialTitle:^(Footprint Chooser .*)$, tag:kicad"
+        "size >70% >70%, initialTitle:^(Configure Paths)$, tag:kicad"
         #"xray off, tag:kicad"
         #"decorate off, tag:kicad"
         #"forcergbx, tag:kicad"
@@ -624,6 +641,9 @@ in
         "suppressevent activatefocus, tag:video"
         "float, content:video"
         "float, tag:video"
+
+        "idleinhibit focus, content:game"
+        "tag +game, content:game"
 
         "suppressevent activatefocus, tag:nograb"
       ];

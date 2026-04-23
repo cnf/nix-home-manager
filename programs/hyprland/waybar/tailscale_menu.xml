@@ -7,6 +7,11 @@
       </object>
     </child>
     <child>
+      <object class="GtkMenuItem" id="exiting">
+        <property name="label">󰿅  Toggle Exit Node</property>
+      </object>
+    </child>
+    <child>
       <object class="GtkMenuItem" id="settings">
         <property name="label">   Settings</property>
       </object>

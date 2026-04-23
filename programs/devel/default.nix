@@ -15,7 +15,7 @@
     gnumake
     nil
     nixd
-    nixfmt-rfc-style
+    nixfmt
 
     gum
 
@@ -23,9 +23,11 @@
     remarshal
     dysk
 
+    dfu-util
+
     sqlite-interactive
 
-    rpi-imager
+    unstable.rpi-imager
 
     linuxPackages.usbip
     usbip-ssh

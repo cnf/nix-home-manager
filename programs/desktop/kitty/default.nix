@@ -12,7 +12,7 @@
     programs.kitty = {
       enable = true;
       font.name = "family=\"SauceCodePro Nerd Font\"";
-      font.size = 12;
+      font.size = 13;
       settings = {
         bold_font = "auto";
         italic_font = "auto";

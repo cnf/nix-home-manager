@@ -27,17 +27,12 @@
       warp
       gnome-boxes
 
-      owl
-      opendrop
-
-      tor-browser
-
-
       waypipe
       cheese
 
       dnsperf
-      miraclecast
+      #miraclecast
+
 
       #unstable.synology-drive-client
 

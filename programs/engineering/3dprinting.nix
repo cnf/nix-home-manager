@@ -2,7 +2,7 @@
 {
   config = lib.mkIf config.my.engineering.enable {
     home.packages = [
-      #unstable.prusa-slicer
+      unstable.prusa-slicer
       unstable.orca-slicer
     ];
      xdg.mimeApps.defaultApplications = {

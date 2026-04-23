@@ -17,6 +17,7 @@ let
       psmisc
       #progress
       usbguard
+      unstable.my-waycon
     ];
     buildInputs = [ pkgs.makeWrapper ];
     postBuild = ''
@@ -61,15 +62,16 @@ in
           "mpris"
           #"custom/media"
           "pulseaudio"
-          "pulseaudio/slider"
+          #"pulseaudio/slider"
           #"upower"
-          "battery"
           "custom/tailscale"
+          "custom/connectivity"
           #"network"
           #"bluetooth"
           #"network#vpn"
 
           "tray"
+          "battery"
           "custom/hyprlock"
 
           "clock"
@@ -242,6 +244,7 @@ in
               headphone = "󰋋 ";
               headphone-muted = "󰟎 ";
               headset = " ";
+              hands-free = " ";
               headset-muted = "󰟎 ";
               hdmi = "󰡁";
               hifi = "󰴸 ";
@@ -249,7 +252,6 @@ in
               #speaker = ["" "" "" " " " "];
               speaker = ["󰕿" "󰖀" "󰖀" "󰕾" "󰕾"];
               speaker-muted = " "; #"󰝟 "; #"󰖁 ";
-              hands-free = " ";
               phone = "";
               portable = "";
               car = "";
@@ -257,9 +259,9 @@ in
               default-muted = " ";
           };
           tooltip-format = "{icon} {volume:3}% {desc}\n{format_source} {source_volume:3}% {source_desc}";
-          on-click = "pavucontrol";
-          on-click-right = "rofi-pulse-select sink";
-          on-click-middle = "rofi-pulse-select source";
+          #on-click = "pavucontrol";
+          on-click-right = "hyprpwcenter";
+          on-click-middle = "pavucontrol";
           reverse-scrolling = true;
         };
         bluetooth = {
@@ -376,6 +378,18 @@ in
           tooltip-format-plugged = "Plugged in {power:.1f}W";
           # on-click = "2";
         };
+        "custom/connectivity" = {
+          format = "{icon}";
+          exec = "${unstable.my-waycon}/bin/waycon";
+          return-type = "json";
+          tooltip = true;
+          interval = 3;
+          format-icons = {
+            connected = " ";
+            limited = "󰜚";
+            disconnected = " ";
+          };
+        };
         "network" = {
           # interface = "wlp1s0";
           # format = "{ifname}";
@@ -422,12 +436,12 @@ in
           menu = "on-click";
           menu-file = "$HOME/.config/waybar/power_menu.xml";
           menu-actions = {
-            shutdown = "systemctl poweroff";
-            reboot = "systemctl reboot";
+            shutdown = "hyprctl dispatch exec hyprshutdown -t 'Shutting down...' --post-cmd 'systemctl poweroff'";
+            reboot = "hyprctl dispatch exec hyprshutdown -t 'Rebooting...' --post-cmd 'systemctl reboot'";
             suspend = "systemctl suspend";
             hibernate = "systemctl hibernate";
-            logout = "hyprctl dispatch exit";
-            lock = "loginctl lock-sessions";
+            logout = "hyprctl dispatch exec hyprshutdown"; #hyprctl dispatch exit";
+            lock = "loginctl lock-session";
           };
         };
         "custom/media" = {
@@ -469,7 +483,7 @@ in
         "custom/agenda" = {
           format = "{}";
           #exec = "env GCALCLI_DEFAULT_CALENDAR=Wassup nextmeeting --max-title-length 30 --waybar";
-          exec = "nextmeeting --max-title-length 30 --waybar --waybar-show-all-day-meeting --format='{when} ' --tooltip-format='{when} - {title}' --today-only";
+          exec = "nextmeeting --max-title-length 30 --waybar --waybar-show-all-day-meeting --format='{when} ' --no-meeting-text='' --tooltip-format='{when} - {title}' --today-only";
           on-click = "env GCALCLI_DEFAULT_CALENDAR=Wassup nextmeeting --open-meet-url";
           #on-click-right = "kitty -- /bin/bash -c \"batz;echo;cal -3;echo;nextmeeting;read;\";";
           interval = 59;
@@ -495,6 +509,7 @@ in
           format-icons = {
             disconnected = "󱔕";
             connected = "󰴼";
+            exiting = "󰴼";
             disabled = "󰌸";
             connecting = "󰴽";
             disconnecting = "󱔕";
@@ -508,6 +523,9 @@ in
             toggle = "exec ${app}/bin/waybar-tailscale --toggle";
             settings = "ktailctl &";
             hostname = "exec ${app}/bin/waybar-tailscale --hostname";
+            ipv4 = "exec ${app}/bin/waybar-tailscale --ipv4";
+            ipv6 = "exec ${app}/bin/waybar-tailscale --ipv6";
+            exiting = "exec ${app}/bin/waybar-tailscale --exiting";
           };
 
         };
