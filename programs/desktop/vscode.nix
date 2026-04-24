@@ -1,4 +1,4 @@
-{ pkgs, unstable, lib, config, inputs, ... }:
+{ pkgs, unstable, lib, config, inputs, writeShellScript, ... }:
 let
   #vscode-extensions = inputs.nix-vscode-extensions.extensions.${pkgs.stdenv.hostPlatform.system};
   FHSPackagesList = (ps: with ps; [ 
@@ -66,7 +66,7 @@ in
         editorconfig.editorconfig
         #golang.go
         gruntfuggly.todo-tree
-        mkhl.direnv
+        #mkhl.direnv
         streetsidesoftware.code-spell-checker
         #platformio.platformio-ide
         
@@ -155,6 +155,7 @@ in
         "github.copilot.nextEditSuggestions.allowWhitespaceOnlyChanges" = false;
         "github.copilot.chat.virtualTools.threshold" = 64;
         "chat.checkpoints.showFileChanges" = true;
+        "chat.mcp.gallery.enabled" = true;
 
         "debug.toolBarLocation" = "docked";
         "problems.showCurrentInStatus" = false;
@@ -402,6 +403,9 @@ in
       # platformio, esp-idf, etc
       espressif
     '';
+    home.packages = with pkgs; [
+      (writeShellScriptBin "mcp-uuidgen" (builtins.readFile ./mcp/mcp-uuidgen))
+    ];
     #home.packages = with pkgs; [
       # nixd # in devel/default.nix
       # nixfmt # in devel/default.nix

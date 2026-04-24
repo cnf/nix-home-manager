@@ -38,7 +38,7 @@
       theme = "rofi.rasi";
       #font = "JetBrainsMono Nerd Font";
       #font = "Lekton Nerd Font";
-      font = "sans-serif 12";
+      font = "sans-serif 15";
       extraConfig = {
         sidebar-mode = true;
         show-icons = true;

@@ -22,7 +22,13 @@
       pulseview
       #unstable.my-rustymeter
 
+
+      dsview
+
       saleae-logic-2
+      #unstable.saleae-logic
+      #unstable.my-ngscopeclient
+      unstable.scopehal-apps
     ];
 
     xdg.desktopEntries."org.sigrok.PulseView" = {

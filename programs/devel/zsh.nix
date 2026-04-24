@@ -151,7 +151,7 @@
 
         # kitty ssh fix
         #[[ "$TERM" == "xterm-kitty" ]] && alias ssh="TERM=xterm-256color ssh" 
-        [[ "$TERM" == "xterm-kitty" ]] && alias ssh="kitten ssh" 
+        #[[ "$TERM" == "xterm-kitty" ]] && alias ssh="kitten ssh" 
 
         #alias ssh="assh wrapper ssh --"
 

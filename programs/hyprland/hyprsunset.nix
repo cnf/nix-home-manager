@@ -2,9 +2,9 @@
 {
   config = lib.mkIf config.my.hyprland.enable {
     home.packages = [
-      #hyprsunset
-      inputs.hyprsunset.packages.${pkgs.stdenv.hostPlatform.system}.default
-      #pkgs.gammastep
+      pkgs.hyprsunset
+      #inputs.hyprsunset.packages.${pkgs.stdenv.hostPlatform.system}.default
+      pkgs.gammastep
     ];
 
     systemd.user.services.hyprsunset = {

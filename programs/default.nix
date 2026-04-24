@@ -20,8 +20,10 @@
     assh
     ncdu
     usbtop
+    net-tools
 
     dig
     mtr
+    zip
   ];
 }

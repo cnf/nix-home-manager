@@ -97,7 +97,8 @@ in
   };
   config = lib.mkIf (config.my.engineering.enable && config.my.engineering.kicad.enable) {
     home.packages = [
-      kicad-fixed
+      #kicad-fixed
+      (unstable.kicad.override {compressStep = false; addons = with unstable.kicadAddons; [ ];})
     ];
   };
   # add https://raw.githubusercontent.com/kevontheweb/tokyo-night-kicad-theme/refs/heads/main/colors/tokyonight.json

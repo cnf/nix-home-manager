@@ -53,7 +53,7 @@
     };
     home.packages = with pkgs; [
       unstable.appimage-run
-      pinentry-rofi
+      #pinentry-rofi
       # audio
       pavucontrol
       pulseaudio

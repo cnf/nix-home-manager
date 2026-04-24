@@ -25,7 +25,7 @@
       dump1090-fa
       multimon-ng
       csdr
-      unstable.gnss-sdr # FIXME: undo
+      #unstable.gnss-sdr # FIXME: undo
 
       iw
     ];

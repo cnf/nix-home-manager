@@ -8,9 +8,12 @@ get_tailscale_status() {
     if status_json=$(tailscale status --json 2>/dev/null); then
         local backend_state=$(echo "$status_json" | jq -r '.BackendState // "NoState"')
         local connection_state=$(echo "$status_json" | jq -r '.Self.Online')
+        local exit_node=$(echo "$status_json"|jq -r '.ExitNodeStatus.Online'|tr -d "[:space:]")
         case "$backend_state" in
             "Running")
-                if [[ "$connection_state" == "true" ]]; then
+                if [[ "$exit_node" == "true" ]]; then
+                    echo "exiting"
+                elif [[ "$connection_state" == "true" ]]; then
                     echo "connected"
                 else
                     echo "disconnected"
@@ -45,6 +48,7 @@ get_tooltip() {
         echo "<b><span foreground='#AA0000'>NOT CONNECTED</span></b>"
         return
     fi
+
     
     # Get current hostname
     local hostname=$(echo "$status_json" | jq -r '.Self.HostName // "Unknown"')
@@ -52,14 +56,21 @@ get_tooltip() {
     # Build tooltip with hostname and peers using Pango markup
     local tooltip="<b>Hostname: <span foreground='#87CEEB'>$hostname</span></b>\n"
 
+    local exit_node=$(echo "$status_json"|jq -r '.ExitNodeStatus.Online'|tr -d "[:space:]")
+    if [[ $exit_node == "true" ]]; then
+        tooltip+="<b>Exit Node <span foreground='#FF6700'>Active</span>.</b>\n"
+    fi
+
     tooltip+="\nPeers:"
     
     # Get peers and their status
-    local peers=$(echo "$status_json" | jq -r '.Peer // {} | to_entries[] | "\(.value.HostName):\(.value.Online)"' | sort)
+    local peers=$(echo "$status_json" | jq -r '.Peer // {} | to_entries[] | "\(.value.HostName):\(.value.Online):\(.value.ExitNode)"' | sort)
     
     if [[ -n "$peers" ]]; then
-        while IFS=: read -r peer_name peer_online; do
-            if [[ "$peer_online" == "true" ]]; then
+        while IFS=: read -r peer_name peer_online peer_exit; do
+            if [[ "$peer_online" == "true" && "$peer_exit" == "true" ]]; then
+                tooltip+="\n<span foreground='#FF6700'>●</span> $peer_name"
+            elif [[ "$peer_online" == "true" ]]; then
                 tooltip+="\n<span foreground='#00ff00'>●</span> $peer_name"
             else
                 tooltip+="\n<span foreground='#666666'>●</span> <span foreground='#888888'>$peer_name</span>"
@@ -79,6 +90,10 @@ show_status() {
     local tooltip=""
     
     case $status in
+        "exiting")
+            alt="exiting"
+            tooltip=$(get_tooltip)
+            ;;
         "connected")
             #text=""
             alt="connected"
@@ -136,6 +151,20 @@ get_hostname() {
     fi
 }
 
+get_ipv4() {
+    local ipv4
+    ipv4=$(tailscale status --json|jq -r '.TailscaleIPs[0]')
+    echo $ipv4|wl-copy
+    notify-send -a tailscale -i copy -e $ipv4 "IP v4 copied to clipboard."
+}
+
+get_ipv6() {
+    local ipv6
+    ipv6=$(tailscale status --json|jq -r '.TailscaleIPs[1]')
+    echo $ipv6|wl-copy
+    notify-send -a tailscale -i copy -e $ipv6 "IP v6 copied to clipboard."
+}
+
 case "$1" in
     --status)
         # Check if we're in a transition state
@@ -182,11 +211,25 @@ case "$1" in
             show_connecting
         fi
         ;;
+    --exiting)
+        current_status=$(get_tailscale_status)
+        if [[ "$current_status" == "exiting" ]]; then
+            tailscale set --exit-node=
+        else
+            tailscale set --exit-node=cerberus
+        fi
+        ;;
     --hostname)
         get_hostname
         ;;
+    --ipv4)
+        get_ipv4
+        ;;
+    --ipv6)
+        get_ipv6
+        ;;
     *)
-        echo "Usage: $0 {--status|--toggle}"
+        echo "Usage: $0 {--status|--toggle|--exiting|--hostname|--ipv4|--ipv6}"
         exit 1
         ;;
 esac

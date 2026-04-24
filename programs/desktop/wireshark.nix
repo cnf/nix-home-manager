@@ -5,8 +5,8 @@
   };
   config = lib.mkIf config.my.wireshark.enable {
     home.packages = [
-      unstable.wireshark-qt
-      unstable.obsidian
+      unstable.wireshark
+      #unstable.obsidian
     ];
   };
 }

@@ -13,37 +13,41 @@
       url = "github:nix-community/nix-vscode-extensions";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    hyprland = {
-      url = "github:hyprwm/Hyprland";
+    hyprshutdown = {
+      url = "github:hyprwm/hyprshutdown";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    hyprpolkitagent = {
-      url = "github:hyprwm/hyprpolkitagent";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    hyprsunset = {
-      url = "github:hyprwm/hyprsunset";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    #hyprland = {
+    #  url = "github:hyprwm/Hyprland";
+    #  inputs.nixpkgs.follows = "nixpkgs";
+    #};
+    #hyprpolkitagent = {
+    #  url = "github:hyprwm/hyprpolkitagent";
+    #  inputs.nixpkgs.follows = "nixpkgs";
+    #};
+    #hyprsunset = {
+    #  url = "github:hyprwm/hyprsunset";
+    #  inputs.nixpkgs.follows = "nixpkgs";
+    #};
     hyprshell = {
       url = "github:H3rmt/hyprshell?ref=hyprshell-release";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    hyprspace = {
-      url = "github:KZDKM/Hyprspace";
-      inputs.hyprland.follows = "hyprland";
-    };
+    #hyprspace = {
+    #  url = "github:KZDKM/Hyprspace";
+    #  inputs.hyprland.follows = "hyprland";
+    #};
     #hyprland-plugins = {
     #  url = "github:hyprwm/hyprland-plugins";
     #};
-    hyprland-contrib = {
-      url = "github:hyprwm/contrib";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    hyprsysteminfo = {
-      url = "github:hyprwm/hyprsysteminfo";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    #hyprland-contrib = {
+    #  url = "github:hyprwm/contrib";
+    #  inputs.nixpkgs.follows = "nixpkgs";
+    #};
+    #hyprsysteminfo = {
+    #  url = "github:hyprwm/hyprsysteminfo";
+    #  inputs.nixpkgs.follows = "nixpkgs";
+    #};
     hypr-binds = {
       url = "github:gvolpe/hypr-binds";
       inputs.nixpkgs.follows = "nixpkgs";
