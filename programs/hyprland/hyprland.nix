@@ -67,6 +67,9 @@ in
       grimblast
       swappy
 
+      nwg-drawer
+      wvkbd
+
       # hyprland-monitor-attached
 
       emojipick
@@ -364,17 +367,18 @@ in
       };
       gesture = [
         "3, horizontal, workspace"
-        #"3, down, dispatcher, overview:open"
+        "3, down, dispatcher, exec nwg-drawer"
         #"3, up, dispatcher, overview:close"
         #"3, down, mod: ALT, close"
         #"3, up, mod: SUPER, scale: 1.5, fullscreen"
         #"3, left, scale: 1.5, float"
       ];
-      #gestures = {
+      gestures = {
+        workspace_swipe_touch = true;
       #  workspace_swipe = true;
       #  workspace_swipe_create_new = true;
       #  #workspace_swipe_use_r = true;
-      #};
+      };
       decoration = {
         rounding=9;
         shadow = {
@@ -655,6 +659,16 @@ in
         # keybinds further down will be global again...
 
         plugin {
+          touch_gestures {
+            resize_on_border_long_press = true
+            edge_margin = 50
+            sensitivity = 4.0
+            hyprgrass-bind = , edge:u:d, exec, nwg-drawer
+            hyprgrass-bind = , edge:d:u, exec, wvkbd-mobintl
+            hyprgrass-bind = , edge:l:d, exec, pactl set-sink-volume @DEFAULT_SINK@ -4%
+            hyprgrass-bind = , edge:l:u, exec, pactl set-sink-volume @DEFAULT_SINK@ +4%
+          }
+
           overview {
             affectStrut = false
             autoDrag = true

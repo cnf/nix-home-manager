@@ -20,6 +20,7 @@
       unstable.sigrok-firmware-fx2lafw
       smuview
       pulseview
+      #unstable.my-rustymeter
 
       saleae-logic-2
     ];
