@@ -1,9 +1,10 @@
-{ lib, config, ... }:
+{ lib, config, unstable, ... }:
 {
   config = lib.mkIf config.my.hyprland.enable {
     programs.hyprlock = {
       enable = true;
       sourceFirst = true;
+      package = unstable.hyprlock;
   
       settings = {
         "$primary" = "rgb(ff6700)";

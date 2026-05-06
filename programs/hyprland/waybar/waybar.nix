@@ -436,8 +436,8 @@ in
           menu = "on-click";
           menu-file = "$HOME/.config/waybar/power_menu.xml";
           menu-actions = {
-            shutdown = "hyprctl dispatch exec hyprshutdown -t 'Shutting down...' --post-cmd 'systemctl poweroff'";
-            reboot = "hyprctl dispatch exec hyprshutdown -t 'Rebooting...' --post-cmd 'systemctl reboot'";
+            shutdown = "hyprshutdown -t 'Shutting down...' --post-cmd `systemctl poweroff`";
+            reboot = "hyprshutdown -t 'Rebooting...' --post-cmd `systemctl reboot`";
             suspend = "systemctl suspend";
             hibernate = "systemctl hibernate";
             logout = "hyprctl dispatch exec hyprshutdown"; #hyprctl dispatch exit";

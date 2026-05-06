@@ -61,7 +61,8 @@ in
 
         #1Password.op-vscode
         #vscode-extensions.vscode-marketplace.cschlosser.doxdocgen
-        pkgs.vscode-marketplace.eamodio.gitlens
+        #pkgs.vscode-marketplace.eamodio.gitlens
+        eamodio.gitlens
         #vscode-extensions.vscode-marketplace.tailscale.vscode-tailscale
         editorconfig.editorconfig
         #golang.go

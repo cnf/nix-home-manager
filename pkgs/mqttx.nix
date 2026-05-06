@@ -34,7 +34,7 @@ let
 in
 appimageTools.wrapType2 {
   inherit pname version src;
-  extraPkgs = pkgs: with pkgs; [ xorg.libxshmfence];
+  extraPkgs = pkgs: with pkgs; [ libxshmfence];
 
   extraInstallCommands = ''
     install -m 444 -D ${appimageContents}/${pname}.desktop $out/share/applications/${pname}.desktop

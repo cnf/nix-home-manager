@@ -1,27 +1,21 @@
 {
+  pkgs,
   lib,
-  mkDerivation,
+  stdenv,
   fetchFromGitHub,
-  gnuradio,
-  cmake,
-  pkg-config,
- # logLib,
- # mpir,
- # gmp,
- # boost,
-  #python,
-  gnuradioOlder,
+  #cmake,
+  #pkg-config,
 }:
 
-mkDerivation {
+stdenv.mkDerivation rec {
   pname = "ngscopeclient";
-  version = "";
+  version = "0.1.1";
 
   src = fetchFromGitHub {
     owner = "ngscopeclient";
     repo = "scopehal-apps";
-    rev = "0.1.1";
-    hash = "";
+    rev = "v${version}";
+    hash = "sha256-YgYjlxTrQyF3wwtcmj4CI1+YxDwiWy5PgHo/RXyw+xU=";
   };
   #disabled = gnuradioOlder "3.10";
 
@@ -30,9 +24,22 @@ mkDerivation {
   #  "dev"
   #];
 
-  nativeBuildInputs = [
+  nativeBuildInputs = with pkgs;[
     cmake
+    yaml-cpp
     pkg-config
+    libsigcxx
+    gtk3
+    glfw
+    catch2
+    hidapi
+
+    spirv-tools
+    glslang
+    vulkan-headers
+    vulkan-loader
+    shaderc
+
   ];
 
   #buildInputs = [
@@ -47,6 +54,11 @@ mkDerivation {
   #];
 
   cmakeFlags = [
+    "NGSCOPECLIENT_VERSION_LONG=v${version}"
+    "NGSCOPECLIENT_PACKAGE_VERSION=v${version}"
+    "CMAKE_BUILD_TYPE=Release"
+    "BUILD_TESTING=OFF"
+    "CMAKE_MODULE_PATH=cmake"
     #(lib.cmakeBool "ENABLE_PYTHON" (gnuradio.hasFeature "python-support"))
   ];
 
