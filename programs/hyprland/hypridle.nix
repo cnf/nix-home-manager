@@ -10,7 +10,7 @@
       enable = true;
       settings = {
         general = {
-          lock_cmd = "pidof hyprlock || hyprlock";      # avoid starting multiple hyprlock instances.
+          #lock_cmd = "pidof hyprlock || hyprlock";      # avoid starting multiple hyprlock instances.
           unlock_cmd = "pkill -USR1 hyprlock";          # same as above, but unlock
           before_sleep_cmd = "loginctl lock-session";     # command ran before sleep
           after_sleep_cmd = "hyprctl dispatch dpms on";  # command ran after sleep 

@@ -28,6 +28,9 @@
       #unstable.gnss-sdr # FIXME: undo
 
       iw
+
+
+      unstable.my-adsb-rx
     ];
 
     xdg.desktopEntries.dump1090 = {

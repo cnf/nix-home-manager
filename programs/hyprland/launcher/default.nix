@@ -45,9 +45,9 @@
         #icon-theme = "candy-icons";
         #icon-theme = "breeze-dark";
         icon-theme = "kora";
-        combi-modes = "drun,calc,ssh";
+        combi-modi = "drun,filebrowser";
         display-drun = " ";
-        display-combi = " ";
+        display-combi = "󰎂 ";
         display-calc = " ";
         display-ssh = "󰣀 ";
         display-games = "󰊗 ";
@@ -56,14 +56,15 @@
         display-filebrowser = " ";
         calc-error-color = "#0098ff";
         drun-show-actions = true;
-        modes = [
-           "drun"
-           "calc"
-           "ssh"
-           "emoji"
-           "games"
-        ];
       };
+      modes = [
+         "drun"
+         "calc"
+         "filebrowser"
+         "games"
+         "ssh"
+         "emoji"
+      ];
     };
     #xdg.configFile."rofi/rofi.rasi".source = ./rofi.rasi;
     xdg.configFile."rofi/rofi.rasi".source = ./spotlight.rasi;

@@ -88,7 +88,11 @@
       };
     in {
       nix.nixPath = ["nixpkgs=${inputs.nixpkgs}"]; # for nixd
-      devShells.x86_64-linux.default = pkgs.mkShell {};
+      devShells.x86_64-linux.default = pkgs.mkShell {
+        buildInputs = [
+          (import ./overlays/default.nix)
+        ];
+      };
       homeConfigurations = {
         "cnf@hydra" = home-manager.lib.homeManagerConfiguration {
           #system = "x86_64-linux";

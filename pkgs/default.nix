@@ -14,4 +14,5 @@ self: super: {
   my-hydratool = super.libsForQt5.callPackage ./hydratool.nix {};
   my-waycon = super.callPackage ./waycon.nix {};
   my-ngscopeclient = super.callPackage ./ngscopeclient.nix {};
+  my-adsb-rx = super.callPackage ./adsb-rx.nix {};
 }

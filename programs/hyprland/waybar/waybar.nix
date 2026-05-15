@@ -379,16 +379,16 @@ in
           # on-click = "2";
         };
         "custom/connectivity" = {
-          format = "{icon}";
+          format = "{text}";
           exec = "${unstable.my-waycon}/bin/waycon";
           return-type = "json";
           tooltip = true;
           interval = 3;
-          format-icons = {
-            connected = " ";
-            limited = "󰜚";
-            disconnected = " ";
-          };
+          #format-icons = {
+          #  connected = " ";
+          #  limited = "󰜚";
+          #  disconnected = " ";
+          #};
         };
         "network" = {
           # interface = "wlp1s0";

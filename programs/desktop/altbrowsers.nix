@@ -31,6 +31,14 @@
           order = [ "ddg" "bing" ];
         };
       };
+      profiles.sunshine = {
+        id = 1;
+        name = "sunshine";
+        search = {
+          default = "bing";
+          order = [ "ddg" "bing" ];
+        };
+      };
     };
   };
 }

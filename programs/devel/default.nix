@@ -27,7 +27,8 @@
 
     sqlite-interactive
 
-    unstable.rpi-imager
+    rpi-imager
+    rpiboot
 
     linuxPackages.usbip
     usbip-ssh

@@ -51,10 +51,13 @@ get_tooltip() {
 
     
     # Get current hostname
-    local hostname=$(echo "$status_json" | jq -r '.Self.HostName // "Unknown"')
+    local hostname=$(echo "$status_json" | jq -r '.Self.DNSName // "Unknown"')
+
+    local ip_address=$(echo "$status_json" | jq -r '.TailscaleIPs[0]' )
     
     # Build tooltip with hostname and peers using Pango markup
-    local tooltip="<b>Hostname: <span foreground='#87CEEB'>$hostname</span></b>\n"
+    local tooltip="<b><span foreground='#87CEEB'>$hostname</span></b>\n"
+    tooltip+="<span>$ip_address</span>\n"
 
     local exit_node=$(echo "$status_json"|jq -r '.ExitNodeStatus.Online'|tr -d "[:space:]")
     if [[ $exit_node == "true" ]]; then

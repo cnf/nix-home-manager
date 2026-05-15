@@ -243,6 +243,7 @@ in
 
         ## Various Launchers
         "$mod, SPACE, App Launcher Menu, exec, rofi -show drun # Show the graphical app launcher"
+        "$shiftmod, SPACE, App launcher drawer, exec, nwg-drawer"
         "$mod, Return, Kitty Terminal, exec, kitty"
         "$mod, BackSpace, Nautilus File Browser, exec, nautilus"
         #"$mod, K, Kitty Terminal, exec, kitty"
