@@ -7,6 +7,7 @@
 
     home.packages = [
       unstable.spotify
+      unstable.my-sendspin
     ];
     #programs.firejail.wrappedBinaries = {
     #  plexamp = {

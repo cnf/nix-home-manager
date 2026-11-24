@@ -99,6 +99,29 @@
         "/local/"
       ];
     };
+    xdg.configFile."prek/global-hooks.toml" =  {
+      enable = true;
+      executable = false;
+      text = ''
+        [[repos]]
+        #repo = "https://github.com/gitleaks/gitleaks"
+        repo = "local"
+        #rev = "v8.24.2"
+        hooks = [{ 
+          id = "gitleaks",
+          name = "gitleaks",
+          entry = "${lib.getExe pkgs.gitleaks} git --pre-commit --redact --staged --verbose",
+          language = "system"
+        }]
+
+        #[[repos]]
+        #repo = "https://github.com/pre-commit/pre-commit-hooks"  # Enables fast path
+        #rev = "v4.5.0"  # Used for the manifest and fallback, not fast-path detection
+        #hooks = [
+        #    { id = "trailing-whitespace" },
+        #]
+    '';
+    };
     xdg.configFile."git/hooks/pre-commit" = {
       enable = true;
       executable = true;
