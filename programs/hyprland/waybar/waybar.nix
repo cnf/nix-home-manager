@@ -35,7 +35,7 @@ in
       unstable.my-nextmeeting
     ];
     programs.waybar.systemd.enable = true;
-    programs.waybar.systemd.target = "hyprland-session.target";
+    programs.waybar.systemd.targets = ["hyprland-session.target"];
     programs.waybar.enable = true;
     programs.waybar.settings = {
       mainBar = {
@@ -89,16 +89,17 @@ in
           active-only = false;
           all-outputs = false;
           justify = "center";
-          format = "{name}"; # we use {name} together with hyprland-autorename-workspaces
-          #format = "{icon}";
+          #format = "{name}"; # we use {name} together with hyprland-autorename-workspaces
+          format = "{icon}";
           format-icons = {
-            empty = " ";
-            default = " ";
-            urgent = " ";
-            persistent = " ";
-            special = "󰺕 ";
+            default = "";
+            empty = "";
+            active = "";
+            urgent = "";
+            persistent = "";
+            special = "󰺕";
           };
-          on-click = "activate";
+          #on-click = "activate";
           #persistent-workspaces = {
           #  "*" = 4;
           #};
@@ -110,11 +111,13 @@ in
           on-click = "hyprctl dispatch submap reset";
         };
         "hyprland/window" = {
-          format = "{}";
+          format = "{title}";
           icon = true;
           icon-size = 16;
           rewrite = {
             "(.*) — Mozilla Firefox" = "$1"; # ";
+            "(.*) — LibreWolf" = "$1"; # ";
+            "(.*) — LibreWolf Private Browsing" = "󱀣 $1";
             "(.*) - Visual Studio Code" = "$1"; # ";
             "(.*) - Discord" = "$1"; # ";
             "(.*) - Obsidian v.*" = "$1";
@@ -143,6 +146,10 @@ in
             tooltip= true;
             tooltip-icon-size= 24;
           }
+          {
+	    type = "location";
+	    #icon-name": "location-services-active-symbolic"
+	  }
           #{
           #  type= "audio-out";
           #  tooltip= true;

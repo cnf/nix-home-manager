@@ -29,6 +29,7 @@
         visual_bell_duration = "0.4 ease-in-out linear";
         window_padding_width = 5;
         scrollback_pager_history_size = 250;
+        enabled_layouts = "tall:bias=50,fat,splits";
       };
       keybindings = {
         "ctrl+c" = "copy_or_interrupt"; 

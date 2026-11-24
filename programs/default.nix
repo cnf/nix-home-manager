@@ -7,6 +7,7 @@
     ./engineering
     ./funshoot
     ./hyprland
+    ./debug
     ./sdr
     ./tryouts.nix
     ./helpers.nix
@@ -18,12 +19,14 @@
   };
   home.packages = with pkgs; [
     assh
-    ncdu
+    ncdu # cli disk exporer
     usbtop
     net-tools
 
     dig
     mtr
     zip
+    pv # pipe viewer
+    ripgrep
   ];
 }

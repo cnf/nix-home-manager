@@ -47,7 +47,7 @@
       unstable.my-cistercian
       #nerdfonts
       nerd-font-patcher
-      unstable.helvetica-neue-lt-std
+      #unstable.helvetica-neue-lt-std
    ];
  };
 }

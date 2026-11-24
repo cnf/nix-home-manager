@@ -19,211 +19,176 @@
       };
     };
     xdg.configFile."hyprland-autoname-workspaces/config.toml".text = ''
-      version = "1.1.15"
-      [format]
-      dedup = true
-      dedup_inactive_fullscreen = false
-      delim = " "
-      workspace = "{clients} "
-      workspace_empty = "<span font_weight='heavy'>{name}</span>"
-      client = "{icon} " 
-      client_active = "<span color='#FF8514'>{icon}</span>"
-      # These wrap either client or client_active
-      client_dup = "<span>{icon}{counter_sup}</span>"
-      client_fullscreen = "<span>〔{icon}〕</span>"
+        version = "1.2.0"
 
-      #client_dup_fullscreen = "[{icon}]{delim}{icon}{counter_unfocused_sup}"
+        [format]
+        dedup = true
+        dedup_inactive_fullscreen = false
+        delim = " " # NARROW NO-BREAK SPACE
+        workspace = "{clients} "
+        workspace_empty = "<span font_weight='heavy'>{name}</span>"
+        client = "{icon} "
+        client_fullscreen = "<span>〔{icon}〕</span>"
+        client_active = "<span color='#FF8514'>{icon}</span>"
+        client_dup = "<span>{icon}{counter_sup}</span>"
+        client_dup_active = "*{icon}*{delim}{icon}{counter_unfocused_sup}"
+        client_dup_fullscreen = "[{icon}]{delim}{icon}{counter_unfocused_sup}"
 
-      [class_active]
-      #DEFAULT="<span color='#FF8514'>A{icon}</span>"
-      #"DDDEFAULT": ""
-      "(?i)opera" = "<span foreground='#FF2338'></span>"
-      spotify = "<span foreground='#1ED760'></span>"
-      mpv = "<span foreground='#520053'></span>"
-      "(?i)plexamp" = "<span foreground='#EBAF00'>󰚺</span>"
-      "(?i)freecad" = "<span foreground='#ff585d'></span>"
-      "(?i)zotero" = "<span foreground='#DB2C3A'>󰬡</span>"
+        [class]
+        DEFAULT = "{class}: {title}"
+        mpv = ""
+        mailspring = "󰴃"
+        PrusaSlicer = ""
+        "org.gnome.Firmware" = ""
+        "(?i)gitkraken" = " "
+        "com/serial-studio.*" = "󰙜"
+        "org.gnome.TextEditor" = ""
+        "(?i)code" = "󰨞"
+        "(?i)librewolf" = ""
+        Signal = ""
+        "fusion360.exe" = "󰻬"
+        wine = "󰍲 "
+        nm-connection-editor = ""
+        dolphin = ""
+        OpenSCAD = ""
+        "io.missioncenter.MissionCenter" = ""
+        "org.gnome.Logs" = "󱂅"
+        vlc = "󰕼"
+        bottles = ""
+        "(?i)zotero" = "󰬡"
+        gnome-disks = "󰋊"
+        "org.openscad." = ""
+        "org.gnome.World.PikaBackup" = "󰁯"
+        "(?i).*kooha" = ""
+        DEFAULT = " "
+        udiskie = ""
+        obsidian = ""
+        pavucontrol = ""
+        "(?i)freecad" = ""
+        opensnitch-ui = "󰞵"
+        "org.gnome.Calendar" = ""
+        chromium-browser = ""
+        cloud-drive-ui = ""
+        discord = " "
+        "org.gnome.font-viewer" = ""
+        qbittorrent = ""
+        gcr-prompter = ""
+        "org.gnome.Nautilus" = "󰪶"
+        "org.gnome.seahorse.Application" = "󱕴"
+        pika-backup = "󰁯"
+        "(?i)firefox" = "󰈹"
+        "explorer.exe" = ""
+        spotify = ""
+        wire = "󰁀"
+        wireshark-gtk = ""
+        "org.gnome.SystemMonitor" = ""
+        ".*transmission.*" = ""
+        evince = ""
+        "org.gnome.Settings" = ""
+        calibre-gui = ""
+        "org.raspberrypi." = ""
+        geary = "󰴃"
+        wlfreerdp = "󰢹"
+        "org.gnome.baobab" = ""
+        "org.gnome.Calculator" = ""
+        1Password = "󰝳"
+        xdg-desktop-portal-gtk = ""
+        KTailctl = "󱗼"
+        "se.grenangen." = "󱗼"
+        "(?i)plexamp" = "󰚺"
+        "(?i)opera" = ""
+        thunderbird = ""
+        "org.gnome.FileRoller" = ""
+        "org.gnome.Loupe" = "󰥸"
+        "org.gnome.Software" = ""
+        "org.gnome.NautilusPreviewer" = ""
+        simple-scan = "󰚫"
+        "org.gnome.Snapshot" = ""
+        "org.gnome.dspy" = "󰘘"
+        kicad = ""
+        whatsapp-desktop = ""
+        slack = ""
+        "Podman.*" = " "
+        Varia = ""
+        gucharmap = ""
+        "org.gnome.Boxes" = ""
+        ".blueman-manager-wrapped" = "󰂳"
+        "org.freedesktop.Bustle" = "󰘘"
+        "(?i)evolution.*" = "󰇯"
+        "org.gnome.Maps" = " "
+        "org.gnome.NetworkDisplays" = "󰀟"
+        okular = ""
+        steam = ""
+        waybar = ""
+        "(?i)kitty" = " "
+        "dev.deedles.Trayscale" = "󰖂"
+        eezstudio = "󰔃"
+        telegramdesktop = ""
+        gwenview = ""
 
-      [class]
-      DEFAULT = " "
-      "(?i)firefox" = "󰈹"
-      "(?i)librewolf" = ""
-      "(?i)opera" = ""
-      "(?i)kitty" = " "
-      "(?i)code" = "󰨞"
-      "(?i)freecad" = ""
-      "org.openscad." = ""
-      OpenSCAD = ""
-      1Password = "󰝳"
-      #""
-      #" "
-      vlc = "󰕼"
-      mpv = ""
-      kicad = ""
-      obsidian = ""
-      nm-connection-editor = ""
-      pavucontrol = ""
-      steam = ""
-      spotify = ""
-      PrusaSlicer = ""
-      qbittorrent = ""
-      ".*transmission.*" = ""
-      Varia = ""
-      waybar = ""
-      calibre-gui = ""
-      "(?i)plexamp" = "󰚺"
-      wire = "󰁀"
-      wireshark-gtk = ""
-      wlfreerdp = "󰢹"
-      ".blueman-manager-wrapped" = "󰂳"
-      gcr-prompter = "" 
-      "(?i)zotero" = "󰬡" 
-      mailspring = "󰴃"
-      thunderbird = ""
-      opensnitch-ui = "󰞵"
-      "Podman.*" = " "
-      "dev.deedles.Trayscale" = "󰖂"
-      KTailctl = "󱗼"
-      "se.grenangen." = "󱗼"
-      "(?i)gitkraken" = " "
-      "cloud-drive-ui" = ""
-      "io.missioncenter.MissionCenter" = ""
-      "com/serial-studio.*" = "󰙜"
-      "org.raspberrypi." = ""
-      "eezstudio" = "󰔃"
+        [class_active]
+        "(?i)freecad" = "<span foreground='#ff585d'></span>"
+        mpv = "<span foreground='#520053'></span>"
+        "(?i)opera" = "<span foreground='#FF2338'></span>"
+        "(?i)plexamp" = "<span foreground='#EBAF00'>󰚺</span>"
+        spotify = "<span foreground='#1ED760'></span>"
+        "(?i)zotero" = "<span foreground='#DB2C3A'>󰬡</span>"
 
+        [initial_class]
 
-      "org.freedesktop.Bustle" = "󰘘"
-      # Gnome
-      "org.gnome.Boxes" = ""
-      "org.gnome.Calculator" = ""
-      "org.gnome.Calendar" = ""
-      "org.gnome.FileRoller" = ""
-      "org.gnome.Firmware" = ""
-      "org.gnome.Logs" = "󱂅"
-      "org.gnome.Loupe" = "󰥸"
-      "org.gnome.Maps" = " "
-      "org.gnome.Nautilus" = "󰪶"
-      "org.gnome.NautilusPreviewer" = ""
-      "org.gnome.NetworkDisplays" = "󰀟"
-      "org.gnome.Settings" = ""
-      "org.gnome.Snapshot" = ""
-      "org.gnome.Software" = ""
-      "org.gnome.SystemMonitor" = ""
-      "org.gnome.TextEditor" = ""
-      "org.gnome.World.PikaBackup" = "󰁯"
-      "pika-backup" = "󰁯"
-      "org.gnome.baobab" = ""
-      "org.gnome.dspy" = "󰘘"
-      "org.gnome.font-viewer" = ""
-      "org.gnome.seahorse.Application" = "󱕴"
-      simple-scan = "󰚫"
-      gnome-disks = "󰋊"
-      evince = ""
-      geary = "󰴃"
-      "(?i)evolution.*" = "󰇯"
-      "xdg-desktop-portal-gtk" = ""
+        [initial_class_active]
 
-      # chat
-      discord = " "
-      Signal = ""
-      #Signal = "󰻞"
-      telegramdesktop = ""
-      slack = ""
-      whatsapp-desktop = ""
+        [workspaces_name]
+        3 = "𝐈𝐈𝐈"
+        12 = "𝐗𝐈𝐈"
+        10 = "𝐗"
+        5 = "𝐕  "
+        4 = "I𝐕 "
+        11 = "𝐗𝐈"
+        2 = "𝐈𝐈 "
+        9 = "𝐈𝐗"
+        7 = "𝐕𝐈𝐈"
+        1 = "𝐈  "
+        6 = "𝐕𝐈 "
+        8 = "𝐕𝐈𝐈𝐈"
 
-      # KDE
-      dolphin = ""
-      okular = ""
-      gwenview = ""
+        [title_in_class."(xdg-desktop-portal-gtk)"]
+        File = ""
+        Folder = "󰉓"
 
-      # rare
-      udiskie = ""
-      chromium-browser = ""
-      "(?i).*kooha" = ""
-      gucharmap = ""
-      
+        [title_in_class."(xterm|(?i)kitty|alacritty)"]
+        btop = ""
+        nvtop = ""
+        htop = ""
+        "nh " = "󱄅"
+        "(?i)^(n?)vim" = ""
 
-      # Wine
-      bottles = ""
-      wine = "󰍲 " #""
-      "fusion360.exe" = "󰻬"
-      "explorer.exe" = ""
+        [title_in_class_active."(?i)firefox"]
+        gmail = "󰊫"
+        YouTube = "<span color='red'> </span>"
+        GitHub = ""
+        "Home Assistant" = "<span color='#1ABCF2'>󰟐</span>"
+        Google = ""
 
-      #  
+        [title_in_initial_class]
 
-      #[initial_class]
-      #"com.usebottles.bottles" = ""
-      #"(?i)io.github.seadve.kooha" = ""
+        [title_in_initial_class_active]
 
-      #[initial_class_active]
+        [initial_title_in_class]
 
-      [workspaces_name]
-      # 𝐈 𝐕 𝐗 
-      # 🯰 🯱 🯲 🯳 🯴 🯵 🯶 🯷 🯸 🯹
-      #1 = "􀀂􀀃"
-      #2 = "􀀂􀀄"
-      #3 = "􀀂􀀅"
-      #4 = "􀀂􀀆"
-      #5 = "􀀂􀀇"
-      #6 = "􀀂􀀈"
-      #7 = "􀀂􀀉"
-      #8 = "􀀂􀀊"
-      #9 = "􀀂􀀋"
-      #10 = "􀀂􀀌"
-      #11 = "􀀂􀀌􀀃"
-      1 = "𝐈  "
-      2 = "𝐈𝐈 "
-      3 = "𝐈𝐈𝐈"
-      4 = "I𝐕 "
-      5 = "𝐕  "
-      6 = "𝐕𝐈 "
-      7 = "𝐕𝐈𝐈"
-      8 = "𝐕𝐈𝐈𝐈"
-      9 = "𝐈𝐗"
-      10 = "𝐗"
-      11 = "𝐗𝐈"
-      12 = "𝐗𝐈𝐈"
+        [initial_title_in_class_active]
 
-      [title_in_class."(xdg-desktop-portal-gtk)"]
-      "File" = ""
-      "Folder" = "󰉓"
+        [initial_title_in_initial_class]
 
-      [title_in_class."(xterm|(?i)kitty|alacritty)"]
-      "(?i)^(n?)vim" = "" 
-      # ""
-      btop = ""
-      htop = ""
-      nvtop = ""
-      "nh " = "󱄅"
+        [initial_title_in_initial_class_active]
 
-      [title_in_class_active."(?i)firefox"]
-      "YouTube" = "<span color='red'> </span>"
-      #"Amazon" = ""
-      #"DuckDuckGo" = "󰇥"
-      "Google" = ""
-      "gmail" = "󰊫"
-      "Home Assistant" = "<span color='#1ABCF2'>󰟐</span>"
-      "GitHub" = ""
+        [exclude]
+        "(?i)TestApp" = ""
+        "" = "^$"
+        "[Ss]team" = "^(Friends List.*)?$"
+        "(?i)fcitx" = ".*"
+        aProgram = "^$"
 
-      #[title_in_initial_class]
-
-      #[title_in_initial_class_active]
-
-      #[initial_title_in_class]
-
-      #[initial_title_in_class_active]
-
-      #[initial_title_in_initial_class]
-
-      #[initial_title_in_initial_class_active]
-
-      [exclude]
-      "" = "^$"
-      "(?i)fcitx" = ".*"
-      aProgram = "^$"
-      "[Ss]team" = "^(Friends List.*)?$"
-      "(?i)TestApp" = ""
     '';
   };
 }

@@ -16,8 +16,10 @@
     nil
     nixd
     nixfmt
+    devenv
 
     gum
+    glow # cli markdown renderer
 
     httpie
     remarshal

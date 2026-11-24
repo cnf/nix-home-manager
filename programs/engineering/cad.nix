@@ -5,6 +5,7 @@
       #freecad-wayland
       #unstable.freecad-wayland
       #unstable.freecad-weekly
+      unstable.freecad
       openscad
       graphviz
     ];

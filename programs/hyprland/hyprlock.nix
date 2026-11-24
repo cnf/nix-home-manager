@@ -4,7 +4,7 @@
     programs.hyprlock = {
       enable = true;
       sourceFirst = true;
-      package = unstable.hyprlock;
+      #package = unstable.hyprlock;
   
       settings = {
         "$primary" = "rgb(ff6700)";

@@ -5,7 +5,7 @@
   };
   config = lib.mkIf config.my.wine.enable {
     home.packages = [
-      pkgs.wineWowPackages.unstableFull
+      pkgs.wineWow64Packages.unstableFull
       #pkgs.wine
       pkgs.bottles
       pkgs.winetricks

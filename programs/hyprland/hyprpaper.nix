@@ -7,14 +7,17 @@
       settings = {
         ipc = "on";
         splash = false;
-        splash_offset = 2.0;
+        splash_offset = 2;
 
         preload = [ 
           "${config.home.homeDirectory}/.wallpaper.jpg"
         ];
 
         wallpaper = [
-          ", ${config.home.homeDirectory}/.wallpaper.jpg" #format is "Monitor, file" or ",/path/file" or all monitorss
+          {
+            monitor = "";
+            path = "${config.home.homeDirectory}/.wallpaper.jpg"; #format is "Monitor, file" or ",/path/file" or all monitorss
+          }
         ];
       };
     };

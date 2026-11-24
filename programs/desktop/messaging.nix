@@ -6,7 +6,7 @@
   config = lib.mkIf config.my.messaging.enable {
 
     home.packages = [
-      pkgs.signal-desktop
+      #pkgs.signal-desktop
     ];
   };
 }

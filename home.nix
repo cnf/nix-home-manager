@@ -26,6 +26,7 @@ in {
           (import ./pkgs)
             # (self: super: {my-freerouting = super.callPackage ./pkgs/freerouting.nix { };})
             # (self: super: {local = super.callPackage ./pkgs {};})
+          inputs.hermes-agent.overlays.default
         ] ++ (import ./overlays);
     };
 

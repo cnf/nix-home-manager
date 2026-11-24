@@ -15,6 +15,7 @@
     ./gaming.nix
     ./gnome.nix
     ./kitty
+    ./llm.nix
     ./manpages.nix
     ./messaging.nix
     ./mqtt.nix
@@ -65,6 +66,8 @@
       wf-recorder
       wl-screenrec
 
+      libsecret
+
       # icons
       candy-icons
       nixos-icons
@@ -89,11 +92,11 @@
       # tailscale-systray # not very useful
       ktailctl #no added value
       trayscale # maybe?
-      unstable.my-tailscale-systray
+      #unstable.my-tailscale-systray
       unstable.tail-tray
 
-      podman-desktop
       varia
+      annotator
 
       qalculate-qt
 

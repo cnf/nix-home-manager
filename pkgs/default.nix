@@ -8,11 +8,12 @@ self: super: {
   my-cistercian = super.callPackage ./cistercian.nix {};
   my-hyprswitch = super.callPackage ./hyprswitch.nix {};
   my-appimage-menu-updater = super.callPackage ./appimage-menu-updater.nix {};
-  my-gr-ieee802-11 = super.callPackage ./gr-ieee802-11.nix {};
   my-rustymeter = super.callPackage ./rustymeter.nix {};
   my-hydrabus = super.callPackage ./hydrabus.nix {};
   my-hydratool = super.libsForQt5.callPackage ./hydratool.nix {};
   my-waycon = super.callPackage ./waycon.nix {};
   my-ngscopeclient = super.callPackage ./ngscopeclient.nix {};
   my-adsb-rx = super.callPackage ./adsb-rx.nix {};
+  my-sdroxide = super.callPackage ./sdroxide.nix {};
+  my-uv5r-ble-relay = super.callPackage ./uv5r-ble-relay.nix {};
 }

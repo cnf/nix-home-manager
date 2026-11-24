@@ -13,6 +13,7 @@
     home.packages = with pkgs; [
       git-graph
       pre-commit
+      prek
       unstable.gitleaks
       #earlybird
     ];
@@ -37,13 +38,22 @@
           defaultBranch = "main";
           #templateDir = "${hooks}/share";
         };
-        core = {
-          hooksPath = "${config.xdg.configHome}/git/hooks";
-        };
+        #core = {
+        #  hooksPath = "${config.xdg.configHome}/git/hooks";
+        #};
         push = {
           autoSetupRemote = true;
         };
+        pull = {
+          rebase = true;
+        };
         credential.helper = "${pkgs.git.override { withLibsecret = true; }}/bin/git-credential-libsecret";
+        hook = {
+          prek-globals = {
+            event= "pre-commit";
+            command = "${pkgs.prek}/bin/prek hook-impl --hook-type pre-commit --config ~/.config/prek/global-hooks.toml --";
+          };
+        };
       };
       # hooks = {
       #   pre-commit = "${config.xdg.configHome}/git/hooks/local-pre-commit";
@@ -85,6 +95,8 @@
         ".envrc"
         "### Python"
         "__pycache__/"
+        "/LOCAL/"
+        "/local/"
       ];
     };
     xdg.configFile."git/hooks/pre-commit" = {

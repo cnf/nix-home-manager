@@ -5,11 +5,12 @@
   gnuradio,
   cmake,
   pkg-config,
- # logLib,
- # mpir,
- # gmp,
- # boost,
-  #python,
+  spdlog,
+  logLib,
+  mpir,
+  gmp,
+  boost,
+  python,
   gnuradioOlder,
 }:
 
@@ -21,7 +22,7 @@ mkDerivation {
     owner = "bastibl";
     repo = "gr-ieee802-11";
     rev = "202f63bfa6b6efa2f0943faf3d47086cd26dfb06";
-    hash = "";
+    hash = "sha256-dDWknaMyZtSfuCniFLW0lXQGBL7WieJtrmL2cqr61ro=";
   };
   disabled = gnuradioOlder "3.10";
 
@@ -35,16 +36,17 @@ mkDerivation {
     pkg-config
   ];
 
-  #buildInputs = [
-  #  logLib
-  #  mpir
-  #  gmp
-  #  boost
-  #]
-  #++ lib.optionals (gnuradio.hasFeature "python-support") [
-  #  python.pkgs.pybind11
-  #  python.pkgs.numpy
-  #];
+  buildInputs = [
+    spdlog
+    logLib
+    mpir
+    gmp
+    boost
+  ]
+  ++ lib.optionals (gnuradio.hasFeature "python-support") [
+    python.pkgs.pybind11
+    python.pkgs.numpy
+  ];
 
   cmakeFlags = [
     (lib.cmakeBool "ENABLE_PYTHON" (gnuradio.hasFeature "python-support"))

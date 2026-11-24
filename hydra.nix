@@ -11,6 +11,7 @@
     # EDITOR = "emacs";
   };
   #imports = [
+  #  inputs.hermes-agent.homeManagerModules.default
   #];
   my.altbrowsers.enable = true;
   my.ballisticpinball.enable = true;
@@ -33,6 +34,7 @@
   my.music.enable = true;
   my.nixtools.enable = true;
   my.obsidian.enable = true;
+  my.obd.enable = true;
   my.sdr.enable = true;
   my.sigrok.enable = true;
   my.synodrive.enable = true;
@@ -45,6 +47,11 @@
   my.yubikey.enable = true;
   my.zotero.enable = true;
   my.zsh.enable = true;
+  my.llmclients = {
+    enable = true;
+    mcp.enable = true;
+    opencode.enable = false;
+  };
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;

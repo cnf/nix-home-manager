@@ -16,6 +16,7 @@
         pkgs.fx-cast-bridge
         pkgs.ff2mpv
       ];
+      configPath = "${config.xdg.configHome}/mozilla/firefox";
       profiles = {
         default = {
           id = 0;

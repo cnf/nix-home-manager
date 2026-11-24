@@ -21,6 +21,7 @@
       urh
 
       wsjtx
+      jaero
 
       direwolf
 
@@ -36,16 +37,6 @@
       # https://cemaxecuter.com/?page_id=67
 
       #gr-framework
-      (gnuradio.override {
-        extraPackages = with gnuradioPackages; [
-          osmosdr
-          fosphor
-          lora_sdr
-        ];
-        extraPythonPackages = with gnuradio.python.pkgs; [
-          numpy
-        ];
-      })
     ];
 
     xdg.desktopEntries.SDR = {
@@ -74,19 +65,6 @@
 #      };
     };
 
-    xdg.desktopEntries.gnuradio = {
-      name = "GNU Radio";
-      type = "Application";
-      settings = {
-        #Path = "/home/funshoot/Projects/funshoot/QLCPlus/Shows/2024/Easter/";
-        # Keywords = "qlc;light;controller;dmx;analog;midi;artnet;e131;osc;";
-      };
-      comment = "GNU Radio";
-      icon = "${pkgs.gnuradio}/share/gnuradio/examples/qt-gui/gnuradio_logo.png";
-      exec = "gnuradio-companion";
-      terminal = false;
-      categories = ["Science" "Education" "HamRadio"];
-    };
     xdg.desktopEntries.inspectrum = {
       name = "Inspectrum";
       type = "Application";

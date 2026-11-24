@@ -11,7 +11,7 @@ in
       dpi = mkOption{default = 256;};
       font = {
         name = mkOption {default = "Inter";};
-        size = mkOption {default = 15;};
+        size = mkOption {default = 16;};
         emoji = mkOption {default = ["Noto Color Emoji"];};
         serif = mkOption {default = ["DejaVu Serif"];};
         sansSerif = mkOption {default = ["Inter" "JetBrainsMono Nerd Font"];};

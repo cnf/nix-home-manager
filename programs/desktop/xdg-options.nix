@@ -17,6 +17,7 @@
     xdg.portal.enable = true;
     xdg.userDirs = {
       enable = true;
+      setSessionVariables = true;
       desktop = "${config.home.homeDirectory}/.local/share/Desktop";
       templates = "${config.home.homeDirectory}/.local/share/Templates";
       music = "${config.xdg.userDirs.documents}/Music";

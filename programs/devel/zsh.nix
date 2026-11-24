@@ -80,6 +80,7 @@
     };
     shellAliases = {
       ls = "ls -F --color=auto";
+      ssh = "kitten ssh";
     };
     initContent = let
       ConfigFirst = lib.mkOrder 500 ''

@@ -13,7 +13,8 @@ in
   mylibsigrok = prev.libsigrok.overrideAttrs (finalAttrs: prevAttrs: {
     buildInputs = (prevAttrs.buildInputs or []) ++ [prev.nettle];
     patches = (prevAttrs.patches or []) ++ [
-      p269
+      ../patches/0001-2025-09-14.patch
+      #p269
       #pVelleman
     ] ++ [
     ];

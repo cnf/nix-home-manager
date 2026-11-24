@@ -7,5 +7,6 @@
   imports = [
     ./sdr.nix
     ./clitools.nix
+    ./gnuradio.nix
   ];
 }

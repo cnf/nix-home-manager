@@ -19,7 +19,9 @@ in {
       viAlias = true;
       vimAlias = true;
       defaultEditor = true;
-      extraLuaConfig = ''
+      withRuby = false;
+      withPython3 = true;
+      initLua = ''
 
         -- Extra Lua Config
         -- NIXD
@@ -83,11 +85,11 @@ in {
         ripgrep
       ];
       plugins = with pkgs.vimPlugins; [
-        airline
-        sleuth
+        vim-airline
+        vim-sleuth
         ale
         tcomment_vim
-        gitgutter
+        vim-gitgutter
         vim-nix
         unstable.vimPlugins.cspell-nvim
         nvim-lspconfig
