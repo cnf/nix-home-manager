@@ -4,6 +4,7 @@
     home.packages = with pkgs; [      
       qFlipper
       serial-studio 
+      unstable.my-thermal-camera-viewer
     ];
 
   };

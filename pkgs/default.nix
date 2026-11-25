@@ -17,4 +17,5 @@ self: super: {
   my-sdroxide = super.callPackage ./sdroxide.nix {};
   my-uv5r-ble-relay = super.callPackage ./uv5r-ble-relay.nix {};
   my-sendspin = super.callPackage ./sendspin.nix {};
+  my-thermal-camera-viewer = super.callPackage ./thermal-camera-viewer.nix {};
 }
