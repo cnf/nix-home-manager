@@ -92,7 +92,7 @@ in
 {
   options = {
     my.engineering.kicad.enable = lib.mkEnableOption "Install KiCAD" // {
-      default = true;
+      default = false;
     };
   };
   config = lib.mkIf (config.my.engineering.enable && config.my.engineering.kicad.enable) {

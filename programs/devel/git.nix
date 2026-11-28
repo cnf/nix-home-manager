@@ -110,8 +110,9 @@
         hooks = [{ 
           id = "gitleaks",
           name = "gitleaks",
-          entry = "${lib.getExe pkgs.gitleaks} git --pre-commit --redact --staged --verbose",
-          language = "system"
+          entry = "${lib.getExe pkgs.gitleaks} git --pre-commit --redact --staged",
+          language = "system",
+          pass_filenames = false
         }]
 
         #[[repos]]
